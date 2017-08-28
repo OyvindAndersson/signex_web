@@ -13,4 +13,5 @@ require('./bootstrap');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
+require('./components/client/clients-view.jsx');
 require('./components/views/orders/orders-view.jsx');
