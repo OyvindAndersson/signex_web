@@ -13,4 +13,4 @@ require('./bootstrap');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-require('./components/create-order-form.jsx');
+require('./components/views/orders/orders-view.jsx');

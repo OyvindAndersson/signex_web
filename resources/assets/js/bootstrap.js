@@ -9,6 +9,11 @@ window._ = require('lodash');
 
 try {
     window.$ = window.jQuery = require('jquery');
+    $.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
 
     require('bootstrap-sass');
 } catch (e) {}

@@ -71,12 +71,12 @@
             </div>
         </nav>
 
-        <div id="app-content">
         @yield('content')
-        </div>
     </div>
 
+    @include('footer')
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
+    @yield('page-script')
 </body>
 </html>

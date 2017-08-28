@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Order;
+use App\Client;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreOrder;
+use JavaScript;
+use Auth;
 
 class OrderController extends Controller
 {
@@ -15,6 +18,10 @@ class OrderController extends Controller
      */
     public function index()
     {
+        JavaScript::put([
+            'user' => Auth::user(),
+            'ordersPostUrl' => route('orders.store')
+        ]);
         return view('order.index');
     }
 

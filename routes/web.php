@@ -19,4 +19,5 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/orders', 'OrderController@index')->name('orders');
+//Route::get('/orders', 'OrderController@index')->name('orders')->middleware('auth');
+Route::resource('orders', 'OrderController')->middleware('auth');

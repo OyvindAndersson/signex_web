@@ -24,9 +24,9 @@ class StoreOrder extends FormRequest
     public function rules()
     {
         return [
-            'client_id' => 'required|exists:clients',
+            'client_id' => 'required|exists:clients,id',
             'client_ref_id' => 'nullable|integer',
-            'user_id' => 'required|exist:users',
+            'user_id' => 'required|exists:users,id',
             'is_quote' => 'boolean',
             'status_id' => 'integer',
             'due_at' => 'date|after_or_equal:now'

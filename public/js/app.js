@@ -10387,7 +10387,7 @@ __webpack_require__(108);
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-__webpack_require__(109);
+__webpack_require__(228);
 
 /***/ }),
 /* 89 */
@@ -11250,9 +11250,14 @@ window._ = __webpack_require__(127);
  */
 
 try {
-  window.$ = window.jQuery = __webpack_require__(126);
+    window.$ = window.jQuery = __webpack_require__(126);
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
 
-  __webpack_require__(110);
+    __webpack_require__(110);
 } catch (e) {}
 
 /**
@@ -11274,9 +11279,9 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 var token = document.head.querySelector('meta[name="csrf-token"]');
 
 if (token) {
-  window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
+    window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
 } else {
-  console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
+    console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
 }
 
 /**
@@ -11295,62 +11300,7 @@ if (token) {
 // });
 
 /***/ }),
-/* 109 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(214);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom__ = __webpack_require__(130);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react_dom__);
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-
-
-
-var CreateOrderForm = function (_Component) {
-    _inherits(CreateOrderForm, _Component);
-
-    function CreateOrderForm() {
-        _classCallCheck(this, CreateOrderForm);
-
-        return _possibleConstructorReturn(this, (CreateOrderForm.__proto__ || Object.getPrototypeOf(CreateOrderForm)).apply(this, arguments));
-    }
-
-    _createClass(CreateOrderForm, [{
-        key: 'render',
-        value: function render() {
-            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                'div',
-                { className: 'panel panel-default' },
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'div',
-                    { className: 'panel-heading' },
-                    'Create order'
-                ),
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('div', { className: 'panel-body' })
-            );
-        }
-    }]);
-
-    return CreateOrderForm;
-}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
-
-/* harmony default export */ __webpack_exports__["default"] = (CreateOrderForm);
-
-
-if (document.getElementById('create-order-form')) {
-    __WEBPACK_IMPORTED_MODULE_1_react_dom___default.a.render(__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(CreateOrderForm, null), document.getElementById('create-order-form'));
-}
-
-/***/ }),
+/* 109 */,
 /* 110 */
 /***/ (function(module, exports) {
 
@@ -53747,6 +53697,241 @@ module.exports = function(module) {
 __webpack_require__(88);
 module.exports = __webpack_require__(89);
 
+
+/***/ }),
+/* 218 */,
+/* 219 */,
+/* 220 */,
+/* 221 */,
+/* 222 */,
+/* 223 */,
+/* 224 */,
+/* 225 */,
+/* 226 */,
+/* 227 */,
+/* 228 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(214);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom__ = __webpack_require__(130);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react_dom__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ClientCreateForm", function() { return ClientCreateForm; });
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+
+var OrdersView = function (_Component) {
+    _inherits(OrdersView, _Component);
+
+    function OrdersView(props) {
+        _classCallCheck(this, OrdersView);
+
+        var _this = _possibleConstructorReturn(this, (OrdersView.__proto__ || Object.getPrototypeOf(OrdersView)).call(this, props));
+
+        _this.state = {
+            orders: []
+        };
+        return _this;
+    }
+
+    _createClass(OrdersView, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            this.updateOrders();
+        }
+    }, {
+        key: 'updateOrders',
+        value: function updateOrders() {
+            var _this2 = this;
+
+            fetch('/api/orders').then(function (response) {
+                return response.json();
+            }).then(function (response) {
+                _this2.setState({ orders: response });
+            });
+        }
+    }, {
+        key: 'renderOrders',
+        value: function renderOrders() {
+            return this.state.orders.map(function (order) {
+                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'li',
+                    { key: order.id },
+                    order.id,
+                    ' - Due: ',
+                    order.due_at
+                );
+            });
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'div',
+                { className: 'container' },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'div',
+                    { className: 'row' },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        { className: 'col-md-8 col-md-offset-2' },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'h1',
+                            null,
+                            'Orders'
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'ul',
+                            null,
+                            this.renderOrders()
+                        )
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        { className: 'col-md-8 col-md-offset-2' },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(ClientCreateForm, null)
+                    )
+                )
+            );
+        }
+    }]);
+
+    return OrdersView;
+}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
+
+/* harmony default export */ __webpack_exports__["default"] = (OrdersView);
+
+
+var ClientCreateForm = function (_Component2) {
+    _inherits(ClientCreateForm, _Component2);
+
+    function ClientCreateForm(props) {
+        _classCallCheck(this, ClientCreateForm);
+
+        var _this3 = _possibleConstructorReturn(this, (ClientCreateForm.__proto__ || Object.getPrototypeOf(ClientCreateForm)).call(this, props));
+
+        _this3.handleSubmit = _this3.handleSubmit.bind(_this3);
+        _this3.handleSelectChange = _this3.handleSelectChange.bind(_this3);
+
+        _this3.state = {
+            clients: [],
+            selectedClient: ""
+        };
+        return _this3;
+    }
+
+    _createClass(ClientCreateForm, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            var _this4 = this;
+
+            fetch('/api/clients').then(function (response) {
+                return response.json();
+            }).then(function (clients) {
+                _this4.setState({ clients: clients });
+            });
+        }
+    }, {
+        key: 'handleSubmit',
+        value: function handleSubmit(event) {
+            event.preventDefault();
+
+            var now = new Date();
+            now.setDate(now.getDate() + 14);
+
+            var url = signex.ordersPostUrl;
+            var data = {
+                client_id: parseInt(this.state.selectedClient),
+                user_id: signex.user.id,
+                is_quote: 0,
+                due_at: now.toISOString().substring(0, 10)
+            };
+            console.log("Sending: ");
+            console.log(data);
+            $.ajax({
+                type: 'post',
+                url: url,
+                data: data,
+                dataType: 'json',
+                success: function success(data) {
+                    alert(data);
+                },
+                error: function error(data) {
+                    var errors = data.responseJSON;
+                    console.log(errors);
+                }
+            });
+        }
+    }, {
+        key: 'handleSelectChange',
+        value: function handleSelectChange(event) {
+            this.setState({ selectedClient: event.target.value });
+        }
+    }, {
+        key: 'renderClientList',
+        value: function renderClientList() {
+            return this.state.clients.map(function (client) {
+                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'option',
+                    { key: client.id, value: client.id },
+                    client.name
+                );
+            });
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'div',
+                { className: 'col-md-6' },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'h4',
+                    null,
+                    'Create order'
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'form',
+                    { onSubmit: this.handleSubmit },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'select',
+                        { className: 'form-control',
+                            onChange: this.handleSelectChange,
+                            value: this.state.selectedClient },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'option',
+                            { value: '0' },
+                            'Select...'
+                        ),
+                        this.renderClientList()
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { name: 'user_id',
+                        type: 'hidden',
+                        className: 'form-control',
+                        value: signex.user.id }),
+                    'Is quote',
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { name: 'is_quote', type: 'checkbox', className: 'form-control' }),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'submit', className: 'btn btn-primary', value: 'Submit' })
+                )
+            );
+        }
+    }]);
+
+    return ClientCreateForm;
+}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
+
+if (document.getElementById('orders-view-root')) {
+    __WEBPACK_IMPORTED_MODULE_1_react_dom___default.a.render(__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(OrdersView, null), document.getElementById('orders-view-root'));
+}
 
 /***/ })
 /******/ ]);
