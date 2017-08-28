@@ -77,7 +77,19 @@ class ClientController extends Controller
      */
     public function update(Request $request, Client $client)
     {
-        //
+        $this->validate($request, [
+            'name' => 'required|between:2,64',
+            'org_nr' => 'required|unique:clients'
+        ]);
+
+        if($request->ajax())
+        {
+            $client->name = $request['name'];
+            $client->org_nr = $request['org_nr'];
+            $r = $client->save();
+
+            return response()->json(['data' => $client, 'result' => $r]);
+        }
     }
 
     /**
