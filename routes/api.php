@@ -18,7 +18,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get('/clients', function (Request $request) {
-    return Client::all();
+    return Client::orderBy('name')->get();
 });
 
 Route::get('/client/{id}', function ($id) {

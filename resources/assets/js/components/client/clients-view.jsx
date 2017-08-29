@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import AjaxForm from '../ajax-form';
+import Brreg from '../../brreg.js';
 
 /*
 * @TODO: 28.08.17 ClientsTable -> component-rows, able to inline-delete/edit/save
@@ -42,19 +43,16 @@ export default class ClientsView extends Component {
         return(
             <div className="container">
                 <div className="row">
-                    <div className="col-md-10 col-md-offset-1">
+                    <div className="col-md-12">
                         <h1>Clients</h1>
                     </div>
                 </div>
                 <div className="row">
-                    <div className="col-md-4 col-md-offset-1">
+                    <div className="col-md-4">
                         <h4>Create client</h4>
-                        <ClientForm clientName="Cunt" onClientAddedHandler={this.onClientAdded} />
-
-                        <h4>Edit client</h4>
-                        <ClientForm />
+                        <ClientForm onClientAddedHandler={this.onClientAdded} />
                     </div>
-                    <div className="col-md-6">
+                    <div className="col-md-12">
                         <ClientsTable clients={this.state.clients} />
                     </div>
                 </div>
@@ -72,11 +70,8 @@ export class ClientsTable extends Component {
         }
     }
 
-    componentDidMount() {
-        this.serverRequest = axios.get('/api/clients')
-        .then( response => {
-            this.setState({clients: response.data});
-        });
+    componentWillReceiveProps(props){
+        this.setState({clients: props.clients});
     }
 
     renderClientRows() {
@@ -93,6 +88,11 @@ export class ClientsTable extends Component {
     }
 
     render() {
+
+        const rows = this.state.clients.map( client => {
+            return <ClientTableRow key={client.id} client={client} />;
+        });
+
         return(
             <table className="table">
                 <thead>
@@ -103,9 +103,26 @@ export class ClientsTable extends Component {
                     </tr>
                 </thead>
                 <tbody>
-                    {this.renderClientRows()}
+                    {rows}
                 </tbody>
             </table>
+        );
+    }
+}
+export class ClientTableRow extends Component {
+    constructor(props){
+        super(props);
+    }
+    render() {
+        return(
+        <tr key={this.props.client.id}>
+            <td>{this.props.client.id}</td>
+            <td>{this.props.client.name}</td>
+            <td>{this.props.client.org_nr}</td>
+            <td>
+                <button className="btn btn-xs">Edit</button>
+            </td>
+        </tr>
         );
     }
 }
@@ -126,6 +143,7 @@ export class ClientForm extends Component {
 
     onClientNameChanged(e){
         this.setState({ clientName: e.target.value });
+        (new Brreg()).searchByName(e.target.value);
     }
 
     onClientOrgNrChanged(e){

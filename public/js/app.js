@@ -11390,7 +11390,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom__ = __webpack_require__(35);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react_dom__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ajax_form__ = __webpack_require__(111);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__brreg_js__ = __webpack_require__(228);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ClientsTable", function() { return ClientsTable; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ClientTableRow", function() { return ClientTableRow; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ClientForm", function() { return ClientForm; });
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -11399,6 +11401,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 
 
 
@@ -11460,7 +11463,7 @@ var ClientsView = function (_Component) {
                     { className: 'row' },
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         'div',
-                        { className: 'col-md-10 col-md-offset-1' },
+                        { className: 'col-md-12' },
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             'h1',
                             null,
@@ -11473,23 +11476,17 @@ var ClientsView = function (_Component) {
                     { className: 'row' },
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         'div',
-                        { className: 'col-md-4 col-md-offset-1' },
+                        { className: 'col-md-4' },
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             'h4',
                             null,
                             'Create client'
                         ),
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(ClientForm, { clientName: 'Cunt', onClientAddedHandler: this.onClientAdded }),
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            'h4',
-                            null,
-                            'Edit client'
-                        ),
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(ClientForm, null)
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(ClientForm, { onClientAddedHandler: this.onClientAdded })
                     ),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         'div',
-                        { className: 'col-md-6' },
+                        { className: 'col-md-12' },
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(ClientsTable, { clients: this.state.clients })
                     )
                 )
@@ -11518,13 +11515,9 @@ var ClientsTable = function (_Component2) {
     }
 
     _createClass(ClientsTable, [{
-        key: 'componentDidMount',
-        value: function componentDidMount() {
-            var _this4 = this;
-
-            this.serverRequest = axios.get('/api/clients').then(function (response) {
-                _this4.setState({ clients: response.data });
-            });
+        key: 'componentWillReceiveProps',
+        value: function componentWillReceiveProps(props) {
+            this.setState({ clients: props.clients });
         }
     }, {
         key: 'renderClientRows',
@@ -11555,6 +11548,11 @@ var ClientsTable = function (_Component2) {
     }, {
         key: 'render',
         value: function render() {
+
+            var rows = this.state.clients.map(function (client) {
+                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(ClientTableRow, { key: client.id, client: client });
+            });
+
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'table',
                 { className: 'table' },
@@ -11584,7 +11582,7 @@ var ClientsTable = function (_Component2) {
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     'tbody',
                     null,
-                    this.renderClientRows()
+                    rows
                 )
             );
         }
@@ -11592,9 +11590,54 @@ var ClientsTable = function (_Component2) {
 
     return ClientsTable;
 }(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
+var ClientTableRow = function (_Component3) {
+    _inherits(ClientTableRow, _Component3);
 
-var ClientForm = function (_Component3) {
-    _inherits(ClientForm, _Component3);
+    function ClientTableRow(props) {
+        _classCallCheck(this, ClientTableRow);
+
+        return _possibleConstructorReturn(this, (ClientTableRow.__proto__ || Object.getPrototypeOf(ClientTableRow)).call(this, props));
+    }
+
+    _createClass(ClientTableRow, [{
+        key: 'render',
+        value: function render() {
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'tr',
+                { key: this.props.client.id },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'td',
+                    null,
+                    this.props.client.id
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'td',
+                    null,
+                    this.props.client.name
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'td',
+                    null,
+                    this.props.client.org_nr
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'td',
+                    null,
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'button',
+                        { className: 'btn btn-xs' },
+                        'Edit'
+                    )
+                )
+            );
+        }
+    }]);
+
+    return ClientTableRow;
+}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
+
+var ClientForm = function (_Component4) {
+    _inherits(ClientForm, _Component4);
 
     function ClientForm(props) {
         _classCallCheck(this, ClientForm);
@@ -11616,6 +11659,7 @@ var ClientForm = function (_Component3) {
         key: 'onClientNameChanged',
         value: function onClientNameChanged(e) {
             this.setState({ clientName: e.target.value });
+            new __WEBPACK_IMPORTED_MODULE_3__brreg_js__["a" /* default */]().searchByName(e.target.value);
         }
     }, {
         key: 'onClientOrgNrChanged',
@@ -54286,6 +54330,76 @@ module.exports = function(module) {
 __webpack_require__(90);
 module.exports = __webpack_require__(91);
 
+
+/***/ }),
+/* 220 */,
+/* 221 */,
+/* 222 */,
+/* 223 */,
+/* 224 */,
+/* 225 */,
+/* 226 */,
+/* 227 */,
+/* 228 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var brregFilters = {
+    startsWith: "startsWith(navn, '{1}')"
+};
+var brregOptions = {
+    url: "http://data.brreg.no/enhetsregisteret/enhet.json",
+    page: 0,
+    size: 1,
+    filterPrefix: "$filter="
+};
+
+var defaultParams = {
+    page: 0,
+    size: 1
+};
+
+var Brreg = function () {
+    function Brreg() {
+        _classCallCheck(this, Brreg);
+
+        var url = "http://data.brreg.no/enhetsregisteret/enhet.json";
+    }
+
+    _createClass(Brreg, [{
+        key: "searchByName",
+        value: function searchByName(companyName) {
+            if (!axios) {
+                console.log("brreg - AXIOS not found. Unable to retrieve data.");
+                return null;
+            }
+
+            var queryFilter = brregFilters.startsWith.replace('{1}', companyName);
+
+            var result = axios.get(brregOptions.url, {
+                params: {
+                    page: defaultParams.page,
+                    size: defaultParams.size,
+                    $filter: queryFilter
+                }
+            }).then(function (results) {
+                console.log('brreg - Results searching..:');
+                console.log(results);
+            }).catch(function (error) {
+                console.log('brreg - Error searching..:');
+                console.log(error);
+            });
+        }
+    }]);
+
+    return Brreg;
+}();
+
+/* harmony default export */ __webpack_exports__["a"] = (Brreg);
 
 /***/ })
 /******/ ]);
