@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import { ClientForm } from '../../client/clients-view';
 
 export default class OrdersView extends Component {
     constructor(props){
@@ -44,7 +45,7 @@ export default class OrdersView extends Component {
                     </div>
 
                     <div className="col-md-8 col-md-offset-2">
-                        <ClientCreateForm />
+                        <ClientForm />
                     </div>
                 </div>
             </div>
