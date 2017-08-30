@@ -11393,6 +11393,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__brreg_js__ = __webpack_require__(228);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ClientsTable", function() { return ClientsTable; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ClientTableRow", function() { return ClientTableRow; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SelectBox", function() { return SelectBox; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "BrregResultBox", function() { return BrregResultBox; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ClientForm", function() { return ClientForm; });
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -11476,7 +11478,7 @@ var ClientsView = function (_Component) {
                     { className: 'row' },
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         'div',
-                        { className: 'col-md-4' },
+                        { className: 'col-md-6' },
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             'h4',
                             null,
@@ -11636,30 +11638,113 @@ var ClientTableRow = function (_Component3) {
     return ClientTableRow;
 }(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
 
-var ClientForm = function (_Component4) {
-    _inherits(ClientForm, _Component4);
+var SelectBox = function (_Component4) {
+    _inherits(SelectBox, _Component4);
+
+    function SelectBox(props) {
+        _classCallCheck(this, SelectBox);
+
+        return _possibleConstructorReturn(this, (SelectBox.__proto__ || Object.getPrototypeOf(SelectBox)).call(this, props));
+    }
+
+    _createClass(SelectBox, [{
+        key: 'getSelectedValue',
+        value: function getSelectedValue() {
+            var selection = document.getElementById(this.props.id);
+            if (selection) {
+                var opt = selection.options[selection.selectedIndex].value;
+            }
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'select',
+                { id: this.props.id, className: 'form-control' },
+                this.props.children
+            );
+        }
+    }]);
+
+    return SelectBox;
+}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
+
+var BrregResultBox = function (_Component5) {
+    _inherits(BrregResultBox, _Component5);
+
+    function BrregResultBox(props) {
+        _classCallCheck(this, BrregResultBox);
+
+        var _this6 = _possibleConstructorReturn(this, (BrregResultBox.__proto__ || Object.getPrototypeOf(BrregResultBox)).call(this, props));
+
+        _this6.state = {
+            selected: null,
+            data: []
+        };
+        return _this6;
+    }
+
+    _createClass(BrregResultBox, [{
+        key: 'componentWillReceiveProps',
+        value: function componentWillReceiveProps(props) {
+            this.setState({ data: props.data });
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var options = this.state.data ? this.state.data.map(function (r) {
+                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'option',
+                    { key: r.organisasjonsnummer, value: r.organisasjonsnummer },
+                    r.navn
+                );
+            }) : [];
+
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'div',
+                null,
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    SelectBox,
+                    null,
+                    options
+                )
+            );
+        }
+    }]);
+
+    return BrregResultBox;
+}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
+
+var ClientForm = function (_Component6) {
+    _inherits(ClientForm, _Component6);
 
     function ClientForm(props) {
         _classCallCheck(this, ClientForm);
 
-        var _this5 = _possibleConstructorReturn(this, (ClientForm.__proto__ || Object.getPrototypeOf(ClientForm)).call(this, props));
+        var _this7 = _possibleConstructorReturn(this, (ClientForm.__proto__ || Object.getPrototypeOf(ClientForm)).call(this, props));
 
-        _this5.onSubmitForm = _this5.onSubmitForm.bind(_this5);
-        _this5.onClientNameChanged = _this5.onClientNameChanged.bind(_this5);
-        _this5.onClientOrgNrChanged = _this5.onClientOrgNrChanged.bind(_this5);
+        _this7.onSubmitForm = _this7.onSubmitForm.bind(_this7);
+        _this7.onClientNameChanged = _this7.onClientNameChanged.bind(_this7);
+        _this7.onClientOrgNrChanged = _this7.onClientOrgNrChanged.bind(_this7);
 
-        _this5.state = {
+        _this7.state = {
             clientName: '',
-            clientOrgNr: ''
+            clientOrgNr: '',
+            brregResults: []
         };
-        return _this5;
+
+        _this7.brreg = new __WEBPACK_IMPORTED_MODULE_3__brreg_js__["a" /* default */]();
+        return _this7;
     }
 
     _createClass(ClientForm, [{
         key: 'onClientNameChanged',
         value: function onClientNameChanged(e) {
-            this.setState({ clientName: e.target.value });
-            new __WEBPACK_IMPORTED_MODULE_3__brreg_js__["a" /* default */]().searchByName(e.target.value);
+            this.brreg.searchByName(e.target.value);
+            this.setState({
+                clientName: e.target.value,
+                brregResults: this.brreg.getLastResult()
+            });
         }
     }, {
         key: 'onClientOrgNrChanged',
@@ -11669,7 +11754,7 @@ var ClientForm = function (_Component4) {
     }, {
         key: 'onSubmitForm',
         value: function onSubmitForm(e) {
-            var _this6 = this;
+            var _this8 = this;
 
             e.preventDefault();
             axios.post('clients', {
@@ -11677,11 +11762,11 @@ var ClientForm = function (_Component4) {
                 org_nr: this.state.clientOrgNr
             }).then(function (response) {
                 // registerable handler for when the client is added.
-                if (_this6.props.onClientAddedHandler) {
-                    _this6.props.onClientAddedHandler(response.data);
+                if (_this8.props.onClientAddedHandler) {
+                    _this8.props.onClientAddedHandler(response.data);
                 }
                 // clear form fields
-                _this6.setState({
+                _this8.setState({
                     clientName: '',
                     clientOrgNr: ''
                 });
@@ -11695,17 +11780,31 @@ var ClientForm = function (_Component4) {
         value: function render() {
             var url = this.props.url ? this.props.url : "/clients";
             var method = this.props.method ? this.props.method : "post";
+
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 __WEBPACK_IMPORTED_MODULE_2__ajax_form__["a" /* default */],
                 { onSubmitForm: this.onSubmitForm, url: url, method: method },
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     'div',
-                    { className: 'form-group' },
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { name: 'name', type: 'text',
-                        value: this.state.clientName,
-                        onChange: this.onClientNameChanged,
-                        placeholder: 'Client name...',
-                        className: 'form-control' })
+                    { className: 'row' },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        { className: 'col-md-6' },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            { className: 'form-group' },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { name: 'name', type: 'text',
+                                value: this.state.clientName,
+                                onChange: this.onClientNameChanged,
+                                placeholder: 'Client name...',
+                                className: 'form-control' })
+                        )
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        { className: 'col-md-6' },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(BrregResultBox, { data: this.state.brregResults })
+                    )
                 ),
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     'div',
@@ -54349,49 +54448,60 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var brregFilters = {
-    startsWith: "startsWith(navn, '{1}')"
+    filterPrefix: "$filter=",
+    startsWith: "startswith({prop}, '{value}')"
 };
 var brregOptions = {
-    url: "http://data.brreg.no/enhetsregisteret/enhet.json",
-    page: 0,
-    size: 1,
-    filterPrefix: "$filter="
-};
-
-var defaultParams = {
+    url: "http://data.brreg.no/enhetsregisteret/enhet.json?",
     page: 0,
     size: 1
-};
 
+    /**
+     * @todo Make this class more flexible, and implement the proper API
+     * This works for now.
+     */
+};
 var Brreg = function () {
     function Brreg() {
         _classCallCheck(this, Brreg);
 
-        var url = "http://data.brreg.no/enhetsregisteret/enhet.json";
+        this.state = {
+            lastResult: []
+        };
     }
 
     _createClass(Brreg, [{
+        key: "getLastResult",
+        value: function getLastResult() {
+            return this.state.lastResult;
+        }
+    }, {
         key: "searchByName",
-        value: function searchByName(companyName) {
-            if (!axios) {
-                console.log("brreg - AXIOS not found. Unable to retrieve data.");
-                return null;
+        value: function searchByName(value) {
+            var _this = this;
+
+            if (value.length < 3 || this.state.lat) {
+                console.log("Name must be > 2 chars.");
+                return;
             }
 
-            var queryFilter = brregFilters.startsWith.replace('{1}', companyName);
+            var url = "http://data.brreg.no/enhetsregisteret/enhet.{format}?page={side}&size={antall}&$filter={filter}";
+            url = url.replace('{format}', "json");
+            url = url.replace('{side}', "0");
+            url = url.replace('{antall}', "3");
+            url = url.replace('{filter}', "startswith(navn, '" + value + "')");
 
-            var result = axios.get(brregOptions.url, {
-                params: {
-                    page: defaultParams.page,
-                    size: defaultParams.size,
-                    $filter: queryFilter
+            fetch(url).then(function (response) {
+                if (response.status !== 200) {
+                    console.log('Looks like there was a problem. Status Code: ' + response.status);
+                    return;
                 }
-            }).then(function (results) {
-                console.log('brreg - Results searching..:');
-                console.log(results);
+                return response.json();
+            }).then(function (response) {
+                console.log(response.data);
+                _this.state.lastResult = response.data;
             }).catch(function (error) {
-                console.log('brreg - Error searching..:');
-                console.log(error);
+                console.log("Error!: " + error);
             });
         }
     }]);

@@ -1,47 +1,58 @@
 
 const brregFilters = {
-    startsWith: "startsWith(navn, '{1}')"
+    filterPrefix: "$filter=",
+    startsWith: "startswith({prop}, '{value}')"
 }
 const brregOptions = {
-    url: "http://data.brreg.no/enhetsregisteret/enhet.json",
+    url: "http://data.brreg.no/enhetsregisteret/enhet.json?",
     page: 0,
     size: 1,
-    filterPrefix: "$filter="
+    
 }
 
-const defaultParams = {
-    page: 0,
-    size: 1
-}
-
+/**
+ * @todo Make this class more flexible, and implement the proper API
+ * This works for now.
+ */
 export default class Brreg {
 
     constructor() {
-        const url = "http://data.brreg.no/enhetsregisteret/enhet.json";
+        this.state = {
+            lastResult: []
+        }
     }
 
-    searchByName(companyName) {
-        if(!axios){
-            console.log("brreg - AXIOS not found. Unable to retrieve data.");
-            return null;
+    getLastResult() {
+        return this.state.lastResult;
+    }
+
+    searchByName(value) {
+        if(value.length < 3 || this.state.lat){
+            console.log("Name must be > 2 chars.")
+            return;
         }
 
-        let queryFilter = brregFilters.startsWith.replace('{1}', companyName);
+        let url = "http://data.brreg.no/enhetsregisteret/enhet.{format}?page={side}&size={antall}&$filter={filter}";
+        url = url.replace('{format}', "json");
+        url = url.replace('{side}', "0");
+        url = url.replace('{antall}', "3");
+        url = url.replace('{filter}', "startswith(navn, '"+value+"')");
 
-        let result = axios.get(brregOptions.url, {
-            params: {
-                page: defaultParams.page,
-                size: defaultParams.size,
-                $filter: queryFilter
+        fetch(url)
+        .then( response => {
+            if (response.status !== 200) {  
+                console.log('Looks like there was a problem. Status Code: ' +  
+                response.status);  
+                return;  
             }
+            return response.json();
         })
-        .then( results => {
-            console.log('brreg - Results searching..:');
-            console.log(results);
+        .then(response => {
+            console.log(response.data);
+            this.state.lastResult = response.data;
         })
         .catch(error => {
-            console.log('brreg - Error searching..:');
-            console.log(error);
+            console.log("Error!: " + error);
         });
     }
 }

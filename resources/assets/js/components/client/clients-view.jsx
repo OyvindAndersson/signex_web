@@ -48,7 +48,7 @@ export default class ClientsView extends Component {
                     </div>
                 </div>
                 <div className="row">
-                    <div className="col-md-4">
+                    <div className="col-md-6">
                         <h4>Create client</h4>
                         <ClientForm onClientAddedHandler={this.onClientAdded} />
                     </div>
@@ -127,6 +127,53 @@ export class ClientTableRow extends Component {
     }
 }
 
+export class SelectBox extends Component {
+    constructor(props){
+        super(props);
+    }
+
+    getSelectedValue() {
+        let selection = document.getElementById(this.props.id);
+        if(selection){
+            let opt = selection.options[selection.selectedIndex].value;
+        }
+    }
+    render() {
+        return(
+            <select id={this.props.id} className="form-control">
+                {this.props.children}
+            </select>
+        );
+    }
+}
+
+export class BrregResultBox extends Component {
+    constructor(props){
+        super(props);
+
+        this.state = {
+            selected: null,
+            data: []
+        };
+    }
+    componentWillReceiveProps(props){
+        this.setState({data: props.data});
+    }
+    render() {
+        let options = (this.state.data) ? this.state.data.map(r => {
+            return (<option key={r.organisasjonsnummer} value={r.organisasjonsnummer}>{r.navn}</option>);
+        }) : [];
+
+        return (
+            <div>
+                <SelectBox>
+                    {options}
+                </SelectBox>
+            </div>
+        );
+    }
+}
+
 export class ClientForm extends Component {
     constructor(props){
         super(props);
@@ -137,13 +184,19 @@ export class ClientForm extends Component {
 
         this.state = {
             clientName: '',
-            clientOrgNr: ''
+            clientOrgNr: '',
+            brregResults: []
         }
+
+        this.brreg = new Brreg();
     }
 
     onClientNameChanged(e){
-        this.setState({ clientName: e.target.value });
-        (new Brreg()).searchByName(e.target.value);
+        this.brreg.searchByName(e.target.value);
+        this.setState({ 
+            clientName: e.target.value,
+            brregResults: this.brreg.getLastResult()
+        });
     }
 
     onClientOrgNrChanged(e){
@@ -176,15 +229,24 @@ export class ClientForm extends Component {
     render() {
         const url = this.props.url ? this.props.url : "/clients";
         const method = this.props.method ? this.props.method : "post";
+
         return(
         <AjaxForm  onSubmitForm={this.onSubmitForm} url={url} method={method}>
-            <div className="form-group">
-                <input name="name" type="text" 
-                    value={this.state.clientName} 
-                    onChange={this.onClientNameChanged} 
-                    placeholder="Client name..." 
-                    className="form-control" />
+            <div className="row">
+                <div className="col-md-6">
+                    <div className="form-group">
+                        <input name="name" type="text" 
+                            value={this.state.clientName} 
+                            onChange={this.onClientNameChanged} 
+                            placeholder="Client name..." 
+                            className="form-control" />
+                    </div>
+                </div>
+                <div className="col-md-6">
+                    <BrregResultBox data={this.state.brregResults} />
+                </div>
             </div>
+            
 
             <div className="form-group">
                 <input name="org_nr" type="text" 
