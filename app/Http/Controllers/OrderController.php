@@ -45,9 +45,16 @@ class OrderController extends Controller
     {
         $newOrder = Order::create($request->all());
 
+        
         if($request->ajax())
         {
-            return response()->json(['response' => 'I just saved a fucking order.']);
+            if(!$newOrder){
+                return response()->json(['order' => null, 'error' => 'Create order failed.']);
+            }
+            else 
+            {
+                return response()->json(['order' => $newOrder]);
+            }
         }
         
         return view('order.index');

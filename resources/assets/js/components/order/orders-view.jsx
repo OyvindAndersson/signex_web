@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import { ClientForm } from '../../client/clients-view';
+import { ClientForm } from '../client/clients-view';
 
 export default class OrdersView extends Component {
     constructor(props){
@@ -37,15 +37,12 @@ export default class OrdersView extends Component {
         return(
             <div className="container">
                 <div className="row">
-                    <div className="col-md-8 col-md-offset-2">
+                    <div className="col-md-12">
                         <h1>Orders</h1>
-                        <ul>
-                            {this.renderOrders()}
-                        </ul>
                     </div>
 
-                    <div className="col-md-8 col-md-offset-2">
-                        <ClientForm />
+                    <div className="col-md-12">
+                        <ClientCreateForm />
                     </div>
                 </div>
             </div>
@@ -59,6 +56,8 @@ export class ClientCreateForm extends Component {
 
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleSelectChange = this.handleSelectChange.bind(this);
+        this.updateClientList = this.updateClientList.bind(this);
+        this.onClientAddedHandler = this.onClientAddedHandler.bind(this);
 
         this.state = {
             clients: [],
@@ -67,6 +66,9 @@ export class ClientCreateForm extends Component {
     }
 
     componentDidMount(){
+        this.updateClientList();
+    }
+    updateClientList(){
         fetch('/api/clients')
         .then(response => { 
             return response.json(); 
@@ -74,6 +76,11 @@ export class ClientCreateForm extends Component {
         .then(clients => {
             this.setState({ clients });
         });
+    }
+    onClientAddedHandler(newClient){
+        this.updateClientList();
+
+        // TODO: Toast message
     }
     handleSubmit(event) {
         event.preventDefault();
@@ -116,27 +123,46 @@ export class ClientCreateForm extends Component {
     }
     render() {
         return(
-            <div className="col-md-6">
-                <h4>Create order</h4>
-                <form onSubmit={this.handleSubmit}>
-                    <select className="form-control" 
-                        onChange={this.handleSelectChange} 
-                        value={this.state.selectedClient}>
-                        <option value="0">Select...</option>
-                        {this.renderClientList()}
-                    </select>
+            <div className="row">
+                <div className="col-md-6">
+                    <h4>Create order</h4>
+                    <form onSubmit={this.handleSubmit}>
+                        <div className="row">
+                            <div className="col-md-12">
+                                <div className="form-group">
+                                    <label>Client:</label>
+                                    <select className="form-control" 
+                                        onChange={this.handleSelectChange} 
+                                        value={this.state.selectedClient}>
+                                        <option value="0">Select...</option>
+                                        {this.renderClientList()}
+                                    </select>
+                                </div>
 
-                    <input name="user_id" 
-                    type="hidden" 
-                    className="form-control" 
-                    value={signex.user.id} />
+                                <input name="user_id" 
+                                    type="hidden" 
+                                    className="form-control" 
+                                    value={signex.user.id} />
+                                
+                            </div>
+                            
+                            <div className="col-md-12">
+                                <div className="checkbox">
+                                    <label><input name="is_quote" type="checkbox" value=""/>Is quote</label>
+                                </div>
+                                <input type="submit" className="btn btn-primary" value="Submit" />
+                            </div>
+                            
+                        </div>
+                    </form>
+                </div>
 
-                    Is quote
-                    <input name="is_quote" type="checkbox" className="form-control" />
-                    
-
-                    <input type="submit" className="btn btn-primary" value="Submit" />
-                </form>
+                <div className="col-md-6">
+                    <div className="jumbotron">
+                        <h3>New client form</h3>
+                        <ClientForm onClientAddedHandler={this.onClientAddedHandler} />
+                    </div>
+                </div>
             </div>
         );
     }

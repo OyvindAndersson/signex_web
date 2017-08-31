@@ -8,10 +8,8 @@
 require('./bootstrap');
 
 /**
- * Next, we will create a fresh React component instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
+ * Next, include all page-root views to use throughout the application
  */
 
-require('./components/client/clients-view.jsx');
-require('./components/views/orders/orders-view.jsx');
+require('./components/client/clients-view.jsx'); // views.client.index
+require('./components/order/orders-view.jsx'); // views.order.index

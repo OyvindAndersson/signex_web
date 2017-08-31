@@ -358,7 +358,7 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 var _prodInvariant = __webpack_require__(2);
 
 var DOMProperty = __webpack_require__(13);
-var ReactDOMComponentFlags = __webpack_require__(66);
+var ReactDOMComponentFlags = __webpack_require__(67);
 
 var invariant = __webpack_require__(0);
 
@@ -1362,9 +1362,9 @@ module.exports = emptyFunction;
 var _prodInvariant = __webpack_require__(2),
     _assign = __webpack_require__(3);
 
-var CallbackQueue = __webpack_require__(64);
+var CallbackQueue = __webpack_require__(65);
 var PooledClass = __webpack_require__(14);
-var ReactFeatureFlags = __webpack_require__(69);
+var ReactFeatureFlags = __webpack_require__(70);
 var ReactReconciler = __webpack_require__(17);
 var Transaction = __webpack_require__(29);
 
@@ -2259,7 +2259,7 @@ var warning = __webpack_require__(1);
 var canDefineProperty = __webpack_require__(32);
 var hasOwnProperty = Object.prototype.hasOwnProperty;
 
-var REACT_ELEMENT_TYPE = __webpack_require__(86);
+var REACT_ELEMENT_TYPE = __webpack_require__(87);
 
 var RESERVED_PROPS = {
   key: true,
@@ -2601,7 +2601,7 @@ var DOMNamespaces = __webpack_require__(37);
 var setInnerHTML = __webpack_require__(31);
 
 var createMicrosoftUnsafeLocalFunction = __webpack_require__(44);
-var setTextContent = __webpack_require__(83);
+var setTextContent = __webpack_require__(84);
 
 var ELEMENT_NODE_TYPE = 1;
 var DOCUMENT_FRAGMENT_NODE_TYPE = 11;
@@ -2893,7 +2893,7 @@ module.exports = ReactReconciler;
 
 var _assign = __webpack_require__(3);
 
-var ReactBaseClasses = __webpack_require__(85);
+var ReactBaseClasses = __webpack_require__(86);
 var ReactChildren = __webpack_require__(207);
 var ReactDOMFactories = __webpack_require__(208);
 var ReactElement = __webpack_require__(15);
@@ -2910,7 +2910,7 @@ var cloneElement = ReactElement.cloneElement;
 if (true) {
   var lowPriorityWarning = __webpack_require__(51);
   var canDefineProperty = __webpack_require__(32);
-  var ReactElementValidator = __webpack_require__(87);
+  var ReactElementValidator = __webpack_require__(88);
   var didWarnPropTypesDeprecated = false;
   createElement = ReactElementValidator.createElement;
   createFactory = ReactElementValidator.createFactory;
@@ -3268,8 +3268,8 @@ var EventPluginRegistry = __webpack_require__(26);
 var EventPluginUtils = __webpack_require__(38);
 var ReactErrorUtils = __webpack_require__(42);
 
-var accumulateInto = __webpack_require__(76);
-var forEachAccumulated = __webpack_require__(77);
+var accumulateInto = __webpack_require__(77);
+var forEachAccumulated = __webpack_require__(78);
 var invariant = __webpack_require__(0);
 
 /**
@@ -3544,8 +3544,8 @@ module.exports = EventPluginHub;
 var EventPluginHub = __webpack_require__(21);
 var EventPluginUtils = __webpack_require__(38);
 
-var accumulateInto = __webpack_require__(76);
-var forEachAccumulated = __webpack_require__(77);
+var accumulateInto = __webpack_require__(77);
+var forEachAccumulated = __webpack_require__(78);
 var warning = __webpack_require__(1);
 
 var getListener = EventPluginHub.getListener;
@@ -4082,7 +4082,7 @@ var _assign = __webpack_require__(3);
 
 var EventPluginRegistry = __webpack_require__(26);
 var ReactEventEmitterMixin = __webpack_require__(167);
-var ViewportMetrics = __webpack_require__(75);
+var ViewportMetrics = __webpack_require__(76);
 
 var getVendorPrefixedEventName = __webpack_require__(202);
 var isEventSupported = __webpack_require__(48);
@@ -4408,7 +4408,7 @@ module.exports = ReactBrowserEventEmitter;
 
 
 var SyntheticUIEvent = __webpack_require__(24);
-var ViewportMetrics = __webpack_require__(75);
+var ViewportMetrics = __webpack_require__(76);
 
 var getEventModifierState = __webpack_require__(46);
 
@@ -4969,7 +4969,7 @@ module.exports = canDefineProperty;
 /* WEBPACK VAR INJECTION */(function(process) {
 
 var utils = __webpack_require__(7);
-var normalizeHeaderName = __webpack_require__(107);
+var normalizeHeaderName = __webpack_require__(108);
 
 var PROTECTION_PREFIX = /^\)\]\}',?\n/;
 var DEFAULT_CONTENT_TYPE = {
@@ -5169,7 +5169,7 @@ var ReactInstrumentation = __webpack_require__(8);
 
 var createMicrosoftUnsafeLocalFunction = __webpack_require__(44);
 var setInnerHTML = __webpack_require__(31);
-var setTextContent = __webpack_require__(83);
+var setTextContent = __webpack_require__(84);
 
 function getNodeAfter(parentNode, node) {
   // Special case for text components, which return [open, close] comments
@@ -5715,8 +5715,8 @@ module.exports = KeyEscapeUtils;
 
 var _prodInvariant = __webpack_require__(2);
 
-var ReactPropTypesSecret = __webpack_require__(74);
-var propTypesFactory = __webpack_require__(61);
+var ReactPropTypesSecret = __webpack_require__(75);
+var propTypesFactory = __webpack_require__(62);
 
 var React = __webpack_require__(18);
 var PropTypes = propTypesFactory(React.isValidElement);
@@ -6964,12 +6964,12 @@ module.exports = __webpack_require__(18);
 
 
 var utils = __webpack_require__(7);
-var settle = __webpack_require__(99);
-var buildURL = __webpack_require__(102);
-var parseHeaders = __webpack_require__(108);
-var isURLSameOrigin = __webpack_require__(106);
+var settle = __webpack_require__(100);
+var buildURL = __webpack_require__(103);
+var parseHeaders = __webpack_require__(109);
+var isURLSameOrigin = __webpack_require__(107);
 var createError = __webpack_require__(56);
-var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(101);
+var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(102);
 
 module.exports = function xhrAdapter(config) {
   return new Promise(function dispatchXhrRequest(resolve, reject) {
@@ -7065,7 +7065,7 @@ module.exports = function xhrAdapter(config) {
     // This is only done if running in a standard browser environment.
     // Specifically not if we're in a web worker, or react-native.
     if (utils.isStandardBrowserEnv()) {
-      var cookies = __webpack_require__(104);
+      var cookies = __webpack_require__(105);
 
       // Add xsrf header
       var xsrfValue = (config.withCredentials || isURLSameOrigin(config.url)) && config.xsrfCookieName ?
@@ -7185,7 +7185,7 @@ module.exports = function isCancel(value) {
 "use strict";
 
 
-var enhanceError = __webpack_require__(98);
+var enhanceError = __webpack_require__(99);
 
 /**
  * Create an Error with the specified message, config, error code, and response.
@@ -7222,6 +7222,562 @@ module.exports = function bind(fn, thisArg) {
 
 /***/ }),
 /* 58 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(52);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom__ = __webpack_require__(35);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react_dom__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ajax_form__ = __webpack_require__(113);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__brreg_js__ = __webpack_require__(112);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ClientsTable", function() { return ClientsTable; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ClientTableRow", function() { return ClientTableRow; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SelectBox", function() { return SelectBox; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "BrregResultBox", function() { return BrregResultBox; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ClientForm", function() { return ClientForm; });
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+
+
+
+/**
+ * Main view component. Parent for entire "Clients" view.
+ */
+
+var ClientsView = function (_Component) {
+    _inherits(ClientsView, _Component);
+
+    function ClientsView(props) {
+        _classCallCheck(this, ClientsView);
+
+        var _this = _possibleConstructorReturn(this, (ClientsView.__proto__ || Object.getPrototypeOf(ClientsView)).call(this, props));
+
+        _this.onClientAdded = _this.onClientAdded.bind(_this);
+
+        _this.state = {
+            clients: []
+        };
+        return _this;
+    }
+
+    _createClass(ClientsView, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            var _this2 = this;
+
+            this.serverRequest = axios.get('/api/clients').then(function (response) {
+                _this2.setState({ clients: response.data });
+            });
+        }
+    }, {
+        key: 'componentWillUnmount',
+        value: function componentWillUnmount() {
+            this.serverRequest.abort();
+        }
+    }, {
+        key: 'onClientAdded',
+        value: function onClientAdded(client) {
+            if (client) {
+                var newClients = this.state.clients.slice();
+                newClients.push(client);
+                this.setState({
+                    clients: newClients
+                });
+            }
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'div',
+                { className: 'container' },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'div',
+                    { className: 'row' },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        { className: 'col-md-12' },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'h1',
+                            null,
+                            'Clients'
+                        )
+                    )
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'div',
+                    { className: 'row' },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        { className: 'col-md-6' },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'h4',
+                            null,
+                            'Create client'
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(ClientForm, { onClientAddedHandler: this.onClientAdded })
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        { className: 'col-md-12' },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(ClientsTable, { clients: this.state.clients })
+                    )
+                )
+            );
+        }
+    }]);
+
+    return ClientsView;
+}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
+
+/**
+ * Table for displaying all client data.
+ * @todo Pagination
+ */
+
+
+/* harmony default export */ __webpack_exports__["default"] = (ClientsView);
+var ClientsTable = function (_Component2) {
+    _inherits(ClientsTable, _Component2);
+
+    function ClientsTable(props) {
+        _classCallCheck(this, ClientsTable);
+
+        var _this3 = _possibleConstructorReturn(this, (ClientsTable.__proto__ || Object.getPrototypeOf(ClientsTable)).call(this, props));
+
+        _this3.state = {
+            clients: props.clients
+        };
+        return _this3;
+    }
+
+    _createClass(ClientsTable, [{
+        key: 'componentWillReceiveProps',
+        value: function componentWillReceiveProps(props) {
+            this.setState({ clients: props.clients });
+        }
+    }, {
+        key: 'renderClientRows',
+        value: function renderClientRows() {
+
+            return this.state.clients.map(function (client) {
+                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'tr',
+                    { key: client.id },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'td',
+                        null,
+                        client.id
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'td',
+                        null,
+                        client.name
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'td',
+                        null,
+                        client.org_nr
+                    )
+                );
+            });
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+
+            var rows = this.state.clients.map(function (client) {
+                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(ClientTableRow, { key: client.id, client: client });
+            });
+
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'table',
+                { className: 'table' },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'thead',
+                    null,
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'tr',
+                        null,
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'th',
+                            null,
+                            'Id'
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'th',
+                            null,
+                            'Name'
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'th',
+                            null,
+                            'Organization\'s number'
+                        )
+                    )
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'tbody',
+                    null,
+                    rows
+                )
+            );
+        }
+    }]);
+
+    return ClientsTable;
+}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
+
+/**
+ * Row component used for ClientsTable component.
+ */
+var ClientTableRow = function (_Component3) {
+    _inherits(ClientTableRow, _Component3);
+
+    function ClientTableRow(props) {
+        _classCallCheck(this, ClientTableRow);
+
+        return _possibleConstructorReturn(this, (ClientTableRow.__proto__ || Object.getPrototypeOf(ClientTableRow)).call(this, props));
+    }
+
+    _createClass(ClientTableRow, [{
+        key: 'render',
+        value: function render() {
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'tr',
+                { key: this.props.client.id },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'td',
+                    null,
+                    this.props.client.id
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'td',
+                    null,
+                    this.props.client.name
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'td',
+                    null,
+                    this.props.client.org_nr
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'td',
+                    null,
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'button',
+                        { className: 'btn btn-xs' },
+                        'Edit'
+                    )
+                )
+            );
+        }
+    }]);
+
+    return ClientTableRow;
+}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
+
+/**
+ * <select> component
+ * Callback: selectedChangeCallback (dispatches on <select> onChange event)
+ */
+var SelectBox = function (_Component4) {
+    _inherits(SelectBox, _Component4);
+
+    function SelectBox(props) {
+        _classCallCheck(this, SelectBox);
+
+        var _this5 = _possibleConstructorReturn(this, (SelectBox.__proto__ || Object.getPrototypeOf(SelectBox)).call(this, props));
+
+        _this5.onSelectedChange = _this5.onSelectedChange.bind(_this5);
+        _this5.selectedChangeCallback = _this5.props.selectedChangeCallback;
+        return _this5;
+    }
+
+    _createClass(SelectBox, [{
+        key: 'onSelectedChange',
+        value: function onSelectedChange(e) {
+            var selectBox = e.target;
+            if (selectBox !== null) {
+                if (this.selectedChangeCallback) {
+                    this.selectedChangeCallback({
+                        value: Array.from(e.target.selectedOptions)
+                    });
+                }
+            }
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'select',
+                { id: this.props.id,
+                    onChange: this.onSelectedChange,
+                    className: 'form-control' },
+                this.props.children
+            );
+        }
+    }]);
+
+    return SelectBox;
+}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
+
+/**
+ * Wraps a SelectBox and can display brreg API objects
+ * from a query. Can be integrated with callbacks:
+ * onItemResultChanged: dispatches on SelectBox onChange event
+ */
+var BrregResultBox = function (_Component5) {
+    _inherits(BrregResultBox, _Component5);
+
+    function BrregResultBox(props) {
+        _classCallCheck(this, BrregResultBox);
+
+        var _this6 = _possibleConstructorReturn(this, (BrregResultBox.__proto__ || Object.getPrototypeOf(BrregResultBox)).call(this, props));
+
+        _this6.itemResultChanged = _this6.itemResultChanged.bind(_this6);
+        _this6.onItemResultChanged = props.onItemResultChanged;
+
+        _this6.state = {
+            data: []
+        };
+        return _this6;
+    }
+
+    _createClass(BrregResultBox, [{
+        key: 'componentWillReceiveProps',
+        value: function componentWillReceiveProps(props) {
+            this.setState({ data: props.data });
+        }
+    }, {
+        key: 'itemResultChanged',
+        value: function itemResultChanged(result) {
+            if (result.value.length > 0) {
+
+                if (this.onItemResultChanged) {
+                    this.onItemResultChanged({
+                        value: result.value[0].value,
+                        name: result.value[0].text
+                    });
+                }
+            }
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var len = this.state.data ? this.state.data.length : 0;
+            var data = this.state.data ? this.state.data.slice() : [];
+            if (len > 0) {
+                data.unshift({ organisasjonsnummer: "brregSearchBox", navn: len + " treff..." });
+            }
+
+            var options = data ? data.map(function (r) {
+                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'option',
+                    { key: r.organisasjonsnummer, value: r.organisasjonsnummer },
+                    r.navn
+                );
+            }) : [];
+
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'div',
+                null,
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    SelectBox,
+                    { id: this.props.id, selectedChangeCallback: this.itemResultChanged },
+                    options
+                )
+            );
+        }
+    }]);
+
+    return BrregResultBox;
+}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
+
+/**
+ * Standard client form for creating new clients and persist
+ * to the database. 
+ * Callbacks:
+ *  onClientAddedHandler - Dispatched when a new client is successfully persisted to the database.
+ */
+var ClientForm = function (_Component6) {
+    _inherits(ClientForm, _Component6);
+
+    function ClientForm(props) {
+        _classCallCheck(this, ClientForm);
+
+        var _this7 = _possibleConstructorReturn(this, (ClientForm.__proto__ || Object.getPrototypeOf(ClientForm)).call(this, props));
+
+        _this7.onSubmitForm = _this7.onSubmitForm.bind(_this7);
+        _this7.onClientNameChanged = _this7.onClientNameChanged.bind(_this7);
+        _this7.onClientOrgNrChanged = _this7.onClientOrgNrChanged.bind(_this7);
+
+        _this7.onBrregSearchResults = _this7.onBrregSearchResults.bind(_this7);
+        _this7.onSelectedBrregChange = _this7.onSelectedBrregChange.bind(_this7);
+        _this7.onBtnUseBrregDataClick = _this7.onBtnUseBrregDataClick.bind(_this7);
+
+        _this7.state = {
+            clientName: '',
+            clientOrgNr: '',
+            brregResults: [],
+            brregSelection: null
+        };
+
+        _this7.brreg = new __WEBPACK_IMPORTED_MODULE_3__brreg_js__["a" /* default */](_this7.onBrregSearchResults);
+        return _this7;
+    }
+
+    _createClass(ClientForm, [{
+        key: 'onClientNameChanged',
+        value: function onClientNameChanged(e) {
+            this.brreg.searchByName(e.target.value, 5);
+            this.setState({
+                clientName: e.target.value
+            });
+        }
+    }, {
+        key: 'onClientOrgNrChanged',
+        value: function onClientOrgNrChanged(e) {
+            this.setState({ clientOrgNr: e.target.value });
+        }
+    }, {
+        key: 'onSubmitForm',
+        value: function onSubmitForm(e) {
+            var _this8 = this;
+
+            e.preventDefault();
+            axios.post('clients', {
+                name: this.state.clientName,
+                org_nr: this.state.clientOrgNr
+            }).then(function (response) {
+                // registerable handler for when the client is added.
+                // Useful for parent components with client tables
+                // that must/could be updated.
+                if (_this8.props.onClientAddedHandler) {
+                    _this8.props.onClientAddedHandler(response.data);
+                }
+                // clear form fields
+                _this8.setState({
+                    clientName: '',
+                    clientOrgNr: ''
+                });
+            }).catch(function (error) {
+                alert("Error!: Submission failed. See log.");
+                console.log("Error axios: " + error);
+            });
+        }
+    }, {
+        key: 'onBrregSearchResults',
+        value: function onBrregSearchResults(data) {
+            this.setState({ brregResults: data });
+        }
+    }, {
+        key: 'onSelectedBrregChange',
+        value: function onSelectedBrregChange(item) {
+            if (item) {
+                this.setState({ brregSelection: item });
+            }
+        }
+    }, {
+        key: 'onBtnUseBrregDataClick',
+        value: function onBtnUseBrregDataClick() {
+            var item = this.state.brregSelection;
+            if (item) {
+                this.setState({
+                    clientName: item.name,
+                    clientOrgNr: item.value,
+                    brregResults: [],
+                    brregSelection: null
+                });
+            }
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var url = this.props.url ? this.props.url : "/clients";
+            var method = this.props.method ? this.props.method : "post";
+
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                __WEBPACK_IMPORTED_MODULE_2__ajax_form__["a" /* default */],
+                { onSubmitForm: this.onSubmitForm, url: url, method: method },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'div',
+                    { className: 'row' },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        { className: 'col-md-12' },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            { className: 'form-group' },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { name: 'name', type: 'text',
+                                value: this.state.clientName,
+                                onChange: this.onClientNameChanged,
+                                placeholder: 'Client name...',
+                                className: 'form-control' })
+                        )
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        { className: 'col-md-12' },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            { className: 'form-group' },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { name: 'org_nr', type: 'text',
+                                value: this.state.clientOrgNr,
+                                onChange: this.onClientOrgNrChanged,
+                                placeholder: 'Organization id',
+                                className: 'form-control' })
+                        )
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        { className: 'col-md-12' },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            { className: 'form-group' },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(BrregResultBox, { data: this.state.brregResults,
+                                onItemResultChanged: this.onSelectedBrregChange })
+                        )
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        { className: 'col-md-4 col-md-offset-8' },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            { className: 'form-group' },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'button',
+                                { onClick: this.onBtnUseBrregDataClick, type: 'button',
+                                    className: 'btn btn-default form-control' },
+                                'Use selected'
+                            )
+                        )
+                    )
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'submit', value: 'Submit', className: 'btn btn-primary' })
+            );
+        }
+    }]);
+
+    return ClientForm;
+}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
+
+if (document.getElementById('clients-view-root')) {
+    __WEBPACK_IMPORTED_MODULE_1_react_dom___default.a.render(__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(ClientsView, null), document.getElementById('clients-view-root'));
+}
+
+/***/ }),
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7303,7 +7859,7 @@ var EventListener = {
 module.exports = EventListener;
 
 /***/ }),
-/* 59 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7335,7 +7891,7 @@ function focusNode(node) {
 module.exports = focusNode;
 
 /***/ }),
-/* 60 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7379,7 +7935,7 @@ function getActiveElement(doc) /*?DOMElement*/{
 module.exports = getActiveElement;
 
 /***/ }),
-/* 61 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7407,7 +7963,7 @@ module.exports = function(isValidElement) {
 
 
 /***/ }),
-/* 62 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7428,7 +7984,7 @@ module.exports = ReactPropTypesSecret;
 
 
 /***/ }),
-/* 63 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7587,7 +8143,7 @@ var CSSProperty = {
 module.exports = CSSProperty;
 
 /***/ }),
-/* 64 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7711,7 +8267,7 @@ var CallbackQueue = function () {
 module.exports = PooledClass.addPoolingTo(CallbackQueue);
 
 /***/ }),
-/* 65 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7951,7 +8507,7 @@ var DOMPropertyOperations = {
 module.exports = DOMPropertyOperations;
 
 /***/ }),
-/* 66 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7974,7 +8530,7 @@ var ReactDOMComponentFlags = {
 module.exports = ReactDOMComponentFlags;
 
 /***/ }),
-/* 67 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8179,7 +8735,7 @@ function _handleChange(event) {
 module.exports = ReactDOMSelect;
 
 /***/ }),
-/* 68 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8214,7 +8770,7 @@ ReactEmptyComponent.injection = ReactEmptyComponentInjection;
 module.exports = ReactEmptyComponent;
 
 /***/ }),
-/* 69 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8241,7 +8797,7 @@ var ReactFeatureFlags = {
 module.exports = ReactFeatureFlags;
 
 /***/ }),
-/* 70 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8314,7 +8870,7 @@ var ReactHostComponent = {
 module.exports = ReactHostComponent;
 
 /***/ }),
-/* 71 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8333,8 +8889,8 @@ module.exports = ReactHostComponent;
 var ReactDOMSelection = __webpack_require__(158);
 
 var containsNode = __webpack_require__(119);
-var focusNode = __webpack_require__(59);
-var getActiveElement = __webpack_require__(60);
+var focusNode = __webpack_require__(60);
+var getActiveElement = __webpack_require__(61);
 
 function isInDocument(node) {
   return containsNode(document.documentElement, node);
@@ -8442,7 +8998,7 @@ var ReactInputSelection = {
 module.exports = ReactInputSelection;
 
 /***/ }),
-/* 72 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8468,7 +9024,7 @@ var ReactCurrentOwner = __webpack_require__(11);
 var ReactDOMComponentTree = __webpack_require__(4);
 var ReactDOMContainerInfo = __webpack_require__(150);
 var ReactDOMFeatureFlags = __webpack_require__(152);
-var ReactFeatureFlags = __webpack_require__(69);
+var ReactFeatureFlags = __webpack_require__(70);
 var ReactInstanceMap = __webpack_require__(23);
 var ReactInstrumentation = __webpack_require__(8);
 var ReactMarkupChecksum = __webpack_require__(172);
@@ -8477,7 +9033,7 @@ var ReactUpdateQueue = __webpack_require__(43);
 var ReactUpdates = __webpack_require__(10);
 
 var emptyObject = __webpack_require__(25);
-var instantiateReactComponent = __webpack_require__(81);
+var instantiateReactComponent = __webpack_require__(82);
 var invariant = __webpack_require__(0);
 var setInnerHTML = __webpack_require__(31);
 var shouldUpdateReactComponent = __webpack_require__(49);
@@ -8985,7 +9541,7 @@ var ReactMount = {
 module.exports = ReactMount;
 
 /***/ }),
-/* 73 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9030,7 +9586,7 @@ var ReactNodeTypes = {
 module.exports = ReactNodeTypes;
 
 /***/ }),
-/* 74 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9052,7 +9608,7 @@ var ReactPropTypesSecret = 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED';
 module.exports = ReactPropTypesSecret;
 
 /***/ }),
-/* 75 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9082,7 +9638,7 @@ var ViewportMetrics = {
 module.exports = ViewportMetrics;
 
 /***/ }),
-/* 76 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9145,7 +9701,7 @@ function accumulateInto(current, next) {
 module.exports = accumulateInto;
 
 /***/ }),
-/* 77 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9181,7 +9737,7 @@ function forEachAccumulated(arr, cb, scope) {
 module.exports = forEachAccumulated;
 
 /***/ }),
-/* 78 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9197,7 +9753,7 @@ module.exports = forEachAccumulated;
 
 
 
-var ReactNodeTypes = __webpack_require__(73);
+var ReactNodeTypes = __webpack_require__(74);
 
 function getHostComponentFromComposite(inst) {
   var type;
@@ -9216,7 +9772,7 @@ function getHostComponentFromComposite(inst) {
 module.exports = getHostComponentFromComposite;
 
 /***/ }),
-/* 79 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9254,7 +9810,7 @@ function getTextContentAccessor() {
 module.exports = getTextContentAccessor;
 
 /***/ }),
-/* 80 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9382,7 +9938,7 @@ var inputValueTracking = {
 module.exports = inputValueTracking;
 
 /***/ }),
-/* 81 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9402,8 +9958,8 @@ var _prodInvariant = __webpack_require__(2),
     _assign = __webpack_require__(3);
 
 var ReactCompositeComponent = __webpack_require__(147);
-var ReactEmptyComponent = __webpack_require__(68);
-var ReactHostComponent = __webpack_require__(70);
+var ReactEmptyComponent = __webpack_require__(69);
+var ReactHostComponent = __webpack_require__(71);
 
 var getNextDebugID = __webpack_require__(215);
 var invariant = __webpack_require__(0);
@@ -9516,7 +10072,7 @@ _assign(ReactCompositeComponentWrapper.prototype, ReactCompositeComponent, {
 module.exports = instantiateReactComponent;
 
 /***/ }),
-/* 82 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9572,7 +10128,7 @@ function isTextInputElement(elem) {
 module.exports = isTextInputElement;
 
 /***/ }),
-/* 83 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9629,7 +10185,7 @@ if (ExecutionEnvironment.canUseDOM) {
 module.exports = setTextContent;
 
 /***/ }),
-/* 84 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9810,7 +10366,7 @@ function traverseAllChildren(children, callback, traverseContext) {
 module.exports = traverseAllChildren;
 
 /***/ }),
-/* 85 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9829,7 +10385,7 @@ module.exports = traverseAllChildren;
 var _prodInvariant = __webpack_require__(19),
     _assign = __webpack_require__(3);
 
-var ReactNoopUpdateQueue = __webpack_require__(88);
+var ReactNoopUpdateQueue = __webpack_require__(89);
 
 var canDefineProperty = __webpack_require__(32);
 var emptyObject = __webpack_require__(25);
@@ -9958,7 +10514,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 86 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9983,7 +10539,7 @@ var REACT_ELEMENT_TYPE = typeof Symbol === 'function' && Symbol['for'] && Symbol
 module.exports = REACT_ELEMENT_TYPE;
 
 /***/ }),
-/* 87 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10013,7 +10569,7 @@ var ReactElement = __webpack_require__(15);
 var checkReactTypeSpec = __webpack_require__(213);
 
 var canDefineProperty = __webpack_require__(32);
-var getIteratorFn = __webpack_require__(89);
+var getIteratorFn = __webpack_require__(90);
 var warning = __webpack_require__(1);
 var lowPriorityWarning = __webpack_require__(51);
 
@@ -10243,7 +10799,7 @@ var ReactElementValidator = {
 module.exports = ReactElementValidator;
 
 /***/ }),
-/* 88 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10343,7 +10899,7 @@ var ReactNoopUpdateQueue = {
 module.exports = ReactNoopUpdateQueue;
 
 /***/ }),
-/* 89 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10389,7 +10945,7 @@ function getIteratorFn(maybeIterable) {
 module.exports = getIteratorFn;
 
 /***/ }),
-/* 90 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
@@ -10399,31 +10955,29 @@ module.exports = getIteratorFn;
  * building robust, powerful web applications using React + Laravel.
  */
 
-__webpack_require__(110);
+__webpack_require__(111);
 
 /**
- * Next, we will create a fresh React component instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
+ * Next, include all page-root views to use throughout the application
  */
 
-__webpack_require__(113);
-__webpack_require__(114);
+__webpack_require__(58); // views.client.index
+__webpack_require__(229); // views.order.index
 
 /***/ }),
-/* 91 */
+/* 92 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 92 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(93);
+module.exports = __webpack_require__(94);
 
 /***/ }),
-/* 93 */
+/* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10431,7 +10985,7 @@ module.exports = __webpack_require__(93);
 
 var utils = __webpack_require__(7);
 var bind = __webpack_require__(57);
-var Axios = __webpack_require__(95);
+var Axios = __webpack_require__(96);
 var defaults = __webpack_require__(33);
 
 /**
@@ -10466,14 +11020,14 @@ axios.create = function create(instanceConfig) {
 
 // Expose Cancel & CancelToken
 axios.Cancel = __webpack_require__(54);
-axios.CancelToken = __webpack_require__(94);
+axios.CancelToken = __webpack_require__(95);
 axios.isCancel = __webpack_require__(55);
 
 // Expose all/spread
 axios.all = function all(promises) {
   return Promise.all(promises);
 };
-axios.spread = __webpack_require__(109);
+axios.spread = __webpack_require__(110);
 
 module.exports = axios;
 
@@ -10482,7 +11036,7 @@ module.exports.default = axios;
 
 
 /***/ }),
-/* 94 */
+/* 95 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10546,7 +11100,7 @@ module.exports = CancelToken;
 
 
 /***/ }),
-/* 95 */
+/* 96 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10554,10 +11108,10 @@ module.exports = CancelToken;
 
 var defaults = __webpack_require__(33);
 var utils = __webpack_require__(7);
-var InterceptorManager = __webpack_require__(96);
-var dispatchRequest = __webpack_require__(97);
-var isAbsoluteURL = __webpack_require__(105);
-var combineURLs = __webpack_require__(103);
+var InterceptorManager = __webpack_require__(97);
+var dispatchRequest = __webpack_require__(98);
+var isAbsoluteURL = __webpack_require__(106);
+var combineURLs = __webpack_require__(104);
 
 /**
  * Create a new instance of Axios
@@ -10638,7 +11192,7 @@ module.exports = Axios;
 
 
 /***/ }),
-/* 96 */
+/* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10697,14 +11251,14 @@ module.exports = InterceptorManager;
 
 
 /***/ }),
-/* 97 */
+/* 98 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var utils = __webpack_require__(7);
-var transformData = __webpack_require__(100);
+var transformData = __webpack_require__(101);
 var isCancel = __webpack_require__(55);
 var defaults = __webpack_require__(33);
 
@@ -10783,7 +11337,7 @@ module.exports = function dispatchRequest(config) {
 
 
 /***/ }),
-/* 98 */
+/* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10809,7 +11363,7 @@ module.exports = function enhanceError(error, config, code, response) {
 
 
 /***/ }),
-/* 99 */
+/* 100 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10841,7 +11395,7 @@ module.exports = function settle(resolve, reject, response) {
 
 
 /***/ }),
-/* 100 */
+/* 101 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10868,7 +11422,7 @@ module.exports = function transformData(data, headers, fns) {
 
 
 /***/ }),
-/* 101 */
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10911,7 +11465,7 @@ module.exports = btoa;
 
 
 /***/ }),
-/* 102 */
+/* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10986,7 +11540,7 @@ module.exports = function buildURL(url, params, paramsSerializer) {
 
 
 /***/ }),
-/* 103 */
+/* 104 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11005,7 +11559,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
 
 
 /***/ }),
-/* 104 */
+/* 105 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11065,7 +11619,7 @@ module.exports = (
 
 
 /***/ }),
-/* 105 */
+/* 106 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11086,7 +11640,7 @@ module.exports = function isAbsoluteURL(url) {
 
 
 /***/ }),
-/* 106 */
+/* 107 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11161,7 +11715,7 @@ module.exports = (
 
 
 /***/ }),
-/* 107 */
+/* 108 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11180,7 +11734,7 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
 
 
 /***/ }),
-/* 108 */
+/* 109 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11224,7 +11778,7 @@ module.exports = function parseHeaders(headers) {
 
 
 /***/ }),
-/* 109 */
+/* 110 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11258,7 +11812,7 @@ module.exports = function spread(callback) {
 
 
 /***/ }),
-/* 110 */
+/* 111 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
@@ -11287,7 +11841,7 @@ try {
  * CSRF token as a header based on the value of the "XSRF" token cookie.
  */
 
-window.axios = __webpack_require__(92);
+window.axios = __webpack_require__(93);
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
@@ -11321,7 +11875,7 @@ if (token) {
 // });
 
 /***/ }),
-/* 111 */
+/* 112 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -11401,7 +11955,7 @@ var Brreg = function () {
 /* harmony default export */ __webpack_exports__["a"] = (Brreg);
 
 /***/ }),
-/* 112 */
+/* 113 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -11460,785 +12014,7 @@ var AjaxForm = function (_Component) {
 /* harmony default export */ __webpack_exports__["a"] = (AjaxForm);
 
 /***/ }),
-/* 113 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(52);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom__ = __webpack_require__(35);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react_dom__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ajax_form__ = __webpack_require__(112);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__brreg_js__ = __webpack_require__(111);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ClientsTable", function() { return ClientsTable; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ClientTableRow", function() { return ClientTableRow; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SelectBox", function() { return SelectBox; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "BrregResultBox", function() { return BrregResultBox; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ClientForm", function() { return ClientForm; });
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-
-
-
-
-
-/**
- * Main view component. Parent for entire "Clients" view.
- */
-
-var ClientsView = function (_Component) {
-    _inherits(ClientsView, _Component);
-
-    function ClientsView(props) {
-        _classCallCheck(this, ClientsView);
-
-        var _this = _possibleConstructorReturn(this, (ClientsView.__proto__ || Object.getPrototypeOf(ClientsView)).call(this, props));
-
-        _this.onClientAdded = _this.onClientAdded.bind(_this);
-
-        _this.state = {
-            clients: []
-        };
-        return _this;
-    }
-
-    _createClass(ClientsView, [{
-        key: 'componentDidMount',
-        value: function componentDidMount() {
-            var _this2 = this;
-
-            this.serverRequest = axios.get('/api/clients').then(function (response) {
-                _this2.setState({ clients: response.data });
-            });
-        }
-    }, {
-        key: 'componentWillUnmount',
-        value: function componentWillUnmount() {
-            this.serverRequest.abort();
-        }
-    }, {
-        key: 'onClientAdded',
-        value: function onClientAdded(client) {
-            if (client) {
-                var newClients = this.state.clients.slice();
-                newClients.push(client);
-                this.setState({
-                    clients: newClients
-                });
-            }
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                'div',
-                { className: 'container' },
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'div',
-                    { className: 'row' },
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'div',
-                        { className: 'col-md-12' },
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            'h1',
-                            null,
-                            'Clients'
-                        )
-                    )
-                ),
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'div',
-                    { className: 'row' },
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'div',
-                        { className: 'col-md-6' },
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            'h4',
-                            null,
-                            'Create client'
-                        ),
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(ClientForm, { onClientAddedHandler: this.onClientAdded })
-                    ),
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'div',
-                        { className: 'col-md-12' },
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(ClientsTable, { clients: this.state.clients })
-                    )
-                )
-            );
-        }
-    }]);
-
-    return ClientsView;
-}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
-
-/**
- * Table for displaying all client data.
- * @todo Pagination
- */
-
-
-/* harmony default export */ __webpack_exports__["default"] = (ClientsView);
-var ClientsTable = function (_Component2) {
-    _inherits(ClientsTable, _Component2);
-
-    function ClientsTable(props) {
-        _classCallCheck(this, ClientsTable);
-
-        var _this3 = _possibleConstructorReturn(this, (ClientsTable.__proto__ || Object.getPrototypeOf(ClientsTable)).call(this, props));
-
-        _this3.state = {
-            clients: props.clients
-        };
-        return _this3;
-    }
-
-    _createClass(ClientsTable, [{
-        key: 'componentWillReceiveProps',
-        value: function componentWillReceiveProps(props) {
-            this.setState({ clients: props.clients });
-        }
-    }, {
-        key: 'renderClientRows',
-        value: function renderClientRows() {
-
-            return this.state.clients.map(function (client) {
-                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'tr',
-                    { key: client.id },
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'td',
-                        null,
-                        client.id
-                    ),
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'td',
-                        null,
-                        client.name
-                    ),
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'td',
-                        null,
-                        client.org_nr
-                    )
-                );
-            });
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-
-            var rows = this.state.clients.map(function (client) {
-                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(ClientTableRow, { key: client.id, client: client });
-            });
-
-            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                'table',
-                { className: 'table' },
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'thead',
-                    null,
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'tr',
-                        null,
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            'th',
-                            null,
-                            'Id'
-                        ),
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            'th',
-                            null,
-                            'Name'
-                        ),
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            'th',
-                            null,
-                            'Organization\'s number'
-                        )
-                    )
-                ),
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'tbody',
-                    null,
-                    rows
-                )
-            );
-        }
-    }]);
-
-    return ClientsTable;
-}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
-
-/**
- * Row component used for ClientsTable component.
- */
-var ClientTableRow = function (_Component3) {
-    _inherits(ClientTableRow, _Component3);
-
-    function ClientTableRow(props) {
-        _classCallCheck(this, ClientTableRow);
-
-        return _possibleConstructorReturn(this, (ClientTableRow.__proto__ || Object.getPrototypeOf(ClientTableRow)).call(this, props));
-    }
-
-    _createClass(ClientTableRow, [{
-        key: 'render',
-        value: function render() {
-            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                'tr',
-                { key: this.props.client.id },
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'td',
-                    null,
-                    this.props.client.id
-                ),
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'td',
-                    null,
-                    this.props.client.name
-                ),
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'td',
-                    null,
-                    this.props.client.org_nr
-                ),
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'td',
-                    null,
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'button',
-                        { className: 'btn btn-xs' },
-                        'Edit'
-                    )
-                )
-            );
-        }
-    }]);
-
-    return ClientTableRow;
-}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
-
-/**
- * <select> component
- * Callback: selectedChangeCallback (dispatches on <select> onChange event)
- */
-var SelectBox = function (_Component4) {
-    _inherits(SelectBox, _Component4);
-
-    function SelectBox(props) {
-        _classCallCheck(this, SelectBox);
-
-        var _this5 = _possibleConstructorReturn(this, (SelectBox.__proto__ || Object.getPrototypeOf(SelectBox)).call(this, props));
-
-        _this5.onSelectedChange = _this5.onSelectedChange.bind(_this5);
-        _this5.selectedChangeCallback = _this5.props.selectedChangeCallback;
-        return _this5;
-    }
-
-    _createClass(SelectBox, [{
-        key: 'onSelectedChange',
-        value: function onSelectedChange(e) {
-            var selectBox = e.target;
-            if (selectBox !== null) {
-                if (this.selectedChangeCallback) {
-                    this.selectedChangeCallback({
-                        value: Array.from(e.target.selectedOptions)
-                    });
-                }
-            }
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                'select',
-                { id: this.props.id,
-                    onChange: this.onSelectedChange,
-                    className: 'form-control' },
-                this.props.children
-            );
-        }
-    }]);
-
-    return SelectBox;
-}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
-
-/**
- * Wraps a SelectBox and can display brreg API objects
- * from a query. Can be integrated with callbacks:
- * onItemResultChanged: dispatches on SelectBox onChange event
- */
-var BrregResultBox = function (_Component5) {
-    _inherits(BrregResultBox, _Component5);
-
-    function BrregResultBox(props) {
-        _classCallCheck(this, BrregResultBox);
-
-        var _this6 = _possibleConstructorReturn(this, (BrregResultBox.__proto__ || Object.getPrototypeOf(BrregResultBox)).call(this, props));
-
-        _this6.itemResultChanged = _this6.itemResultChanged.bind(_this6);
-        _this6.onItemResultChanged = props.onItemResultChanged;
-
-        _this6.state = {
-            data: []
-        };
-        return _this6;
-    }
-
-    _createClass(BrregResultBox, [{
-        key: 'componentWillReceiveProps',
-        value: function componentWillReceiveProps(props) {
-            this.setState({ data: props.data });
-        }
-    }, {
-        key: 'itemResultChanged',
-        value: function itemResultChanged(result) {
-            if (result.value.length > 0) {
-
-                if (this.onItemResultChanged) {
-                    this.onItemResultChanged({
-                        value: result.value[0].value,
-                        name: result.value[0].text
-                    });
-                }
-            }
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-            var len = this.state.data.length;
-            var data = this.state.data.slice();
-            if (len > 0) {
-                data.unshift({ organisasjonsnummer: "brregSearchBox", navn: len + " treff..." });
-            }
-
-            var options = data ? data.map(function (r) {
-                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'option',
-                    { key: r.organisasjonsnummer, value: r.organisasjonsnummer },
-                    r.navn
-                );
-            }) : [];
-
-            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                'div',
-                null,
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    SelectBox,
-                    { id: this.props.id, selectedChangeCallback: this.itemResultChanged },
-                    options
-                )
-            );
-        }
-    }]);
-
-    return BrregResultBox;
-}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
-
-/**
- * Standard client form for creating new clients and persist
- * to the database. 
- * Callbacks:
- *  onClientAddedHandler - Dispatched when a new client is successfully persisted to the database.
- */
-var ClientForm = function (_Component6) {
-    _inherits(ClientForm, _Component6);
-
-    function ClientForm(props) {
-        _classCallCheck(this, ClientForm);
-
-        var _this7 = _possibleConstructorReturn(this, (ClientForm.__proto__ || Object.getPrototypeOf(ClientForm)).call(this, props));
-
-        _this7.onSubmitForm = _this7.onSubmitForm.bind(_this7);
-        _this7.onClientNameChanged = _this7.onClientNameChanged.bind(_this7);
-        _this7.onClientOrgNrChanged = _this7.onClientOrgNrChanged.bind(_this7);
-
-        _this7.onBrregSearchResults = _this7.onBrregSearchResults.bind(_this7);
-        _this7.onSelectedBrregChange = _this7.onSelectedBrregChange.bind(_this7);
-        _this7.onBtnUseBrregDataClick = _this7.onBtnUseBrregDataClick.bind(_this7);
-
-        _this7.state = {
-            clientName: '',
-            clientOrgNr: '',
-            brregResults: [],
-            brregSelection: null
-        };
-
-        _this7.brreg = new __WEBPACK_IMPORTED_MODULE_3__brreg_js__["a" /* default */](_this7.onBrregSearchResults);
-        return _this7;
-    }
-
-    _createClass(ClientForm, [{
-        key: 'onClientNameChanged',
-        value: function onClientNameChanged(e) {
-            this.brreg.searchByName(e.target.value, 5);
-            this.setState({
-                clientName: e.target.value
-            });
-        }
-    }, {
-        key: 'onClientOrgNrChanged',
-        value: function onClientOrgNrChanged(e) {
-            this.setState({ clientOrgNr: e.target.value });
-        }
-    }, {
-        key: 'onSubmitForm',
-        value: function onSubmitForm(e) {
-            var _this8 = this;
-
-            e.preventDefault();
-            axios.post('clients', {
-                name: this.state.clientName,
-                org_nr: this.state.clientOrgNr
-            }).then(function (response) {
-                // registerable handler for when the client is added.
-                // Useful for parent components with client tables
-                // that must/could be updated.
-                if (_this8.props.onClientAddedHandler) {
-                    _this8.props.onClientAddedHandler(response.data);
-                }
-                // clear form fields
-                _this8.setState({
-                    clientName: '',
-                    clientOrgNr: ''
-                });
-            }).catch(function (error) {
-                alert("Error!: Submission failed. See log.");
-                console.log("Error axios: " + error);
-            });
-        }
-    }, {
-        key: 'onBrregSearchResults',
-        value: function onBrregSearchResults(data) {
-            this.setState({ brregResults: data });
-        }
-    }, {
-        key: 'onSelectedBrregChange',
-        value: function onSelectedBrregChange(item) {
-            if (item) {
-                this.setState({ brregSelection: item });
-            }
-        }
-    }, {
-        key: 'onBtnUseBrregDataClick',
-        value: function onBtnUseBrregDataClick() {
-            var item = this.state.brregSelection;
-            if (item) {
-                this.setState({
-                    clientName: item.name,
-                    clientOrgNr: item.value,
-                    brregResults: [],
-                    brregSelection: null
-                });
-            }
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-            var url = this.props.url ? this.props.url : "/clients";
-            var method = this.props.method ? this.props.method : "post";
-
-            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                __WEBPACK_IMPORTED_MODULE_2__ajax_form__["a" /* default */],
-                { onSubmitForm: this.onSubmitForm, url: url, method: method },
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'div',
-                    { className: 'row' },
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'div',
-                        { className: 'col-md-6' },
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            'div',
-                            { className: 'form-group' },
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { name: 'name', type: 'text',
-                                value: this.state.clientName,
-                                onChange: this.onClientNameChanged,
-                                placeholder: 'Client name...',
-                                className: 'form-control' })
-                        )
-                    ),
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'div',
-                        { className: 'col-md-4' },
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(BrregResultBox, { data: this.state.brregResults,
-                            onItemResultChanged: this.onSelectedBrregChange })
-                    ),
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'div',
-                        { className: 'col-md-2' },
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            'button',
-                            { onClick: this.onBtnUseBrregDataClick, type: 'button',
-                                className: 'btn btn-primary' },
-                            'Use'
-                        )
-                    )
-                ),
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'div',
-                    { className: 'row' },
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'div',
-                        { className: 'col-md-6' },
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            'div',
-                            { className: 'form-group' },
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { name: 'org_nr', type: 'text',
-                                value: this.state.clientOrgNr,
-                                onChange: this.onClientOrgNrChanged,
-                                placeholder: 'Organization id',
-                                className: 'form-control' })
-                        )
-                    )
-                ),
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'submit', value: 'Submit', className: 'btn btn-primary' })
-            );
-        }
-    }]);
-
-    return ClientForm;
-}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
-
-if (document.getElementById('clients-view-root')) {
-    __WEBPACK_IMPORTED_MODULE_1_react_dom___default.a.render(__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(ClientsView, null), document.getElementById('clients-view-root'));
-}
-
-/***/ }),
-/* 114 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(52);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom__ = __webpack_require__(35);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react_dom__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__client_clients_view__ = __webpack_require__(113);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ClientCreateForm", function() { return ClientCreateForm; });
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-
-
-
-
-var OrdersView = function (_Component) {
-    _inherits(OrdersView, _Component);
-
-    function OrdersView(props) {
-        _classCallCheck(this, OrdersView);
-
-        var _this = _possibleConstructorReturn(this, (OrdersView.__proto__ || Object.getPrototypeOf(OrdersView)).call(this, props));
-
-        _this.state = {
-            orders: []
-        };
-        return _this;
-    }
-
-    _createClass(OrdersView, [{
-        key: 'componentDidMount',
-        value: function componentDidMount() {
-            this.updateOrders();
-        }
-    }, {
-        key: 'updateOrders',
-        value: function updateOrders() {
-            var _this2 = this;
-
-            fetch('/api/orders').then(function (response) {
-                return response.json();
-            }).then(function (response) {
-                _this2.setState({ orders: response });
-            });
-        }
-    }, {
-        key: 'renderOrders',
-        value: function renderOrders() {
-            return this.state.orders.map(function (order) {
-                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'li',
-                    { key: order.id },
-                    order.id,
-                    ' - Due: ',
-                    order.due_at
-                );
-            });
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                'div',
-                { className: 'container' },
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'div',
-                    { className: 'row' },
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'div',
-                        { className: 'col-md-8 col-md-offset-2' },
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            'h1',
-                            null,
-                            'Orders'
-                        ),
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            'ul',
-                            null,
-                            this.renderOrders()
-                        )
-                    ),
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'div',
-                        { className: 'col-md-8 col-md-offset-2' },
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__client_clients_view__["ClientForm"], null)
-                    )
-                )
-            );
-        }
-    }]);
-
-    return OrdersView;
-}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
-
-/* harmony default export */ __webpack_exports__["default"] = (OrdersView);
-
-
-var ClientCreateForm = function (_Component2) {
-    _inherits(ClientCreateForm, _Component2);
-
-    function ClientCreateForm(props) {
-        _classCallCheck(this, ClientCreateForm);
-
-        var _this3 = _possibleConstructorReturn(this, (ClientCreateForm.__proto__ || Object.getPrototypeOf(ClientCreateForm)).call(this, props));
-
-        _this3.handleSubmit = _this3.handleSubmit.bind(_this3);
-        _this3.handleSelectChange = _this3.handleSelectChange.bind(_this3);
-
-        _this3.state = {
-            clients: [],
-            selectedClient: ""
-        };
-        return _this3;
-    }
-
-    _createClass(ClientCreateForm, [{
-        key: 'componentDidMount',
-        value: function componentDidMount() {
-            var _this4 = this;
-
-            fetch('/api/clients').then(function (response) {
-                return response.json();
-            }).then(function (clients) {
-                _this4.setState({ clients: clients });
-            });
-        }
-    }, {
-        key: 'handleSubmit',
-        value: function handleSubmit(event) {
-            event.preventDefault();
-
-            var now = new Date();
-            now.setDate(now.getDate() + 14);
-
-            var url = signex.ordersPostUrl;
-            var data = {
-                client_id: parseInt(this.state.selectedClient),
-                user_id: signex.user.id,
-                is_quote: 0,
-                due_at: now.toISOString().substring(0, 10)
-            };
-            console.log("Sending: ");
-            console.log(data);
-            $.ajax({
-                type: 'post',
-                url: url,
-                data: data,
-                dataType: 'json',
-                success: function success(data) {
-                    alert(data);
-                },
-                error: function error(data) {
-                    var errors = data.responseJSON;
-                    console.log(errors);
-                }
-            });
-        }
-    }, {
-        key: 'handleSelectChange',
-        value: function handleSelectChange(event) {
-            this.setState({ selectedClient: event.target.value });
-        }
-    }, {
-        key: 'renderClientList',
-        value: function renderClientList() {
-            return this.state.clients.map(function (client) {
-                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'option',
-                    { key: client.id, value: client.id },
-                    client.name
-                );
-            });
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                'div',
-                { className: 'col-md-6' },
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'h4',
-                    null,
-                    'Create order'
-                ),
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'form',
-                    { onSubmit: this.handleSubmit },
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'select',
-                        { className: 'form-control',
-                            onChange: this.handleSelectChange,
-                            value: this.state.selectedClient },
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            'option',
-                            { value: '0' },
-                            'Select...'
-                        ),
-                        this.renderClientList()
-                    ),
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { name: 'user_id',
-                        type: 'hidden',
-                        className: 'form-control',
-                        value: signex.user.id }),
-                    'Is quote',
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { name: 'is_quote', type: 'checkbox', className: 'form-control' }),
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'submit', className: 'btn btn-primary', value: 'Submit' })
-                )
-            );
-        }
-    }]);
-
-    return ClientCreateForm;
-}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
-
-if (document.getElementById('orders-view-root')) {
-    __WEBPACK_IMPORTED_MODULE_1_react_dom___default.a.render(__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(OrdersView, null), document.getElementById('orders-view-root'));
-}
-
-/***/ }),
+/* 114 */,
 /* 115 */
 /***/ (function(module, exports) {
 
@@ -43607,7 +43383,7 @@ return jQuery;
 if (true) {
   var invariant = __webpack_require__(0);
   var warning = __webpack_require__(1);
-  var ReactPropTypesSecret = __webpack_require__(62);
+  var ReactPropTypesSecret = __webpack_require__(63);
   var loggedTypeFailures = {};
 }
 
@@ -43676,7 +43452,7 @@ var emptyFunction = __webpack_require__(9);
 var invariant = __webpack_require__(0);
 var warning = __webpack_require__(1);
 
-var ReactPropTypesSecret = __webpack_require__(62);
+var ReactPropTypesSecret = __webpack_require__(63);
 var checkPropTypes = __webpack_require__(133);
 
 module.exports = function(isValidElement, throwOnDirectAccess) {
@@ -44273,7 +44049,7 @@ module.exports = ARIADOMPropertyConfig;
 
 var ReactDOMComponentTree = __webpack_require__(4);
 
-var focusNode = __webpack_require__(59);
+var focusNode = __webpack_require__(60);
 
 var AutoFocusUtils = {
   focusDOMComponent: function () {
@@ -44689,7 +44465,7 @@ module.exports = BeforeInputEventPlugin;
 
 
 
-var CSSProperty = __webpack_require__(63);
+var CSSProperty = __webpack_require__(64);
 var ExecutionEnvironment = __webpack_require__(5);
 var ReactInstrumentation = __webpack_require__(8);
 
@@ -44916,10 +44692,10 @@ var ReactDOMComponentTree = __webpack_require__(4);
 var ReactUpdates = __webpack_require__(10);
 var SyntheticEvent = __webpack_require__(12);
 
-var inputValueTracking = __webpack_require__(80);
+var inputValueTracking = __webpack_require__(81);
 var getEventTarget = __webpack_require__(47);
 var isEventSupported = __webpack_require__(48);
-var isTextInputElement = __webpack_require__(82);
+var isTextInputElement = __webpack_require__(83);
 
 var eventTypes = {
   change: {
@@ -45415,7 +45191,7 @@ var _assign = __webpack_require__(3);
 
 var PooledClass = __webpack_require__(14);
 
-var getTextContentAccessor = __webpack_require__(79);
+var getTextContentAccessor = __webpack_require__(80);
 
 /**
  * This helper class stores information about text content of a target node,
@@ -45754,10 +45530,10 @@ module.exports = HTMLDOMPropertyConfig;
 
 var ReactReconciler = __webpack_require__(17);
 
-var instantiateReactComponent = __webpack_require__(81);
+var instantiateReactComponent = __webpack_require__(82);
 var KeyEscapeUtils = __webpack_require__(39);
 var shouldUpdateReactComponent = __webpack_require__(49);
-var traverseAllChildren = __webpack_require__(84);
+var traverseAllChildren = __webpack_require__(85);
 var warning = __webpack_require__(1);
 
 var ReactComponentTreeHook;
@@ -45953,7 +45729,7 @@ var ReactCurrentOwner = __webpack_require__(11);
 var ReactErrorUtils = __webpack_require__(42);
 var ReactInstanceMap = __webpack_require__(23);
 var ReactInstrumentation = __webpack_require__(8);
-var ReactNodeTypes = __webpack_require__(73);
+var ReactNodeTypes = __webpack_require__(74);
 var ReactReconciler = __webpack_require__(17);
 
 if (true) {
@@ -46853,13 +46629,13 @@ module.exports = ReactCompositeComponent;
 
 var ReactDOMComponentTree = __webpack_require__(4);
 var ReactDefaultInjection = __webpack_require__(165);
-var ReactMount = __webpack_require__(72);
+var ReactMount = __webpack_require__(73);
 var ReactReconciler = __webpack_require__(17);
 var ReactUpdates = __webpack_require__(10);
 var ReactVersion = __webpack_require__(180);
 
 var findDOMNode = __webpack_require__(197);
-var getHostComponentFromComposite = __webpack_require__(78);
+var getHostComponentFromComposite = __webpack_require__(79);
 var renderSubtreeIntoContainer = __webpack_require__(204);
 var warning = __webpack_require__(1);
 
@@ -46975,15 +46751,15 @@ var CSSPropertyOperations = __webpack_require__(138);
 var DOMLazyTree = __webpack_require__(16);
 var DOMNamespaces = __webpack_require__(37);
 var DOMProperty = __webpack_require__(13);
-var DOMPropertyOperations = __webpack_require__(65);
+var DOMPropertyOperations = __webpack_require__(66);
 var EventPluginHub = __webpack_require__(21);
 var EventPluginRegistry = __webpack_require__(26);
 var ReactBrowserEventEmitter = __webpack_require__(27);
-var ReactDOMComponentFlags = __webpack_require__(66);
+var ReactDOMComponentFlags = __webpack_require__(67);
 var ReactDOMComponentTree = __webpack_require__(4);
 var ReactDOMInput = __webpack_require__(154);
 var ReactDOMOption = __webpack_require__(157);
-var ReactDOMSelect = __webpack_require__(67);
+var ReactDOMSelect = __webpack_require__(68);
 var ReactDOMTextarea = __webpack_require__(160);
 var ReactInstrumentation = __webpack_require__(8);
 var ReactMultiChild = __webpack_require__(173);
@@ -46994,7 +46770,7 @@ var escapeTextContentForBrowser = __webpack_require__(30);
 var invariant = __webpack_require__(0);
 var isEventSupported = __webpack_require__(48);
 var shallowEqual = __webpack_require__(34);
-var inputValueTracking = __webpack_require__(80);
+var inputValueTracking = __webpack_require__(81);
 var validateDOMNesting = __webpack_require__(50);
 var warning = __webpack_require__(1);
 
@@ -48148,7 +47924,7 @@ module.exports = ReactDOMIDOperations;
 var _prodInvariant = __webpack_require__(2),
     _assign = __webpack_require__(3);
 
-var DOMPropertyOperations = __webpack_require__(65);
+var DOMPropertyOperations = __webpack_require__(66);
 var LinkedValueUtils = __webpack_require__(40);
 var ReactDOMComponentTree = __webpack_require__(4);
 var ReactUpdates = __webpack_require__(10);
@@ -48587,7 +48363,7 @@ var _assign = __webpack_require__(3);
 
 var React = __webpack_require__(18);
 var ReactDOMComponentTree = __webpack_require__(4);
-var ReactDOMSelect = __webpack_require__(67);
+var ReactDOMSelect = __webpack_require__(68);
 
 var warning = __webpack_require__(1);
 var didWarnInvalidOptionChildren = false;
@@ -48713,7 +48489,7 @@ module.exports = ReactDOMOption;
 var ExecutionEnvironment = __webpack_require__(5);
 
 var getNodeForCharacterOffset = __webpack_require__(201);
-var getTextContentAccessor = __webpack_require__(79);
+var getTextContentAccessor = __webpack_require__(80);
 
 /**
  * While `isCollapsed` is available on the Selection object and `collapsed`
@@ -50111,7 +49887,7 @@ module.exports = ReactEventEmitterMixin;
 
 var _assign = __webpack_require__(3);
 
-var EventListener = __webpack_require__(58);
+var EventListener = __webpack_require__(59);
 var ExecutionEnvironment = __webpack_require__(5);
 var PooledClass = __webpack_require__(14);
 var ReactDOMComponentTree = __webpack_require__(4);
@@ -50312,9 +50088,9 @@ var DOMProperty = __webpack_require__(13);
 var EventPluginHub = __webpack_require__(21);
 var EventPluginUtils = __webpack_require__(38);
 var ReactComponentEnvironment = __webpack_require__(41);
-var ReactEmptyComponent = __webpack_require__(68);
+var ReactEmptyComponent = __webpack_require__(69);
 var ReactBrowserEventEmitter = __webpack_require__(27);
-var ReactHostComponent = __webpack_require__(70);
+var ReactHostComponent = __webpack_require__(71);
 var ReactUpdates = __webpack_require__(10);
 
 var ReactInjection = {
@@ -51025,10 +50801,10 @@ module.exports = ReactPropTypeLocationNames;
 
 var _assign = __webpack_require__(3);
 
-var CallbackQueue = __webpack_require__(64);
+var CallbackQueue = __webpack_require__(65);
 var PooledClass = __webpack_require__(14);
 var ReactBrowserEventEmitter = __webpack_require__(27);
-var ReactInputSelection = __webpack_require__(71);
+var ReactInputSelection = __webpack_require__(72);
 var ReactInstrumentation = __webpack_require__(8);
 var Transaction = __webpack_require__(29);
 var ReactUpdateQueue = __webpack_require__(43);
@@ -51868,11 +51644,11 @@ module.exports = SVGDOMPropertyConfig;
 var EventPropagators = __webpack_require__(22);
 var ExecutionEnvironment = __webpack_require__(5);
 var ReactDOMComponentTree = __webpack_require__(4);
-var ReactInputSelection = __webpack_require__(71);
+var ReactInputSelection = __webpack_require__(72);
 var SyntheticEvent = __webpack_require__(12);
 
-var getActiveElement = __webpack_require__(60);
-var isTextInputElement = __webpack_require__(82);
+var getActiveElement = __webpack_require__(61);
+var isTextInputElement = __webpack_require__(83);
 var shallowEqual = __webpack_require__(34);
 
 var skipSelectionChangeEvent = ExecutionEnvironment.canUseDOM && 'documentMode' in document && document.documentMode <= 11;
@@ -52061,7 +51837,7 @@ module.exports = SelectEventPlugin;
 
 var _prodInvariant = __webpack_require__(2);
 
-var EventListener = __webpack_require__(58);
+var EventListener = __webpack_require__(59);
 var EventPropagators = __webpack_require__(22);
 var ReactDOMComponentTree = __webpack_require__(4);
 var SyntheticAnimationEvent = __webpack_require__(184);
@@ -52832,7 +52608,7 @@ module.exports = adler32;
 var _prodInvariant = __webpack_require__(2);
 
 var ReactPropTypeLocationNames = __webpack_require__(175);
-var ReactPropTypesSecret = __webpack_require__(74);
+var ReactPropTypesSecret = __webpack_require__(75);
 
 var invariant = __webpack_require__(0);
 var warning = __webpack_require__(1);
@@ -52922,7 +52698,7 @@ module.exports = checkReactTypeSpec;
 
 
 
-var CSSProperty = __webpack_require__(63);
+var CSSProperty = __webpack_require__(64);
 var warning = __webpack_require__(1);
 
 var isUnitlessNumber = CSSProperty.isUnitlessNumber;
@@ -53012,7 +52788,7 @@ var ReactCurrentOwner = __webpack_require__(11);
 var ReactDOMComponentTree = __webpack_require__(4);
 var ReactInstanceMap = __webpack_require__(23);
 
-var getHostComponentFromComposite = __webpack_require__(78);
+var getHostComponentFromComposite = __webpack_require__(79);
 var invariant = __webpack_require__(0);
 var warning = __webpack_require__(1);
 
@@ -53073,7 +52849,7 @@ module.exports = findDOMNode;
 
 
 var KeyEscapeUtils = __webpack_require__(39);
-var traverseAllChildren = __webpack_require__(84);
+var traverseAllChildren = __webpack_require__(85);
 var warning = __webpack_require__(1);
 
 var ReactComponentTreeHook;
@@ -53532,7 +53308,7 @@ module.exports = quoteAttributeValueForBrowser;
 
 
 
-var ReactMount = __webpack_require__(72);
+var ReactMount = __webpack_require__(73);
 
 module.exports = ReactMount.renderSubtreeIntoContainer;
 
@@ -53939,7 +53715,7 @@ var ReactElement = __webpack_require__(15);
  */
 var createDOMFactory = ReactElement.createFactory;
 if (true) {
-  var ReactElementValidator = __webpack_require__(87);
+  var ReactElementValidator = __webpack_require__(88);
   createDOMFactory = ReactElementValidator.createFactory;
 }
 
@@ -54137,7 +53913,7 @@ module.exports = ReactPropTypeLocationNames;
 var _require = __webpack_require__(15),
     isValidElement = _require.isValidElement;
 
-var factory = __webpack_require__(61);
+var factory = __webpack_require__(62);
 
 module.exports = factory(isValidElement);
 
@@ -54292,13 +54068,13 @@ module.exports = checkReactTypeSpec;
 
 
 
-var _require = __webpack_require__(85),
+var _require = __webpack_require__(86),
     Component = _require.Component;
 
 var _require2 = __webpack_require__(15),
     isValidElement = _require2.isValidElement;
 
-var ReactNoopUpdateQueue = __webpack_require__(88);
+var ReactNoopUpdateQueue = __webpack_require__(89);
 var factory = __webpack_require__(116);
 
 module.exports = factory(Component, isValidElement, ReactNoopUpdateQueue);
@@ -54392,9 +54168,9 @@ module.exports = onlyChild;
 var _prodInvariant = __webpack_require__(19);
 
 var ReactCurrentOwner = __webpack_require__(11);
-var REACT_ELEMENT_TYPE = __webpack_require__(86);
+var REACT_ELEMENT_TYPE = __webpack_require__(87);
 
-var getIteratorFn = __webpack_require__(89);
+var getIteratorFn = __webpack_require__(90);
 var invariant = __webpack_require__(0);
 var KeyEscapeUtils = __webpack_require__(205);
 var warning = __webpack_require__(1);
@@ -54612,9 +54388,300 @@ module.exports = function(module) {
 /* 220 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(90);
-module.exports = __webpack_require__(91);
+__webpack_require__(91);
+module.exports = __webpack_require__(92);
 
+
+/***/ }),
+/* 221 */,
+/* 222 */,
+/* 223 */,
+/* 224 */,
+/* 225 */,
+/* 226 */,
+/* 227 */,
+/* 228 */,
+/* 229 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(52);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom__ = __webpack_require__(35);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react_dom__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__client_clients_view__ = __webpack_require__(58);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ClientCreateForm", function() { return ClientCreateForm; });
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+
+
+var OrdersView = function (_Component) {
+    _inherits(OrdersView, _Component);
+
+    function OrdersView(props) {
+        _classCallCheck(this, OrdersView);
+
+        var _this = _possibleConstructorReturn(this, (OrdersView.__proto__ || Object.getPrototypeOf(OrdersView)).call(this, props));
+
+        _this.state = {
+            orders: []
+        };
+        return _this;
+    }
+
+    _createClass(OrdersView, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            this.updateOrders();
+        }
+    }, {
+        key: 'updateOrders',
+        value: function updateOrders() {
+            var _this2 = this;
+
+            fetch('/api/orders').then(function (response) {
+                return response.json();
+            }).then(function (response) {
+                _this2.setState({ orders: response });
+            });
+        }
+    }, {
+        key: 'renderOrders',
+        value: function renderOrders() {
+            return this.state.orders.map(function (order) {
+                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'li',
+                    { key: order.id },
+                    order.id,
+                    ' - Due: ',
+                    order.due_at
+                );
+            });
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'div',
+                { className: 'container' },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'div',
+                    { className: 'row' },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        { className: 'col-md-12' },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'h1',
+                            null,
+                            'Orders'
+                        )
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        { className: 'col-md-12' },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(ClientCreateForm, null)
+                    )
+                )
+            );
+        }
+    }]);
+
+    return OrdersView;
+}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
+
+/* harmony default export */ __webpack_exports__["default"] = (OrdersView);
+
+
+var ClientCreateForm = function (_Component2) {
+    _inherits(ClientCreateForm, _Component2);
+
+    function ClientCreateForm(props) {
+        _classCallCheck(this, ClientCreateForm);
+
+        var _this3 = _possibleConstructorReturn(this, (ClientCreateForm.__proto__ || Object.getPrototypeOf(ClientCreateForm)).call(this, props));
+
+        _this3.handleSubmit = _this3.handleSubmit.bind(_this3);
+        _this3.handleSelectChange = _this3.handleSelectChange.bind(_this3);
+        _this3.updateClientList = _this3.updateClientList.bind(_this3);
+        _this3.onClientAddedHandler = _this3.onClientAddedHandler.bind(_this3);
+
+        _this3.state = {
+            clients: [],
+            selectedClient: ""
+        };
+        return _this3;
+    }
+
+    _createClass(ClientCreateForm, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            this.updateClientList();
+        }
+    }, {
+        key: 'updateClientList',
+        value: function updateClientList() {
+            var _this4 = this;
+
+            fetch('/api/clients').then(function (response) {
+                return response.json();
+            }).then(function (clients) {
+                _this4.setState({ clients: clients });
+            });
+        }
+    }, {
+        key: 'onClientAddedHandler',
+        value: function onClientAddedHandler(newClient) {
+            this.updateClientList();
+
+            // TODO: Toast message
+        }
+    }, {
+        key: 'handleSubmit',
+        value: function handleSubmit(event) {
+            event.preventDefault();
+
+            var now = new Date();
+            now.setDate(now.getDate() + 14);
+
+            var url = signex.ordersPostUrl;
+            var data = {
+                client_id: parseInt(this.state.selectedClient),
+                user_id: signex.user.id,
+                is_quote: 0,
+                due_at: now.toISOString().substring(0, 10)
+            };
+            console.log("Sending: ");
+            console.log(data);
+            $.ajax({
+                type: 'post',
+                url: url,
+                data: data,
+                dataType: 'json',
+                success: function success(data) {
+                    alert(data);
+                },
+                error: function error(data) {
+                    var errors = data.responseJSON;
+                    console.log(errors);
+                }
+            });
+        }
+    }, {
+        key: 'handleSelectChange',
+        value: function handleSelectChange(event) {
+            this.setState({ selectedClient: event.target.value });
+        }
+    }, {
+        key: 'renderClientList',
+        value: function renderClientList() {
+            return this.state.clients.map(function (client) {
+                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'option',
+                    { key: client.id, value: client.id },
+                    client.name
+                );
+            });
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'div',
+                { className: 'row' },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'div',
+                    { className: 'col-md-6' },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'h4',
+                        null,
+                        'Create order'
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'form',
+                        { onSubmit: this.handleSubmit },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            { className: 'row' },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'div',
+                                { className: 'col-md-12' },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    'div',
+                                    { className: 'form-group' },
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        'label',
+                                        null,
+                                        'Client:'
+                                    ),
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        'select',
+                                        { className: 'form-control',
+                                            onChange: this.handleSelectChange,
+                                            value: this.state.selectedClient },
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                            'option',
+                                            { value: '0' },
+                                            'Select...'
+                                        ),
+                                        this.renderClientList()
+                                    )
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { name: 'user_id',
+                                    type: 'hidden',
+                                    className: 'form-control',
+                                    value: signex.user.id })
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'div',
+                                { className: 'col-md-12' },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    'div',
+                                    { className: 'checkbox' },
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        'label',
+                                        null,
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { name: 'is_quote', type: 'checkbox', value: '' }),
+                                        'Is quote'
+                                    )
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'submit', className: 'btn btn-primary', value: 'Submit' })
+                            )
+                        )
+                    )
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'div',
+                    { className: 'col-md-6' },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        { className: 'jumbotron' },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'h3',
+                            null,
+                            'New client form'
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__client_clients_view__["ClientForm"], { onClientAddedHandler: this.onClientAddedHandler })
+                    )
+                )
+            );
+        }
+    }]);
+
+    return ClientCreateForm;
+}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
+
+if (document.getElementById('orders-view-root')) {
+    __WEBPACK_IMPORTED_MODULE_1_react_dom___default.a.render(__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(OrdersView, null), document.getElementById('orders-view-root'));
+}
 
 /***/ })
 /******/ ]);

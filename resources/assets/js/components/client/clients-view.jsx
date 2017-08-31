@@ -199,8 +199,8 @@ export class BrregResultBox extends Component {
         
     }
     render() {
-        let len = this.state.data.length;
-        const data = this.state.data.slice();
+        let len = (this.state.data) ? this.state.data.length : 0;
+        const data = (this.state.data) ? this.state.data.slice() : [];
         if(len > 0){
             data.unshift({organisasjonsnummer: "brregSearchBox", navn: len+" treff..."});
         }
@@ -310,7 +310,7 @@ export class ClientForm extends Component {
         return(
         <AjaxForm  onSubmitForm={this.onSubmitForm} url={url} method={method}>
             <div className="row">
-                <div className="col-md-6">
+                <div className="col-md-12">
                     <div className="form-group">
                         <input name="name" type="text" 
                             value={this.state.clientName} 
@@ -319,24 +319,25 @@ export class ClientForm extends Component {
                             className="form-control" />
                     </div>
                 </div>
-                <div className="col-md-4">
-                    <BrregResultBox data={this.state.brregResults} 
-                        onItemResultChanged={this.onSelectedBrregChange} />
-                </div>
-                <div className="col-md-2">
-                    <button onClick={this.onBtnUseBrregDataClick} type="button" 
-                        className="btn btn-primary">Use</button>
-                </div>
-            </div>
-            
-            <div className="row">
-                <div className="col-md-6">
+                <div className="col-md-12">
                     <div className="form-group">
                         <input name="org_nr" type="text" 
                             value={this.state.clientOrgNr} 
                             onChange={this.onClientOrgNrChanged} 
                             placeholder="Organization id" 
                             className="form-control" />
+                    </div>
+                </div>
+                <div className="col-md-12">
+                    <div className="form-group">
+                        <BrregResultBox data={this.state.brregResults} 
+                            onItemResultChanged={this.onSelectedBrregChange} />
+                    </div>
+                </div>
+                <div className="col-md-4 col-md-offset-8">
+                    <div className="form-group">
+                        <button onClick={this.onBtnUseBrregDataClick} type="button" 
+                            className="btn btn-default form-control">Use selected</button>
                     </div>
                 </div>
             </div>

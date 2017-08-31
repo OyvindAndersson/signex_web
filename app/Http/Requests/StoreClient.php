@@ -24,8 +24,8 @@ class StoreClient extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|unique:clients|max:255',
-            'org_nr' => 'max:32'
+            'name' => 'required|max:255',
+            'org_nr' => 'max:32|unique:clients'
         ];
     }
 }
