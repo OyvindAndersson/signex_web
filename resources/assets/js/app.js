@@ -7,6 +7,7 @@
 
 require('./bootstrap');
 
+import 'react-toastify/dist/ReactToastify.min.css';
 /**
  * Next, include all page-root views to use throughout the application
  */

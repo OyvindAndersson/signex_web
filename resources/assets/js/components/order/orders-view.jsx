@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { ClientForm } from '../client/clients-view';
+import moment from 'moment';
+import { ToastContainer, toast } from 'react-toastify';
+
+/**
+ * @todo add Order inputs to form (fix due_at!!) and add project form within after.
+ */
 
 export default class OrdersView extends Component {
     constructor(props){
@@ -42,15 +48,24 @@ export default class OrdersView extends Component {
                     </div>
 
                     <div className="col-md-12">
-                        <ClientCreateForm />
+                        <OrderCreateForm />
                     </div>
                 </div>
+
+                <ToastContainer 
+                    position="bottom-right"
+                    autoClose={2000}
+                    hideProgressBar={false}
+                    newestOnTop={false}
+                    closeOnClick
+                    pauseOnHover
+                    />
             </div>
         );
     }
 }
 
-export class ClientCreateForm extends Component {
+export class OrderCreateForm extends Component {
     constructor(props){
         super(props);
 
@@ -64,13 +79,17 @@ export class ClientCreateForm extends Component {
             selectedClient: ""
         };
     }
-
     componentDidMount(){
         this.updateClientList();
     }
     updateClientList(){
         fetch('/api/clients')
         .then(response => { 
+            if(response.status !== 200){
+                console.log("Error while fetching clients: " + response.status);
+                toast.error("Failed to fetch clientlist!", {autoClose: 6000});
+                return response;
+            }
             return response.json(); 
         })
         .then(clients => {
@@ -79,8 +98,8 @@ export class ClientCreateForm extends Component {
     }
     onClientAddedHandler(newClient){
         this.updateClientList();
-
-        // TODO: Toast message
+        
+        toast.success("Client '"+newClient.name+"' added");
     }
     handleSubmit(event) {
         event.preventDefault();
@@ -143,6 +162,9 @@ export class ClientCreateForm extends Component {
                                     type="hidden" 
                                     className="form-control" 
                                     value={signex.user.id} />
+
+                                <input name="due_at" type="date" className="form-control"
+                                    value={moment().format('YYYY-MM-DD h:mm:ss')} />
                                 
                             </div>
                             

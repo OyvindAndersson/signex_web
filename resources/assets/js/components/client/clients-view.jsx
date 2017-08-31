@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom';
 import AjaxForm from '../ajax-form';
 import Brreg from '../../brreg.js';
 
+import { ToastContainer, toast } from 'react-toastify';
+
 /**
  * Main view component. Parent for entire "Clients" view.
  */
@@ -55,6 +57,14 @@ export default class ClientsView extends Component {
                         <ClientsTable clients={this.state.clients} />
                     </div>
                 </div>
+                <ToastContainer 
+                    position="bottom-right"
+                    autoClose={2000}
+                    hideProgressBar={false}
+                    newestOnTop={false}
+                    closeOnClick
+                    pauseOnHover
+                    />
             </div>
         );
     }
@@ -278,8 +288,18 @@ export class ClientForm extends Component {
             });
         })
         .catch(error => {
-            alert("Error!: Submission failed. See log.");
-            console.log("Error axios: " + error);
+            //alert("Error!: Submission failed. See log.");
+
+            /** @todo Display laravel errors with dedicated component */
+            let errors = error.response.data.errors;
+            if(errors){
+                for(let key in errors){
+                    toast.error(errors[key][0]);
+                }
+            }
+            /** @todo Remove (debug) */
+            console.log("axios: " + error);
+            console.log(error);
         })
     }
 
