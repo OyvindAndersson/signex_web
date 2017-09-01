@@ -294,7 +294,7 @@ export class ClientForm extends Component {
             let errors = error.response.data.errors;
             if(errors){
                 for(let key in errors){
-                    toast.error(errors[key][0]);
+                    toast.error(errors[key][0], {autoClose: 5000});
                 }
             }
             /** @todo Remove (debug) */

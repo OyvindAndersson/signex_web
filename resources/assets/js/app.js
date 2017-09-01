@@ -14,3 +14,4 @@ import 'react-toastify/dist/ReactToastify.min.css';
 
 require('./components/client/clients-view.jsx'); // views.client.index
 require('./components/order/orders-view.jsx'); // views.order.index
+require('./components/project/projects-view.jsx'); // views.project.index

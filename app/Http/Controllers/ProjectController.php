@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use JavaScript;
+use Auth;
 use App\Project;
 use Illuminate\Http\Request;
 
@@ -14,7 +16,12 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        //
+        JavaScript::put([
+            'user' => Auth::user(),
+            'projectsPostUrl' => route('projects.store')
+        ]);
+
+        return view('project.index');
     }
 
     /**

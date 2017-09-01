@@ -22,3 +22,4 @@ Route::get('/home', 'HomeController@index')->name('home');
 //Route::get('/orders', 'OrderController@index')->name('orders')->middleware('auth');
 Route::resource('orders', 'OrderController')->middleware('auth');
 Route::resource('clients', 'ClientController')->middleware('auth');
+Route::resource('projects', 'ProjectController')->middleware('auth');
