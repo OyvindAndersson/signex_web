@@ -132,7 +132,11 @@ export class OrderCreateForm extends Component {
                 console.log("Failed to submit new order.:");
                 console.log(response);
             } else {
-                toast.success("Successfully added order id:"+response.data.order.id);
+                toast.success("Order "+response.data.order.code +
+                    " for "+response.data.client.name +
+                    " added.", {
+                        autoClose: 1000*10
+                    });
             }
             // on order added handler - if any need
             // clear form fields

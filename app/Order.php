@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Client;
+use App\Http\CodeRules;
 
 class Order extends Model
 {
@@ -19,6 +20,21 @@ class Order extends Model
 
     public function client()
     {
-        return $this->hasOne(Client::class);
+        return $this->belongsTo(Client::class);
+    }
+
+    public function projects()
+    {
+        return $this->hasMany(\App\Project::class);
+    }
+
+    public function types()
+    {
+        return $this->belongsToMany('App\OrderType', 'order_order_type', 'order_id', 'order_type_id');
+    }
+
+    public static function get_code_from_id($id)
+    {
+        return CodeRules::get_code_format_string('order', $id);
     }
 }

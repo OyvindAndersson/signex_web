@@ -44,7 +44,12 @@ class OrderController extends Controller
     public function store(StoreOrder $request)
     {
         $newOrder = Order::create($request->all());
-
+        if($newOrder)
+        {
+            $code = Order::get_code_from_id($newOrder->id);
+            $newOrder->code = $code;
+            $newOrder->save();
+        }
         
         if($request->ajax())
         {
@@ -53,7 +58,7 @@ class OrderController extends Controller
             }
             else 
             {
-                return response()->json(['order' => $newOrder]);
+                return response()->json(['order' => $newOrder, 'client' => $newOrder->client]);
             }
         }
         

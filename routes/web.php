@@ -23,3 +23,5 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::resource('orders', 'OrderController')->middleware('auth');
 Route::resource('clients', 'ClientController')->middleware('auth');
 Route::resource('projects', 'ProjectController')->middleware('auth');
+
+Route::post('orderWithProject', 'OrderProjectController@store')->middleware('auth');

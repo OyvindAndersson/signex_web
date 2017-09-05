@@ -15,11 +15,18 @@ class CreateProjectsTable extends Migration
     {
         Schema::create('projects', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('code', 16)->default('null'); // The project code/number
             $table->string('name', 128);
             $table->string('body');
             $table->integer('manager_id')->unsigned();
+            $table->integer('order_id')->unsigned();
             $table->timestamps();
+
+            // @todo Do NOT cascade if manager dies.
+            $table->foreign('manager_id')->references('id')->on('users'); 
+            $table->foreign('order_id')->references('id')->on('orders');
         });
+        
     }
 
     /**
