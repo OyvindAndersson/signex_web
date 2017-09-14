@@ -1,0 +1,43 @@
+
+Suppliers
+
+
+Inventory
+-------------------------
+[Medias]-[Print][Cut][Laminate]
+[Raw]-[Ink]
+
+
+-------------------
+Media -> Print
+==================
+(Name, Type, Color, Size, Finish, MatchingLaminates[], Suppliers[], UnitPrice, UnitType, Stock)
+Orafol, 
+3551G, 
+White (00), 
+1.37x50m, 
+Gloss,
+[Oraguard 210] [Oraguard 215],
+[Skangraf][NG Digital],
+35,5 NOK,
+m2,
+1
+================== 
+Media -> Lamiante
+==================
+(Name, Type, Size, Finish, Suppliers[], UnitPrice, UnitType, Stock)
+================== 
+Media -> Cut
+==================
+(Name, Type, Color, Size, Finish, MatchingLaminates[], Suppliers[], UnitPrice, UnitType, Stock)
+
+================== 
+Raw -> Ink
+==================
+(Name, Type, Size, Suppliers[], UnitPrice, UnitType, Stock)
+Canon,
+CYAN,
+440ml,
+[Canon],
+1500 NOK,
+casette

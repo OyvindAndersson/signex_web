@@ -85,7 +85,7 @@ export class CreateOrderProjectForm extends Component {
             <form onSubmit={this.handleSubmit}>
                 <div className="row">
                     <div className="col-md-6">
-                    <OrderFormInputs />
+                        <OrderFormInputs />
                     </div>
                     <div className="col-md-6">
                         <ProjectFormInputs />
@@ -126,11 +126,13 @@ export class OrderFormInputs extends Component {
     constructor(props){
         super(props);
         this.handleInputChange = this.handleInputChange.bind(this);
+
         this.state = {
-            dueAt: "Due yoyo",
+            dueAt: moment().add(7, 'days').format('YYYY-MM-DD'),
             clientId: 0,
             statusId: 1, // Todo: Get enum of order statuses
             isQuote: false,
+            quoteExpiresAt: moment().add(20, 'days').format('YYYY-MM-DD'),
             clients: props.clients ? props.clients : [{id: 0, name: "Select..."}]
         }
     }
@@ -153,10 +155,17 @@ export class OrderFormInputs extends Component {
                     value={this.state.clientId} onChange={this.handleInputChange}>
                     {clientList}
                 </select>
-                <Input name="order[due_at]" label="Due" value={this.state.dueAt} onChange={this.handleInputChange} />
+                <Input name="order[due_at]" label="Due" value={this.state.dueAt} 
+                    onChange={this.handleInputChange} />
                 <Input name="order[user_id]" type="hidden" readOnly value={signex.user.id} />
-                <Input name="order[status_id]" label="Status" value={this.state.statusId} onChange={this.handleInputChange} />
-                <CheckBox name="order[is_quote]" label="Is Quote?" value={this.state.isQuote} onChange={this.handleInputChange} />
+                <Input name="order[status_id]" label="Status" value={this.state.statusId} 
+                    onChange={this.handleInputChange} />
+                <CheckBox name="order[is_quote]" label="Is Quote?" value={this.state.isQuote} 
+                    onChange={this.handleInputChange} />
+                {this.state.isQuote ? (
+                <Input name="order[quote_expires_at]" label="Is Quote?" value={this.state.isQuote} 
+                    onChange={this.handleInputChange} />
+                ) : ''}
 
             </div>
         );
