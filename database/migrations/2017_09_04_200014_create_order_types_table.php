@@ -13,6 +13,13 @@ class CreateOrderTypesTable extends Migration
      */
     public function up()
     {
+        /**
+        * ORDER TYPES
+        * An order can be of a specific type, simply for 
+        * organizational purposes. Types can be custom made.
+        * I.e: "General", "Supplier" etc.
+        * 
+        */
         Schema::create('order_types', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name', 64)->unique();
@@ -20,15 +27,22 @@ class CreateOrderTypesTable extends Migration
             $table->timestamps();
         });
 
-        App\Order::create([
+        /**
+        * INSERT STANDARD ORDER TYPES
+        */
+        App\OrderType::create([
             'name' => 'General',
             'description' => 'Any order type'
         ]);
-        App\Order::create([
+        App\OrderType::create([
             'name' => 'Vendor only',
             'description' => 'All products come from one or more vendors only. Nothing self-produced.'
         ]);
 
+        /**
+        * ORDER -> ORDER_TYPE pivot table
+        * Any order can belong to N order types.
+        */
         Schema::create('order_order_type', function(Blueprint $table) {
             $table->integer('order_id')->unsigned()->index();
             $table->integer('order_type_id')->unsigned()->index();
@@ -46,7 +60,11 @@ class CreateOrderTypesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('order_order_types');
+        Schema::table('order_order_type', function(Blueprint $table){
+            $table->dropForeign(['order_type_id']);
+            $table->dropForeign(['order_id']);
+        });
+        Schema::dropIfExists('order_order_type');
         Schema::dropIfExists('order_types');
     }
 }

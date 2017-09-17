@@ -13,6 +13,10 @@ class CreateClientsTable extends Migration
      */
     public function up()
     {
+        /**
+        * CLIENTS
+        * A client, generally assigned to Orders.
+        */
         Schema::create('clients', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
@@ -20,10 +24,15 @@ class CreateClientsTable extends Migration
             $table->timestamps();
         });
 
+        /**
+        * Now that clients table has been created, we can
+        * create the foreign constraint to clients, on the orders table.
+        */
         Schema::table('orders', function (Blueprint $table) {
             $table->foreign('client_id')->references('id')->on('clients');
         });
 
+        // Insert a "general" client, for private clients
         App\Client::create([
             'name' => 'Privat',
             'org_nr' => ''

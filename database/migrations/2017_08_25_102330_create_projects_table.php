@@ -13,6 +13,12 @@ class CreateProjectsTable extends Migration
      */
     public function up()
     {
+        /**
+        * PROJECTS
+        * Can, optionally, be attached to an Order.
+        * If an Order requires a lot of work, i.e, then a project
+        * is a good way to organize tasks, conversations etc.
+        */
         Schema::create('projects', function (Blueprint $table) {
             $table->increments('id');
             $table->string('code', 16)->default('null'); // The project code/number

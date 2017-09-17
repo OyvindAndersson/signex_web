@@ -14,18 +14,28 @@ class CreateProductCollectionsTable extends Migration
     public function up()
     {
         return;
+
+        /**
+        * PRODUCT COLLECTIONS 
+        * These collections are attached to orders and other models that
+        * utilizes an array of products.
+        */
         Schema::create('product_collections', function (Blueprint $table) {
             $table->increments('id');
             $table->timestamps();
         });
 
-        Schema::create('product_collection_product_state_info', function (Blueprint $table) {
+        /**
+        * PIVOT TABLE FOR product_collections AND product_states
+        * A product collection has many prodoct states in it. 
+        */
+        Schema::create('product_collection_product_state', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('product_state_info_id')->unsigned();
+            $table->integer('product_state_id')->unsigned();
             $table->integer('product_collection_id')->unsigned();
 
-            $table->foreign('product_state_info_id')
-            ->references('id')->on('product_state_infos')
+            $table->foreign('product_state_id')
+            ->references('id')->on('product_states')
             ->onDelete('cascade');
 
             $table->foreign('product_collection_id')

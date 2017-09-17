@@ -13,6 +13,11 @@ class CreateTasksTable extends Migration
      */
     public function up()
     {
+        /**
+        * TASKS
+        * A task belongs to Project(s). 
+        * @todo Add functional columns.
+        */
         Schema::create('tasks', function (Blueprint $table) {
             $table->increments('id');
             $table->timestamps();

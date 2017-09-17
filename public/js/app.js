@@ -12382,6 +12382,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (immutable) */ __webpack_exports__["CheckBox"] = CheckBox;
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OrderFormInputs", function() { return OrderFormInputs; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ProjectFormInputs", function() { return ProjectFormInputs; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ProductCollectionFormInputs", function() { return ProductCollectionFormInputs; });
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -12400,6 +12401,10 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 
+/**
+ * Container View of creating an order, with a project and products.
+ */
+
 var CreateOrderProjectView = function (_Component) {
     _inherits(CreateOrderProjectView, _Component);
 
@@ -12415,7 +12420,11 @@ var CreateOrderProjectView = function (_Component) {
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'div',
                 null,
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(CreateOrderProjectForm, null),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'div',
+                    { className: 'col-md-8 col-md-offset-2' },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(CreateOrderProjectForm, null)
+                ),
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4_react_toastify__["ToastContainer"], {
                     position: 'bottom-right',
                     autoClose: 2000,
@@ -12431,9 +12440,12 @@ var CreateOrderProjectView = function (_Component) {
     return CreateOrderProjectView;
 }(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
 
+/**
+ * Form container for submitting Order and Project input
+ */
+
+
 /* harmony default export */ __webpack_exports__["default"] = (CreateOrderProjectView);
-
-
 var CreateOrderProjectForm = function (_Component2) {
     _inherits(CreateOrderProjectForm, _Component2);
 
@@ -12515,6 +12527,11 @@ var CreateOrderProjectForm = function (_Component2) {
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         'div',
                         { className: 'col-md-6' },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(ProductCollectionFormInputs, null)
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        { className: 'col-md-12' },
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(ProjectFormInputs, null)
                     )
                 ),
@@ -12559,6 +12576,9 @@ function CheckBox(props) {
     );
 }
 
+/**
+ * Form inputs for an Order
+ */
 var OrderFormInputs = function (_Component3) {
     _inherits(OrderFormInputs, _Component3);
 
@@ -12568,11 +12588,13 @@ var OrderFormInputs = function (_Component3) {
         var _this3 = _possibleConstructorReturn(this, (OrderFormInputs.__proto__ || Object.getPrototypeOf(OrderFormInputs)).call(this, props));
 
         _this3.handleInputChange = _this3.handleInputChange.bind(_this3);
+
         _this3.state = {
-            dueAt: "Due yoyo",
+            dueAt: __WEBPACK_IMPORTED_MODULE_3_moment___default()().add(7, 'days').format('YYYY-MM-DD'),
             clientId: 0,
             statusId: 1, // Todo: Get enum of order statuses
             isQuote: false,
+            quoteExpiresAt: __WEBPACK_IMPORTED_MODULE_3_moment___default()().add(20, 'days').format('YYYY-MM-DD'),
             clients: props.clients ? props.clients : [{ id: 0, name: "Select..." }]
         };
         return _this3;
@@ -12616,10 +12638,15 @@ var OrderFormInputs = function (_Component3) {
                         value: this.state.clientId, onChange: this.handleInputChange },
                     clientList
                 ),
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(Input, { name: 'order[due_at]', label: 'Due', value: this.state.dueAt, onChange: this.handleInputChange }),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(Input, { name: 'order[due_at]', label: 'Due', value: this.state.dueAt,
+                    onChange: this.handleInputChange }),
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(Input, { name: 'order[user_id]', type: 'hidden', readOnly: true, value: signex.user.id }),
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(Input, { name: 'order[status_id]', label: 'Status', value: this.state.statusId, onChange: this.handleInputChange }),
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(CheckBox, { name: 'order[is_quote]', label: 'Is Quote?', value: this.state.isQuote, onChange: this.handleInputChange })
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(Input, { name: 'order[status_id]', label: 'Status', value: this.state.statusId,
+                    onChange: this.handleInputChange }),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(CheckBox, { name: 'order[is_quote]', label: 'Is Quote?', value: this.state.isQuote,
+                    onChange: this.handleInputChange }),
+                this.state.isQuote ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(Input, { name: 'order[quote_expires_at]', label: 'Is Quote?', value: this.state.isQuote,
+                    onChange: this.handleInputChange }) : ''
             );
         }
     }]);
@@ -12627,6 +12654,9 @@ var OrderFormInputs = function (_Component3) {
     return OrderFormInputs;
 }(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
 
+/**
+ * Form inputs for a Project
+ */
 var ProjectFormInputs = function (_Component4) {
     _inherits(ProjectFormInputs, _Component4);
 
@@ -12683,6 +12713,37 @@ var ProjectFormInputs = function (_Component4) {
     }]);
 
     return ProjectFormInputs;
+}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
+
+/**
+ * Form inputs for a ProductCollection - attached to an Order.
+ * Use inside of a Order form input container.
+ */
+var ProductCollectionFormInputs = function (_Component5) {
+    _inherits(ProductCollectionFormInputs, _Component5);
+
+    function ProductCollectionFormInputs(props) {
+        _classCallCheck(this, ProductCollectionFormInputs);
+
+        return _possibleConstructorReturn(this, (ProductCollectionFormInputs.__proto__ || Object.getPrototypeOf(ProductCollectionFormInputs)).call(this, props));
+    }
+
+    _createClass(ProductCollectionFormInputs, [{
+        key: 'render',
+        value: function render() {
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'div',
+                null,
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'h4',
+                    null,
+                    'Product collection'
+                )
+            );
+        }
+    }]);
+
+    return ProductCollectionFormInputs;
 }(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
 
 if (document.getElementById('project-create-view-root')) {

@@ -4,11 +4,16 @@ import { ClientForm } from '../client/clients-view';
 import moment from 'moment';
 import { ToastContainer, toast } from 'react-toastify';
 
+/**
+ * Container View of creating an order, with a project and products.
+ */
 export default class CreateOrderProjectView extends Component {
     render() {
         return(
             <div>
+                <div className="col-md-8 col-md-offset-2">
                 <CreateOrderProjectForm />
+                </div>
 
                 <ToastContainer 
                     position="bottom-right"
@@ -23,6 +28,9 @@ export default class CreateOrderProjectView extends Component {
     }
 }
 
+/**
+ * Form container for submitting Order and Project input
+ */
 export class CreateOrderProjectForm extends Component {
     constructor(props){
         super(props);
@@ -88,6 +96,9 @@ export class CreateOrderProjectForm extends Component {
                         <OrderFormInputs />
                     </div>
                     <div className="col-md-6">
+                        <ProductCollectionFormInputs />
+                    </div>
+                    <div className="col-md-12">
                         <ProjectFormInputs />
                     </div>
                 </div>
@@ -122,6 +133,9 @@ export function CheckBox(props){
     );
 }
 
+/**
+ * Form inputs for an Order
+ */
 export class OrderFormInputs extends Component {
     constructor(props){
         super(props);
@@ -172,6 +186,9 @@ export class OrderFormInputs extends Component {
     }
 } 
 
+/**
+ * Form inputs for a Project
+ */
 export class ProjectFormInputs extends Component {
     constructor(props){
         super(props);
@@ -204,6 +221,24 @@ export class ProjectFormInputs extends Component {
                 </div>
                 <Input label="Manager" name="project[manager_id]" value={this.state.managerId} onChange={this.handleInputChange} />
 
+            </div>
+        );
+    }
+}
+
+/**
+ * Form inputs for a ProductCollection - attached to an Order.
+ * Use inside of a Order form input container.
+ */
+export class ProductCollectionFormInputs extends Component {
+    constructor(props){
+        super(props);
+    }
+
+    render(){
+        return(
+            <div>
+                <h4>Product collection</h4>
             </div>
         );
     }

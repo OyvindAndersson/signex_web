@@ -4,6 +4,11 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+* Defines the type of an Order.
+* Simply for organizational and/or statistical
+* purposes.
+*/
 class OrderType extends Model
 {
     protected $fillable = [

@@ -5,6 +5,11 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use App\Order;
 
+/**
+* Client, usually a company. Private clients
+* without a organization ID simply has this
+* field nulled or empty.
+*/
 class Client extends Model
 {
     /**

@@ -6,6 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 use App\Client;
 use App\Http\CodeRules;
 
+/**
+* Defines the absolute needed information for an Order
+* that can be directly utilized in creating an invoice
+* Projects and products can be attached to orders
+*/
 class Order extends Model
 {
     /**
