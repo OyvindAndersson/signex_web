@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import AjaxForm from '../ajax-form';
-import Brreg from '../../brreg.js';
+import Brreg from 'brreg';
 
 import { ToastContainer, toast } from 'react-toastify';
 

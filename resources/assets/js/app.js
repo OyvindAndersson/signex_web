@@ -1,3 +1,6 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
+import Root from './components/containers/root';
 
 /**
  * First we will load all of this project's JavaScript dependencies which
@@ -6,14 +9,23 @@
  */
 
 require('./bootstrap');
+require('./utils/brreg');
 
 import 'react-toastify/dist/ReactToastify.min.css';
 /**
  * Next, include all page-root views to use throughout the application
  */
-
+/*
 require('./components/client/clients-view.jsx'); // views.client.index
 require('./components/order/orders-view.jsx'); // views.order.index
 require('./components/project/projects-view.jsx'); // views.project.index
-
 require('./components/order/create-order-project-form.jsx');
+*/
+
+
+// Main Container
+require('./components/containers/root.jsx');
+
+if(document.getElementById('app')){
+    ReactDOM.render(<Root />, document.getElementById('app'));
+}
