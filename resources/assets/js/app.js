@@ -5,22 +5,65 @@
  * building robust, powerful web applications using React + Laravel.
  */
 
-require('./bootstrap');
-require('./utils/brreg');
+require('./bootstrap')
+require('./utils/brreg')
+import 'react-toastify/dist/ReactToastify.min.css'
 
-import 'react-toastify/dist/ReactToastify.min.css';
+
 /**
- * Next, include all page-root views to use throughout the application
+ * Now we define our app, initialize and bootstrap the needed elements
+ * like the store, router etc. All nav-able pages must be imported
+ * here.
  */
+import React from 'react'
+import ReactDOM from 'react-dom'
+import { Provider, connect } from 'react-redux'
+import {BrowserRouter as Router, Link, Route} from 'react-router-dom'
+
+import jwtDecode from 'jwt-decode'
+import configureStore from './stores'
+import {AUTH_USER} from './actions/types'
+import {fetchAuthUser, logoutUser} from './actions/authActions'
+
 /*
-require('./components/client/clients-view.jsx'); // views.client.index
-require('./components/order/orders-view.jsx'); // views.order.index
-require('./components/project/projects-view.jsx'); // views.project.index
-require('./components/order/create-order-project-form.jsx');
+    IMPORT APP PAGES / CONTAINERS
 */
+import NavBar from './containers/NavBar'
+import DashboardPage from './containers/DashboardPage'
+import LoginPage from './containers/LoginPage'
+import LogoutPage from './containers/LogoutPage'
 
+/* 
+    APP STORE
+*/
+const appStore = configureStore();
+const token = localStorage.getItem('token');
 
-// Main Container
-require('./components/containers/root.jsx');
+/** Check if we already have a valid token - if so, authenticate and fetch user details. */
+if(token && jwtDecode(token) ){
+    // Authenticate token
+    appStore.dispatch({type: AUTH_USER});
+    // Load auth-user info
+    appStore.dispatch(fetchAuthUser())
+}
+
+/*
+    RENDER ROOT
+ */
+if(document.getElementById('app')){
+    ReactDOM.render(
+    <Provider store={appStore}>
+        <Router>
+            <div>
+                <NavBar />
+                <Route exact path="/" component={DashboardPage}/>
+                <Route path="/login" component={LoginPage}/>
+                <Route path="/logout" component={LogoutPage}/>
+            </div>
+        </Router>
+    </Provider>
+    , document.getElementById('app'));
+}
+
 
 
