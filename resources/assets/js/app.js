@@ -1,6 +1,3 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import Root from './components/containers/root';
 
 /**
  * First we will load all of this project's JavaScript dependencies which
@@ -26,6 +23,4 @@ require('./components/order/create-order-project-form.jsx');
 // Main Container
 require('./components/containers/root.jsx');
 
-if(document.getElementById('app')){
-    ReactDOM.render(<Root />, document.getElementById('app'));
-}
+

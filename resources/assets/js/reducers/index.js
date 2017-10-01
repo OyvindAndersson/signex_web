@@ -1,15 +1,12 @@
 import { combineReducers } from 'redux'
+import authReducer from './auth-reducer';
 
-const initialState = {}
 
-/* General app state */
-function appReducer(state = initialState, action){
-    return state;
-}
-
-// Combine all reducers to complete the state shape
+/**
+ * Combine all reducers into the single app-state object
+ */
 const rootReducer = combineReducers({
-    appReducer
+    auth:authReducer
 });
 
 export default rootReducer;

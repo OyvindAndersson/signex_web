@@ -1,6 +1,7 @@
 <?php
 use App\Client;
 use Illuminate\Http\Request;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 /*
 |--------------------------------------------------------------------------
@@ -12,6 +13,20 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+// JWT Auth API
+Route::post("/login", "ApiAuthController@authenticate");
+Route::get("/fetchUser", "ApiAuthController@fetchUser");
+
+Route::group(['middleware' => 'jwt.auth'], function (){
+    Route::get('fetchAuthUser', function () {
+        return JWTAuth::parseToken()->authenticate();
+    });
+});
+
+
+
+//--------------------------------------------------
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();

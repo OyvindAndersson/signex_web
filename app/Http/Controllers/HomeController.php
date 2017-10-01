@@ -23,6 +23,10 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        JavaScript::put([
+            'user' => Auth::user(),
+            'ordersPostUrl' => route('orders.store')
+        ]);
+        return view('index');
     }
 }

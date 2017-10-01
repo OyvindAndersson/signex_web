@@ -1,5 +1,7 @@
 <?php
 
+use App\User;
+use Tymon\JWTAuth\Facades\JWTAuth;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -11,17 +13,15 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/{path?}', function () {
+    return view('index');
 });
 
 Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
-
+/*
 //Route::get('/orders', 'OrderController@index')->name('orders')->middleware('auth');
 Route::resource('orders', 'OrderController')->middleware('auth');
 Route::resource('clients', 'ClientController')->middleware('auth');
 Route::resource('projects', 'ProjectController')->middleware('auth');
 
-Route::post('orderWithProject', 'OrderProjectController@store')->middleware('auth');
+Route::post('orderWithProject', 'OrderProjectController@store')->middleware('auth');*/
