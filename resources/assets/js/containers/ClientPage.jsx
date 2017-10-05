@@ -9,11 +9,10 @@ import {withRouter} from 'react-router'
         authenticated: store.auth.authenticated
     };
 }, withRouter)
-export default class DashboardPage extends Component {
+export default class ClientPage extends Component {
     render(){
-        
         return(
-            <h3>Dashboard Page</h3>
+            <h3>Client Page</h3>
         );
     }
 }

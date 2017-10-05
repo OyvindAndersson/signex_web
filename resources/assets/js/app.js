@@ -18,7 +18,7 @@ import 'react-toastify/dist/ReactToastify.min.css'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider, connect } from 'react-redux'
-import {BrowserRouter as Router, Link, Route} from 'react-router-dom'
+import {BrowserRouter as Router, Switch, Link, Route} from 'react-router-dom'
 
 import jwtDecode from 'jwt-decode'
 import configureStore from './stores'
@@ -28,8 +28,14 @@ import {fetchAuthUser, logoutUser} from './actions/authActions'
 /*
     IMPORT APP PAGES / CONTAINERS
 */
+// Main Layout
 import NavBar from './containers/NavBar'
 import DashboardPage from './containers/DashboardPage'
+
+// Client pages
+import ClientPage from './containers/ClientPage'
+
+// AUTH Pages
 import LoginPage from './containers/LoginPage'
 import LogoutPage from './containers/LogoutPage'
 
@@ -47,6 +53,13 @@ if(token && jwtDecode(token) ){
     appStore.dispatch(fetchAuthUser())
 }
 
+/* Route for 404 */
+const NoMatch = ({ location }) => (
+    <div>
+        <h3>No match for <code>{location.pathname}</code></h3>
+    </div>
+)
+
 /*
     RENDER ROOT
  */
@@ -56,9 +69,13 @@ if(document.getElementById('app')){
         <Router>
             <div>
                 <NavBar />
+                <Switch>
                 <Route exact path="/" component={DashboardPage}/>
-                <Route path="/login" component={LoginPage}/>
-                <Route path="/logout" component={LogoutPage}/>
+                <Route exact path="/clients" component={ClientPage}/>
+                <Route exact path="/login" component={LoginPage}/>
+                <Route exact path="/logout" component={LogoutPage}/>
+                <Route component={NoMatch}/>
+                </Switch>
             </div>
         </Router>
     </Provider>

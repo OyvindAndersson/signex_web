@@ -19,4 +19,4 @@ class LogoutPage extends Component {
     }
 }
 
-export default withRouter(connect(null,actions)(Logout));
+export default withRouter(connect(null,actions)(LogoutPage));
