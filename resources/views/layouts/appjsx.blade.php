@@ -12,6 +12,8 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link rel="stylesheet"
+          href="node_modules/material-components-web/dist/material-components-web.css">
 </head>
 <body>
     <div id="app">

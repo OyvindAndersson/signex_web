@@ -21,6 +21,7 @@
     "jwt-decode": "^2.2.0",
     "laravel-mix": "0.*",
     "lodash": "^4.17.4",
+    "material-components-web": "^0.22.0",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "react-router": "^4.2.0",

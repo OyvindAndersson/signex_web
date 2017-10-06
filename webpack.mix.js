@@ -13,4 +13,6 @@ const { mix } = require('laravel-mix');
 
 mix.react('resources/assets/js/app.js', 'public/js')
    .sass('resources/assets/sass/app.scss', 'public/css')
+   .copy('node_modules/material-components-web/dist/material-components-web.css', 
+   'public/css/material-components-web.css')
    .browserSync('signex.app');

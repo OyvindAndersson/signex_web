@@ -22,6 +22,10 @@ Route::group(['middleware' => 'jwt.auth'], function (){
     Route::get('fetchAuthUser', function () {
         return JWTAuth::parseToken()->authenticate();
     });
+
+    Route::get('authUserToken', function () {
+        return JWTAuth::parseToken()->authenticate();
+    });
 });
 
 

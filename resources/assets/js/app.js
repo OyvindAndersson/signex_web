@@ -23,21 +23,10 @@ import {BrowserRouter as Router, Switch, Link, Route} from 'react-router-dom'
 import jwtDecode from 'jwt-decode'
 import configureStore from './stores'
 import {AUTH_USER} from './actions/types'
-import {fetchAuthUser, logoutUser} from './actions/authActions'
+import {fetchAuthUser, authUserToken, logoutUser} from './actions/authActions'
+import appRoutes from './routes'
 
-/*
-    IMPORT APP PAGES / CONTAINERS
-*/
-// Main Layout
 import NavBar from './containers/NavBar'
-import DashboardPage from './containers/DashboardPage'
-
-// Client pages
-import ClientPage from './containers/ClientPage'
-
-// AUTH Pages
-import LoginPage from './containers/LoginPage'
-import LogoutPage from './containers/LogoutPage'
 
 /* 
     APP STORE
@@ -45,20 +34,16 @@ import LogoutPage from './containers/LogoutPage'
 const appStore = configureStore();
 const token = localStorage.getItem('token');
 
-/** Check if we already have a valid token - if so, authenticate and fetch user details. */
+/** 
+ * Check if we already have a valid token - if so, authenticate and fetch user details.
+ * @todo Does this work when token expires?
+*/
 if(token && jwtDecode(token) ){
     // Authenticate token
-    appStore.dispatch({type: AUTH_USER});
+    appStore.dispatch({ type: AUTH_USER });
     // Load auth-user info
     appStore.dispatch(fetchAuthUser())
 }
-
-/* Route for 404 */
-const NoMatch = ({ location }) => (
-    <div>
-        <h3>No match for <code>{location.pathname}</code></h3>
-    </div>
-)
 
 /*
     RENDER ROOT
@@ -69,13 +54,7 @@ if(document.getElementById('app')){
         <Router>
             <div>
                 <NavBar />
-                <Switch>
-                <Route exact path="/" component={DashboardPage}/>
-                <Route exact path="/clients" component={ClientPage}/>
-                <Route exact path="/login" component={LoginPage}/>
-                <Route exact path="/logout" component={LogoutPage}/>
-                <Route component={NoMatch}/>
-                </Switch>
+                {appRoutes}
             </div>
         </Router>
     </Provider>

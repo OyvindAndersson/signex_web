@@ -3,6 +3,9 @@ import {
   FETCH_AUTH_USER_SUCCESS, FETCH_AUTH_USER_REJECTED,
   LOGOUT_USER
 } from '../actions/types';
+import { jtwDecode } from 'jwt-decode'
+
+const token = localStorage.getItem('token');
 
 /**
  * Auth Reducer - Handles the Auth state object

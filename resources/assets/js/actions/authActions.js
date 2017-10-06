@@ -5,6 +5,20 @@ import {
     LOGOUT_USER 
 } from './types';
 
+export function authUserToken(token){
+    return dispatch => { 
+        axios.get(`/api/authUserToken`,{
+      headers:{authorization:`Bearer`+localStorage.getItem('token')}
+        })
+            .then(response =>{
+                dispatch({ type:AUTH_USER, payload:response.data })
+            })
+            .catch((err) => {
+                dispatch({ type:AUTH_USER_REJECTED, payload:err })
+            })
+    }
+}
+
 export function fetchAuthUser(){
     return dispatch => { 
         axios.get(`/api/fetchAuthUser`,{
