@@ -42,7 +42,7 @@ export default function(state = {
       }
 
       case FETCH_AUTH_USER_REJECTED: {
-        return {...state, error:action.payload}
+        return {...state, error:action.payload, authenticated:false}
       }
 
       case LOGOUT_USER: {

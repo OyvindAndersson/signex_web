@@ -5,7 +5,7 @@ import {
     LOGOUT_USER 
 } from './types';
 
-export function authUserToken(token){
+export function authUserToken(){
     return dispatch => { 
         axios.get(`/api/authUserToken`,{
       headers:{authorization:`Bearer`+localStorage.getItem('token')}

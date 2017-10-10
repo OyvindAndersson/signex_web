@@ -1,9 +1,42 @@
 
 // Fonts
-//@import url("https://fonts.googleapis.com/css?family=Raleway:300,400,600");
+@import url("https://fonts.googleapis.com/css?family=Raleway:300,400,600");
 
 // Variables
-@import "variables";
+//@import "variables";
+
+//@import "material-components-web/material-components-web";
+//@import "node_modules/bootstrap/dist/css/bootstrap.css";
 
 // Bootstrap
-//@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap"; 
+@import "bootstrap/scss/bootstrap";
+
+/*
+html {
+    height: 100%;
+  }
+  body {
+      padding:0;
+      margin:0;
+  }
+.signex-body, [data-reactroot] {
+    display: flex;
+    flex-direction: row;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    height: 100%;
+    width: 100%;
+}
+.signex-content {
+    display: inline-flex;
+    flex-direction: column;
+    flex-grow: 1;
+    height: 100%;
+    box-sizing: border-box;
+}
+.signex-main {
+    padding-left: 16px;
+}
+
+*/

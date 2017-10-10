@@ -2,12 +2,19 @@ import React, { Component } from 'react';
 import {BrowserRouter as Router, Link, Route, Redirect, withRouter} from 'react-router-dom'
 import { connect } from 'react-redux'
 
+import NavBar from '../components/bootstrap/navbar'
+
+/**
+ * Universal container for any navbar.
+ * Sets up all router links and passes them along
+ * to the actual NavBar presentation component
+ */
 @connect((store) => {
     return {
         authenticated: store.auth.authenticated
     };
 }, withRouter)
-export default class NavBar extends Component {
+export default class NavBarContainer extends Component {
     render(){
 
         // Always redirect to login page if not authenticated.
@@ -33,16 +40,13 @@ export default class NavBar extends Component {
         // @todo - Remove <li> portion, as the Link component will be passed to a component that 
         // handles display
         const links = authenticated ? 
-            authLinks.map( (link) => <li key={link.title}><Link to={link.to}>{link.title}</Link></li> ) :
-            guestLinks.map( (link) => <li key={link.title}><Link to={link.to}>{link.title}</Link></li> );
+            authLinks.map( (link) => <Link to={link.to}>{link.title}</Link> ) :
+            guestLinks.map( (link) => <Link to={link.to}>{link.title}</Link> );
 
+            //<Drawer links={authenticated ? authLinks : guestLinks } />
         // Render navbar - @todo: Use component..
         return(
-            <nav>
-                <ul>
-                    {links}
-                </ul>
-            </nav>
+            <NavBar links={authenticated ? authLinks : guestLinks} />
         );
         
     }

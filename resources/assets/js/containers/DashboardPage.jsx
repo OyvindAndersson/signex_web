@@ -13,7 +13,10 @@ export default class DashboardPage extends Component {
     render(){
         
         return(
-            <h3>Dashboard Page</h3>
+            <div>
+                
+                <h3>Dashboard Page</h3>
+            </div>
         );
     }
 }

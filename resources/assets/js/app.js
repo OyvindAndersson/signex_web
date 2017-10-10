@@ -26,7 +26,8 @@ import {AUTH_USER} from './actions/types'
 import {fetchAuthUser, authUserToken, logoutUser} from './actions/authActions'
 import appRoutes from './routes'
 
-import NavBar from './containers/NavBar'
+import NavBarContainer from './containers/NavBarContainer'
+import PageWrapper from './containers/PageWrapper'
 
 /* 
     APP STORE
@@ -40,7 +41,7 @@ const token = localStorage.getItem('token');
 */
 if(token && jwtDecode(token) ){
     // Authenticate token
-    appStore.dispatch({ type: AUTH_USER });
+    appStore.dispatch({ type: AUTH_USER});
     // Load auth-user info
     appStore.dispatch(fetchAuthUser())
 }
@@ -52,9 +53,11 @@ if(document.getElementById('app')){
     ReactDOM.render(
     <Provider store={appStore}>
         <Router>
-            <div>
-                <NavBar />
-                {appRoutes}
+            <div className="signex-wrapper">
+                <NavBarContainer />
+                <PageWrapper className="signex-main">
+                    {appRoutes}
+                </PageWrapper>
             </div>
         </Router>
     </Provider>

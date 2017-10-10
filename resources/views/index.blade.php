@@ -12,14 +12,13 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/material-components-web.css')}}" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
 </head>
 <body>
-    <div id="app">
+    <div class="signex-body" id="app">
     </div>
-
-<hr />
-    <h5>This is index.blade.php react app</h5>
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>

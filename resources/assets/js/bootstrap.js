@@ -9,13 +9,15 @@ window._ = require('lodash');
 try {
     window.$ = window.jQuery = require('jquery');
     $.ajaxSetup({
-    headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    }
-});
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
 
-    require('bootstrap-sass');
+    require('bootstrap')
+    require('popper.js')
 } catch (e) {}
+
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
@@ -24,8 +26,6 @@ try {
  */
 
 window.axios = require('axios');
-
-
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 /**

@@ -10,3 +10,12 @@ const rootReducer = combineReducers({
 });
 
 export default rootReducer;
+
+/*
+    auth: {}
+    api: {
+        clients: {}
+        projects: {}
+        products: {}
+    }
+*/
