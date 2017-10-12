@@ -7,10 +7,18 @@
     "watch-poll": "npm run watch -- --watch-poll",
     "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
     "prod": "npm run production",
-    "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
+    "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "test": "cross-env NODE_ENV=test jest",
+    "tdd": "npm run test -- --watch --notify"
+  },
+  "jest": {
+    "roots": [
+      "./resources/assets/js/"
+    ]
   },
   "devDependencies": {
-    "axios": "^0.15.3",
+    "axios": "^0.16.2",
+    "babel-jest": "^21.2.0",
     "babel-plugin-transform-es2015-destructuring": "^6.23.0",
     "babel-plugin-transform-es2015-parameters": "^6.24.1",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
@@ -18,30 +26,34 @@
     "bootstrap-sass": "^3.3.7",
     "cross-env": "^3.2.3",
     "immutable": "^3.8.2",
+    "jest": "^21.2.1",
     "jquery": "^3.1.1",
     "jwt-decode": "^2.2.0",
     "laravel-mix": "0.*",
     "lodash": "^4.17.4",
     "material-components-web": "^0.22.0",
     "material-design-icons": "^3.0.1",
-    "react": "^15.4.2",
-    "react-dom": "^15.4.2",
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0",
     "react-popper": "^0.7.3",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
+    "react-test-renderer": "^16.0.0",
     "react-transition-group": "^2.2.1"
   },
   "dependencies": {
     "babel-plugin-transform-decorators-legacy": "^1.3.4",
     "bootstrap": "^4.0.0-beta",
-    "moment": "^2.18.1",
+    "moment": "^2.19.1",
     "popper": "^1.0.0",
     "react-redux": "^5.0.6",
     "react-router-redux": "^4.0.8",
-    "react-toastify": "^2.0.0-rc.3",
+    "react-toastify": "^2.1.0",
     "reactstrap": "^5.0.0-alpha.3",
     "redux": "^3.7.2",
     "redux-logger": "^3.0.6",
-    "redux-thunk": "^2.2.0"
+    "redux-saga": "^0.15.6",
+    "redux-thunk": "^2.2.0",
+    "worker-farm": "^1.5.0"
   }
 }

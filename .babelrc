@@ -1,4 +1,46 @@
 {
-    "presets": ["react"],
+  "env": {
+    "test": {
+      "presets": [
+        ["env", {
+          "targets": {
+            "node": "current"
+          }
+        }]
+      ]
+    },
+    "development": {
+      "presets": [
+        ["env", {
+          "modules": false,
+          "targets": {
+            "browsers": "> 2%",
+            "uglify": true
+          }
+        }]
+      ]
+    },
+    "production": {
+      "presets": [
+        ["env", {
+          "modules": false,
+          "targets": {
+            "browsers": "> 2%",
+            "uglify": true
+          }
+        }]
+      ]
+    }
+  },
+    "presets": [
+      "react",
+      ["env", {
+        "modules": false,
+        "targets": {
+          "browsers": "> 2%",
+          "uglify": true
+        }
+      }]
+    ],
     "plugins": ["transform-es2015-destructuring", "transform-object-rest-spread", "transform-decorators-legacy"]
   }
