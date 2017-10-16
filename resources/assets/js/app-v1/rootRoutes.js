@@ -7,7 +7,8 @@ import {Switch} from 'react-router-dom'
 import commonRoutes from './common/routes'
 import authRoutes from './auth/routes'
 
-// Evaluate commonRoutes last, as it handles 404/nomatch
+// All routes coming in must have a key set, as we 
+// render them as a array/list
 const rootRoutes = (
     <Switch>
         {authRoutes}

@@ -1,4 +1,4 @@
-window._ = require('lodash');
+//window._ = require('lodash');
 
 /**
  * We'll load jQuery and the Bootstrap jQuery plugin which provides support
@@ -7,12 +7,13 @@ window._ = require('lodash');
  */
 
 try {
+    /*
     window.$ = window.jQuery = require('jquery');
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
-    });
+    });*/
 
     require('bootstrap')
     require('popper.js')
@@ -56,3 +57,4 @@ if (token) {
 //     broadcaster: 'pusher',
 //     key: 'your-pusher-key'
 // });
+console.log("Bootstrap complete")

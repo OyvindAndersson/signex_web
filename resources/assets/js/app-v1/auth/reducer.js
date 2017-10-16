@@ -1,48 +1,77 @@
-import types from './actionTypes';
+import types from './actionTypes'
 import { jtwDecode } from 'jwt-decode'
 
-const token = localStorage.getItem('token');
+/**
+ * Initial auth state
+ */
+const initialState = {
+  user: null,
+  isFetching: false,
+  isAuthenticating: false,
+  isAuthenticated: localStorage.getItem('token') ? true : false,
+  error: null
+}
 
 /**
  * Auth Reducer - Handles the Auth state object
  * @param {*} state 
  * @param {*} action 
  */
-export default function(state = {
-  user: {
-    id: null,
-    name: null,
-    email: null,
-    created_at: null,
-    updated_at: null
-  },
-  authenticated: false,
-  error: null
-}, action) {
+export default function(state = initialState, action) {
 
     switch (action.type) {   
-      case types.AUTH_USER: {
-        return {...state,authenticated:true}
+      case types.AUTH_LOGIN_USER: {
+        return {
+          ...state, 
+          isFetching: false,
+          isAuthenticating:true, 
+          isAuthenticated:false
+        }
       }
 
-      case types.AUTH_USER_SUCCESS: {
-        return {...state, authenticated:true, user:action.payload.user}
+      case types.AUTH_LOGIN_USER_REJECTED: {
+        return {
+          ...state, 
+          isFetching: false, 
+          isAuthenticating: false,
+          isAuthenticated:false, 
+          error: action.payload
+        }
       }
 
-      case types.AUTH_USER_REJECTED: {
-        return {...state, authenticated:false, user:null}
+      case types.AUTH_LOGIN_USER_SUCCESS: {
+        return {
+          ...state, 
+          isFetching: false, 
+          isAuthenticating: false,
+          isAuthenticated:true,
+          user: action.payload
+        }
       }
 
-      case types.FETCH_AUTH_USER_SUCCESS: {
-        return {...state, user:action.payload}
+      case types.AUTH_TOKEN: {
+        return {
+          ...state, 
+          isFetching: true,
+        }
       }
 
-      case types.FETCH_AUTH_USER_REJECTED: {
-        return {...state, error:action.payload, authenticated:false}
+      case types.AUTH_TOKEN_REJECTED: {
+        return {
+          ...state, 
+          isFetching: false, 
+          isAuthenticated:false,
+          ...action.payload
+        }
       }
 
-      case types.LOGOUT_USER: {
-        return {...state, authenticated:false}
+      case types.AUTH_TOKEN_SUCCESS: {
+        return {
+          ...state, 
+          isFetching: false, 
+          isAuthenticated:true,
+          user: action.payload.user
+        }
       }
           
       default:

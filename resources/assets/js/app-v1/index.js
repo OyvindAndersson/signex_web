@@ -20,35 +20,38 @@ import jwtDecode from 'jwt-decode'
 
 import configureStore from './store'
 import {Main} from './common'
-import rootRoutes from './rootRoutes'
 
+console.log("Initializing app...")
 
 /** 
- *   APP
+ *   APP redux store
  */
-const appStore = configureStore();
+const appStore = configureStore()
+export default appStore
+
+/** Run initial auth-check and fetch user details */
+let {initAuth} = require('./auth')
+initAuth(appStore)
+
+/** 
+ * Require here to make sure routes can import the app-store from this file. 
+ * Import will not work, and scrambles the module pack order, so that 
+ * most app-files evaluate before bootstrap and this file.
+*/
+let rootRoutes = require('./rootRoutes')
+
+/**
+ * Root component
+ */
 const App = (
 	<Provider store={appStore}>
 		<Router>
 			<Main>
-				{rootRoutes}
+				{rootRoutes.default}
 			</Main>
 		</Router>
 	</Provider>
 )
-
-
-/** 
- * Check if we already have a valid token - if so, authenticate and fetch user details.
- * @todo Does this work when token expires?
- */
-const token = localStorage.getItem('token');
-if(token && jwtDecode(token) ){
-    // Authenticate token
-    appStore.dispatch({ type: AUTH_USER });
-    // Load auth-user info
-    appStore.dispatch(fetchAuthUser())
-}
 
 /**
  *   RENDER ROOT

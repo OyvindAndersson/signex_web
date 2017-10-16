@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AuthWrapper component should render authenticating component 1`] = `
+<div>
+  AuthenticatingComponent
+</div>
+`;
+
+exports[`AuthWrapper component should render failure component 1`] = `
+<div>
+  FailureComponent
+</div>
+`;
+
+exports[`AuthWrapper component should render main component 1`] = `
+<div>
+  MainComponent
+</div>
+`;

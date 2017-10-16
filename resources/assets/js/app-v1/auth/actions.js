@@ -1,59 +1,75 @@
-import types from './actionTypes';
+import types from './actionTypes'
+import authApi from './api'
 
-export function authUserToken(){
-    return dispatch => { 
-        axios.get(`/api/authUserToken`,{
-      headers:{authorization:`Bearer`+localStorage.getItem('token')}
-        })
-            .then(response =>{
-                dispatch({ type:AUTH_USER, payload:response.data })
-            })
-            .catch((err) => {
-                dispatch({ type:AUTH_USER_REJECTED, payload:err })
-            })
+/**
+ * A simple action to kick off the state of "isFetching"
+ * when a login request is sent
+ * @param {email: string, password: string} credentials 
+ */
+export function requestLogin(credentials){
+    return {
+        type: types.AUTH_LOGIN_USER
     }
 }
 
-export function fetchAuthUser(){
-    return dispatch => { 
-        axios.get(`/api/fetchAuthUser`,{
-      headers:{authorization:`Bearer`+localStorage.getItem('token')}
-        })
-            .then(response =>{
-                dispatch({ type:FETCH_AUTH_USER_SUCCESS, payload:response.data })
-            })
-            .catch((err) => {
-                dispatch({ type:FETCH_AUTH_USER_REJECTED, payload:err })
-            })
-    }
-}
+/**
+ * Creates an action that queries the API to login with
+ * the credentials. User object and token returns
+ * @param {email: string, password: string} credentials 
+ */
+export function authLoginUser(credentials){
+    return (dispatch) => {
+        
+        // Kick off some state before we contact the API,
+        // so the UI can respond.
+        dispatch(requestLogin(credentials))
 
-export function fetchUser(){
-    return function(dispatch) {
-        axios.get("api/user")
-            .then((response) => {
-                dispatch({ type: FETCH_USER_SUCCESS, payload: response.data[0] });
-            })
-            .catch((err) => {
-                dispatch({ type: FETCH_USER_REJECTED, payload: err });
-            })
-    }
-}
-
-export function loginUser(username, password){
-    return function(dispatch){
-        axios.post("api/login", { email: username, password: password })
+        // Send login request with credentials to the API
+        return authApi.requestLoginWith(credentials)
         .then((response) => {
-            localStorage.setItem('token', response.data.token);
-            dispatch({ type: AUTH_USER_SUCCESS, payload: response.data });
+            // Login succes.
+            localStorage.setItem("token", response.data.token);
+            dispatch({
+                type: types.AUTH_LOGIN_USER_SUCCESS,
+                payload: response.data.user
+            })
         })
         .catch((err) => {
-            dispatch({ type: AUTH_USER_REJECTED, payload: err });
+            // request rejected
+            dispatch({
+                type: types.AUTH_LOGIN_USER_REJECTED,
+                payload: { message: err.message, reason: err.response.data }
+            })
         })
     }
 }
 
-export function logoutUser() {
-    localStorage.removeItem('token');
-    return { type: LOGOUT_USER };
-  }
+export function authUserToken(token = localStorage.getItem('token')){
+    return (dispatch) => {
+        
+        dispatch({
+            type: types.AUTH_TOKEN
+        })
+
+        return authApi.authToken(token)
+        .then((response) => {
+            // token auth succes.
+            dispatch({
+                type: types.AUTH_TOKEN_SUCCESS,
+                payload: response.data
+            })
+
+            
+        })
+        .catch((err) => {
+            // token rejected
+            if(token){
+                localStorage.removeItem("token")
+            }
+            dispatch({
+                type: types.AUTH_TOKEN_REJECTED,
+                payload: { message: err.message, reason: err.response.data }
+            })
+        })
+    }
+}

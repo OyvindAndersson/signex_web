@@ -1,13 +1,15 @@
 import React from 'react'
 import {Route} from 'react-router-dom'
-import renderer from 'react-test-renderer'
 
-import Login from './components/login'
+import { LOGIN_PATH } from './constants'
+import LoginPage from './components/smart/loginPage'
+
+console.log("Auth routes")
 
 
-/* Main app routes */
-const authRoutes = (
-    <Route path="/login" component={Login}/>
-)
+/* auth module routes */
+const authRoutes = [
+    <Route path={LOGIN_PATH} component={LoginPage} key="login-route-key" />
+]
 
-export default authRoutes;
+export default authRoutes

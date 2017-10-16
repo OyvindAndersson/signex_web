@@ -8,7 +8,7 @@ use Tymon\JWTAuth\Exceptions\JWTException;
 
 class ApiAuthController extends Controller
 {
-    public function authenticate(Request $request)
+    public function login(Request $request)
     {
         // grab credentials from the request
         $credentials = $request->only('email', 'password');
@@ -28,9 +28,28 @@ class ApiAuthController extends Controller
         return response()->json([ "token" => $token, "user" => $user ]);
     }
 
-    public function fetchUser(Request $request){
-        $token = $request->only('token');
-
-        
+    public function authUserToken(Request $request)
+    {
+        try 
+        {     
+            if (! $user = JWTAuth::parseToken()->authenticate()) {
+                return response()->json(['user_not_found'], 404);
+            }
+        } 
+        catch (Tymon\JWTAuth\Exceptions\TokenExpiredException $e) 
+        {
+            return response()->json(['token_expired'], $e->getStatusCode());
+        } 
+        catch (Tymon\JWTAuth\Exceptions\TokenInvalidException $e) 
+        {
+            return response()->json(['token_invalid'], $e->getStatusCode());
+        } 
+        catch (Tymon\JWTAuth\Exceptions\JWTException $e) 
+        {
+            return response()->json(['token_absent'], $e->getStatusCode());
+        }
+    
+        // the token is valid and we have found the user via the sub claim
+        return response()->json(compact('user'));
     }
 }

@@ -15,17 +15,11 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 */
 
 // JWT Auth API
-Route::post("/login", "ApiAuthController@authenticate");
-Route::get("/fetchUser", "ApiAuthController@fetchUser");
+Route::post("/login", "ApiAuthController@login");
+
 
 Route::group(['middleware' => 'jwt.auth'], function (){
-    Route::get('fetchAuthUser', function () {
-        return JWTAuth::parseToken()->authenticate();
-    });
-
-    Route::get('authUserToken', function () {
-        return JWTAuth::parseToken()->authenticate();
-    });
+    Route::get('authUserToken', "ApiAuthController@authUserToken");
 });
 
 
