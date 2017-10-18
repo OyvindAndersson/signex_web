@@ -1,5 +1,6 @@
 <?php
 use App\Client;
+use App\User;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -20,6 +21,10 @@ Route::post("/login", "ApiAuthController@login");
 
 Route::group(['middleware' => 'jwt.auth'], function (){
     Route::get('authUserToken', "ApiAuthController@authUserToken");
+    Route::get('users/{id?}', function($id) {
+        $users = User::all();
+        return response()->json([ 'users' => $users ]);
+    });
 });
 
 

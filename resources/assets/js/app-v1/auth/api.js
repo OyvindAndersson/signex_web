@@ -18,5 +18,6 @@ const authFetchUsers = id => {return axios.get(`/api/users/${id}`, {headers:apiR
 
 export default {
     requestLoginWith,
-    authToken
+    authToken,
+    authFetchUsers
 }

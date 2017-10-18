@@ -74,22 +74,22 @@ export function authUserToken(token = localStorage.getItem('token')){
     }
 }
 
-export function requestAuthUsersFetch({id}){
+export function requestAuthFetchUsers(ids = []){
     return {
         type: types.AUTH_FETCH_USERS,
-        payload: id
+        payload: ids
     }
 }
 
-export function authUsersFetch({id}){
+export function authFetchUsers(ids = []){
     return (dispatch) => {
-        dispatch(requestAuthUsersFetch(id))
+        dispatch(requestAuthFetchUsers(ids))
 
-       return authApi.authUsersFetch(id)
+       return authApi.authFetchUsers(ids)
        .then((response) => {
            return dispatch({
                type:types.AUTH_FETCH_USERS_SUCCESS,
-               payload: response.users
+               payload: response.data.users
            })
        })
        .catch((err) => {

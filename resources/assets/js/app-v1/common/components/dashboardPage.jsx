@@ -6,6 +6,8 @@ import {
     Card, CardText, CardBody, CardLink, CardTitle, CardSubtitle
 } from 'reactstrap'
 
+import {authFetchUsers} from '../../auth/actions'
+
 console.log("LandingPage.jsx")
 
 /**
@@ -20,9 +22,10 @@ class QuickStats extends React.Component {
         }
     }
     componentWillReceiveProps(nextProps){
-        console.log("Quickstats props received...")
-        console.log(nextProps)
         this.setState({loaded: true})
+    }
+    componentDidMount(){
+        this.props.dispatch(authFetchUsers(null));
     }
     render(){
         const {user} = this.props
@@ -68,7 +71,7 @@ class LandingPage extends React.Component {
         this.setState({ debugTokenRemoved: true })
     }
     render(){
-        const {computedMatch, isAuthenticated, match, user} = this.props
+        const {computedMatch, isAuthenticated, match, user, dispatch} = this.props
         const pathname = this.props.location.state ? this.props.location.state.from.pathname : "nowhere"
 
         
@@ -97,7 +100,7 @@ class LandingPage extends React.Component {
                         </Col>
                         <Col md="12" lg="6">
                             <Route path={`${match.url}/quick-stats`} 
-                                render={routeProps => <QuickStats {...routeProps} user={user} />} />
+                                render={routeProps => <QuickStats {...routeProps} dispatch={dispatch} user={user} />} />
                         </Col>
                     </Row>
                 </Container>
