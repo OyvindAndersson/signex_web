@@ -19,7 +19,7 @@ export default (args) => {
             render(){
                 const {isAuthenticated, isAuthenticating} = this.props
 
-                if(isAuthenticated){
+                if(isAuthenticated && !isAuthenticating){
                     return <WrappedComponent {...this.props} />
                 } else if(isAuthenticating){
                     return <AuthenticatingComponent {...this.props} />

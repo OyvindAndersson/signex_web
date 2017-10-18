@@ -1,6 +1,15 @@
 import React from 'react'
 import {Route, Redirect} from 'react-router-dom'
 
+export function namedRoute(path, title, component, roles = []){
+    return { 
+        path: path, 
+        title: title, 
+        component: component,
+        roles: roles
+    }
+}
+
 /**
  * Wrapper function for React.createElement, that simplifies creating
  * routes for modules.

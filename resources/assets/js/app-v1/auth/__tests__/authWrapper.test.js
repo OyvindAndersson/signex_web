@@ -3,7 +3,7 @@ import { connect } from "react-redux"
 import configureMockStore from 'redux-mock-store'
 import { Provider } from 'react-redux'
 import renderer from 'react-test-renderer'
-import authWrapper from '../components/smart/authWrapper'
+import authWrapper from '../components/container/authWrapper'
 
 describe('AuthWrapper component', () => {
     let MainComponent
@@ -13,7 +13,7 @@ describe('AuthWrapper component', () => {
 
     beforeEach(() => {
         MainComponent = () => (<div>MainComponent</div>)
-        AuthenticatingComponent = (authComponentRendered) => (<div>AuthenticatingComponent</div>)
+        AuthenticatingComponent = () => (<div>AuthenticatingComponent</div>)
         FailureComponent = () => (<div>FailureComponent</div>)
         
         WrappedComponent = connect((state) => ({

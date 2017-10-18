@@ -1,4 +1,5 @@
 import types from './actionTypes'
+import constants from './constants'
 import { jtwDecode } from 'jwt-decode'
 
 /**
@@ -6,6 +7,7 @@ import { jtwDecode } from 'jwt-decode'
  */
 const initialState = {
   user: null,
+  role: constants.AUTH_ROLE_GUEST,
   isFetching: false,
   isAuthenticating: false,
   isAuthenticated: localStorage.getItem('token') ? true : false,
@@ -35,7 +37,8 @@ export default function(state = initialState, action) {
           isFetching: false, 
           isAuthenticating: false,
           isAuthenticated:false, 
-          error: action.payload
+          error: action.payload,
+          role: constants.AUTH_ROLE_GUEST
         }
       }
 
@@ -45,7 +48,8 @@ export default function(state = initialState, action) {
           isFetching: false, 
           isAuthenticating: false,
           isAuthenticated:true,
-          user: action.payload
+          user: action.payload,
+          role: constants.AUTH_ROLE_ADMIN // TODO! Get from payload.
         }
       }
 
@@ -61,6 +65,7 @@ export default function(state = initialState, action) {
           ...state, 
           isFetching: false, 
           isAuthenticated:false,
+          role: constants.AUTH_ROLE_GUEST,
           ...action.payload
         }
       }
@@ -70,7 +75,41 @@ export default function(state = initialState, action) {
           ...state, 
           isFetching: false, 
           isAuthenticated:true,
-          user: action.payload.user
+          user: action.payload.user,
+          role: constants.AUTH_ROLE_ADMIN // TODO: Get from payload!
+        }
+      }
+
+      case types.AUTH_LOGOUT_USER: {
+        localStorage.removeItem('token')
+        return {
+          ...state, 
+          isFetching: false, 
+          isAuthenticating: false,
+          isAuthenticated:false,
+          user: null,
+          role: constants.AUTH_ROLE_GUEST
+        }
+      }
+
+      case types.AUTH_FETCH_USERS: {
+        return {
+          ...state,
+          isFetching: true
+        }
+      }
+      case types.AUTH_FETCH_USERS_REJECTED: {
+        return {
+          ...state,
+          isFetching: false,
+          error: action.payload
+        }
+      }
+      case types.AUTH_FETCH_USERS_SUCCESS: {
+        return {
+          ...state,
+          isFetching: false,
+          users: action.payload
         }
       }
           

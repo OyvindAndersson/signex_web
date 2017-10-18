@@ -22,7 +22,7 @@ class ApiAuthController extends Controller
             // something went wrong whilst attempting to encode the token
             return response()->json(['error' => 'could_not_create_token'], 500);
         }
-
+        
         $user = JWTAuth::toUser($token);
         // all good so return the token
         return response()->json([ "token" => $token, "user" => $user ]);

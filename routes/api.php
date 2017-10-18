@@ -25,7 +25,7 @@ Route::group(['middleware' => 'jwt.auth'], function (){
 
 
 //--------------------------------------------------
-
+/*
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
@@ -45,3 +45,4 @@ Route::post('/client/store', function(Request $request){
 Route::get('/orders', function () {
     return App\Order::all();
 });
+*/

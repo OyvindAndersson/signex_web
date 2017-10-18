@@ -1,5 +1,7 @@
 import React from 'react'
 import {Route, Redirect} from 'react-router-dom'
+import {connect} from 'react-redux'
+import constants from '../constants'
 
 export const AuthRoute = ({ component: Component, ...rest }) => (  
     <Route {...rest} render={props => (
@@ -7,7 +9,7 @@ export const AuthRoute = ({ component: Component, ...rest }) => (
         <Component {...props}/>
       ) : (
         <Redirect to={{
-          pathname: '/login',
+          pathname: constants.LOGIN_PATH,
           state: { from: props.location }
         }}/>
       )

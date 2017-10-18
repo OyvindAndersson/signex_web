@@ -1,25 +1,25 @@
 /**
- * Use the index file to expose parts of the module
- * to external modules
+ * Expose the modules' API
  */
+import {authUserToken} from './actions'
 
- import {authUserToken} from './actions'
+/** Initialize auth module */
+export function initAuth(store){ store.dispatch(authUserToken()) }
 
- /**
-  * Initialize auth
-  * @param {redux} store 
-  */
- export function initAuth(store){
-     // Get user info
-    store.dispatch(authUserToken())
- }
+/** Components */
+export {default as LoginPage} from './components/container/loginPage'
+export {default as LogoutPage} from './components/container/logoutPage'
+/** Route helper components */
+export {AuthRoute} from './components/authRoute'
 
- /**  */
- export {AuthRoute, IsAuthRoute} from './components/authRoute'
+/** Expose module reducer */
+export {default as reducer} from './reducer'
 
 
- /** */
- import connectedAuthWrapper from './components/smart/connectedAuthWrapper'
+
+ /*
+
+ import connectedAuthWrapper from './components/container/connectedAuthWrapper'
 
  const userIsAuthenticatedDefaults = {
   authenticatedSelector: state => state.auth.isAuthenticated,
@@ -35,3 +35,5 @@ const userIsNotAuthenticatedDefaults = {
 }
 
 export const userIsNotAuthenticated = connectedAuthWrapper(userIsNotAuthenticatedDefaults)
+
+*/

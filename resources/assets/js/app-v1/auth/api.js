@@ -3,6 +3,7 @@
  * to avoid cluttering the action creators, as well
  * as to give API access to native js code.
  */
+import axios from 'axios'
 
  /** This header must be attached to all authed-requests to the API */
 const apiRequestHeaders = {authorization:`Bearer`+localStorage.getItem('token')}
@@ -12,6 +13,8 @@ const requestLoginWith = credentials => { return axios.post("api/login", credent
 
 /** Basic get request to authenticate the current (if any) JWT */
 const authToken = token => { return axios.get(`/api/authUserToken`,{ headers:apiRequestHeaders })}
+
+const authFetchUsers = id => {return axios.get(`/api/users/${id}`, {headers:apiRequestHeaders})}
 
 export default {
     requestLoginWith,

@@ -18,27 +18,17 @@ import {Provider} from 'react-redux'
 import {BrowserRouter as Router, Switch} from 'react-router-dom'
 import jwtDecode from 'jwt-decode'
 
-import configureStore from './store'
+import appStore from './store'
 import {Main} from './common'
 
 console.log("Initializing app...")
 
-/** 
- *   APP redux store
- */
-const appStore = configureStore()
-export default appStore
 
 /** Run initial auth-check and fetch user details */
 let {initAuth} = require('./auth')
 initAuth(appStore)
 
-/** 
- * Require here to make sure routes can import the app-store from this file. 
- * Import will not work, and scrambles the module pack order, so that 
- * most app-files evaluate before bootstrap and this file.
-*/
-let rootRoutes = require('./rootRoutes')
+const rootRoutes = require( './appRoutes')
 
 /**
  * Root component
@@ -47,7 +37,7 @@ const App = (
 	<Provider store={appStore}>
 		<Router>
 			<Main>
-				{rootRoutes.default}
+				{rootRoutes.routes}
 			</Main>
 		</Router>
 	</Provider>

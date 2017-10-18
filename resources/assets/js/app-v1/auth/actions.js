@@ -22,7 +22,7 @@ export function authLoginUser(credentials){
         
         // Kick off some state before we contact the API,
         // so the UI can respond.
-        dispatch(requestLogin(credentials))
+        dispatch({ type: types.AUTH_LOGIN_USER })
 
         // Send login request with credentials to the API
         return authApi.requestLoginWith(credentials)
@@ -71,5 +71,32 @@ export function authUserToken(token = localStorage.getItem('token')){
                 payload: { message: err.message, reason: err.response.data }
             })
         })
+    }
+}
+
+export function requestAuthUsersFetch({id}){
+    return {
+        type: types.AUTH_FETCH_USERS,
+        payload: id
+    }
+}
+
+export function authUsersFetch({id}){
+    return (dispatch) => {
+        dispatch(requestAuthUsersFetch(id))
+
+       return authApi.authUsersFetch(id)
+       .then((response) => {
+           return dispatch({
+               type:types.AUTH_FETCH_USERS_SUCCESS,
+               payload: response.users
+           })
+       })
+       .catch((err) => {
+        return dispatch({
+               type:types.AUTH_FETCH_USERS_REJECTED,
+               payload: { message: err.message, reason: err.response.data }
+           })
+       })
     }
 }
