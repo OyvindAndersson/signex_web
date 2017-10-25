@@ -4,9 +4,7 @@
  * as to give API access to native js code.
  */
 import axios from 'axios'
-
- /** This header must be attached to all authed-requests to the API */
-const apiRequestHeaders = {authorization:`Bearer`+localStorage.getItem('token')}
+import {apiRequestHeaders} from '../common/api'
 
  /** Posts login request to backend */
 const requestLoginWith = credentials => { return axios.post("api/login", credentials) }

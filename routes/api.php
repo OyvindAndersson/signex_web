@@ -21,9 +21,13 @@ Route::post("/login", "ApiAuthController@login");
 
 Route::group(['middleware' => 'jwt.auth'], function (){
     Route::get('authUserToken', "ApiAuthController@authUserToken");
-    Route::get('users/{id?}', function($id) {
+    Route::get('users/{id?}', function($id = null) {
         $users = User::all();
         return response()->json([ 'users' => $users ]);
+    });
+    Route::get('clients/{id?}', function($id = null) {
+        $clients = Client::all();
+        return response()->json(['clients' => $clients]);
     });
 });
 

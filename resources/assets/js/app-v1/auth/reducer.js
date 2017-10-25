@@ -91,27 +91,6 @@ export default function(state = initialState, action) {
           role: constants.AUTH_ROLE_GUEST
         }
       }
-
-      case types.AUTH_FETCH_USERS: {
-        return {
-          ...state,
-          isFetching: true
-        }
-      }
-      case types.AUTH_FETCH_USERS_REJECTED: {
-        return {
-          ...state,
-          isFetching: false,
-          error: action.payload
-        }
-      }
-      case types.AUTH_FETCH_USERS_SUCCESS: {
-        return {
-          ...state,
-          isFetching: false,
-          users: action.payload
-        }
-      }
           
       default:
           return state;

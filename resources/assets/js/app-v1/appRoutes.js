@@ -5,6 +5,7 @@ import {AuthRoute} from './auth'
 import {LoginPage} from './auth'
 import LogoutPage from './auth/components/container/logoutPage'
 import DashboardPage from './common/components/dashboardPage'
+import ClientsPage from './clients/components/clientPage'
 
 const NoMatch = ({location}) => (
     <div>No match for <code>{location.pathname}</code></div>
@@ -17,6 +18,7 @@ export const routes = (
         <Route exact path="/" render={() => (<Redirect to="/login" />)} />
         <Route path="/login" component={LoginPage} />
         <AuthRoute path="/dashboard" component={DashboardPage} />
+        <AuthRoute path="/clients" component={ClientsPage} />
         <AuthRoute exact path="/logout" component={LogoutPage} />
         <Route component={NoMatch} />
     </Switch>
@@ -32,6 +34,7 @@ export const links = {
     ],
     private: [
         { to: '/dashboard', title: 'Landing page' },
+        { to: '/clients', title: 'Clients' },
         { to: '/logout', title: 'Logout' }
     ]
 }
