@@ -33,7 +33,8 @@ class Navbar extends React.Component {
     getRouteNames() {
         const {isAuthenticated, role} = this.props
 
-        if(!isAuthenticated){
+        // Only display public navbar
+        if(!isAuthenticated || !localStorage.getItem('token')){
             return links.public.map((link) => {
                 return (
                     <NavItem key={`${link.to}-key`}>
@@ -41,6 +42,7 @@ class Navbar extends React.Component {
                     </NavItem>
                 )
             })
+        // display logged-in navbar
         } else {
             return links.private.map((link) => {
                 return (
@@ -52,8 +54,8 @@ class Navbar extends React.Component {
         }
     }
     render(){
-        const navItems = this.getRouteNames()
         const {user} = this.props
+        const navItems = this.getRouteNames()
 
         return(
             <div>
@@ -77,5 +79,6 @@ class Navbar extends React.Component {
 export default withRouter(connect((state) => ({
     isAuthenticated: state.auth.isAuthenticated,
     role: state.auth.role,
-    user: state.auth.user
+    user: state.auth.user,
+    token: state.auth.token
 }))(Navbar))

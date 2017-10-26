@@ -31,7 +31,7 @@ export function authLoginUser(credentials){
             localStorage.setItem("token", response.data.token);
             dispatch({
                 type: types.AUTH_LOGIN_USER_SUCCESS,
-                payload: response.data.user
+                payload: response.data
             })
         })
         .catch((err) => {

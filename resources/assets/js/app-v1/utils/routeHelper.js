@@ -1,6 +1,14 @@
 import React from 'react'
 import {Route, Redirect} from 'react-router-dom'
 
+/**
+ * 
+ * @param {*} path 
+ * @param {*} title 
+ * @param {*} component 
+ * @param {*} roles 
+ * @deprecated
+ */
 export function namedRoute(path, title, component, roles = []){
     return { 
         path: path, 
@@ -16,6 +24,7 @@ export function namedRoute(path, title, component, roles = []){
  * @param {A unique name to identify the route} identifier
  * @param {component type to pass in with React.createElement} component 
  * @param {Props to pass in with React.createElement} props 
+ * @deprecated
  */
 export function createRoute(name, props) {
     const key = `${props.name}-key`
@@ -25,6 +34,12 @@ export function createRoute(name, props) {
     //return React.createElement('route', ...props);
 }
 
+/**
+ * 
+ * @param {*} name 
+ * @param {*} props 
+ * @deprecated
+ */
 export function createAuthRoute(name, props) {
     const key = `${props.name}-key`
     const {component, auth, ...rest} = props

@@ -27,7 +27,7 @@
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-react": "^6.23.0",
     "bootstrap-sass": "^3.3.7",
-    "cross-env": "^3.2.3",
+    "cross-env": "^3.2.4",
     "immutable": "^3.8.2",
     "jest": "^21.2.1",
     "jest-localstorage-mock": "^2.0.1",

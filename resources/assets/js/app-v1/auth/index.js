@@ -4,7 +4,12 @@
 import {authUserToken} from './actions'
 
 /** Initialize auth module */
-export function initAuth(store){ store.dispatch(authUserToken()) }
+export function initAuth(store) { 
+
+  /** @todo Check if localStorage is available. If not, create one. */
+
+  store.dispatch(authUserToken())
+}
 
 /** Components */
 export {default as LoginPage} from './components/container/loginPage'

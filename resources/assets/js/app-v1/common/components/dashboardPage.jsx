@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import {Route, Link, Redirect, Switch} from 'react-router-dom'
+import {Route, Link, Redirect, Switch, withRouter} from 'react-router-dom'
 import {
     Nav, NavItem, NavLink, Container, Row, Col,
     Card, CardText, CardBody, CardLink, CardTitle, CardSubtitle
@@ -109,9 +109,9 @@ class LandingPage extends React.Component {
     }
 }
 
-export default connect( 
+export default withRouter(connect( 
     state => ({
         isAuthenticated: state.auth.isAuthenticated,
         user: state.auth.user
     })
-)(LandingPage)
+)(LandingPage))

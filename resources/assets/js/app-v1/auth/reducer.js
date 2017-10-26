@@ -45,10 +45,12 @@ export default function(state = initialState, action) {
       case types.AUTH_LOGIN_USER_SUCCESS: {
         return {
           ...state, 
+          error: null,
           isFetching: false, 
           isAuthenticating: false,
           isAuthenticated:true,
-          user: action.payload,
+          user: action.payload.user,
+          token: action.payload.token,
           role: constants.AUTH_ROLE_ADMIN // TODO! Get from payload.
         }
       }
@@ -66,13 +68,14 @@ export default function(state = initialState, action) {
           isFetching: false, 
           isAuthenticated:false,
           role: constants.AUTH_ROLE_GUEST,
-          ...action.payload
+          error: action.payload
         }
       }
 
       case types.AUTH_TOKEN_SUCCESS: {
         return {
           ...state, 
+          error: null,
           isFetching: false, 
           isAuthenticated:true,
           user: action.payload.user,
@@ -88,6 +91,7 @@ export default function(state = initialState, action) {
           isAuthenticating: false,
           isAuthenticated:false,
           user: null,
+          token: null,
           role: constants.AUTH_ROLE_GUEST
         }
       }

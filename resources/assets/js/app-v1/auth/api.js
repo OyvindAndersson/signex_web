@@ -10,9 +10,9 @@ import {apiRequestHeaders} from '../common/api'
 const requestLoginWith = credentials => { return axios.post("api/login", credentials) }
 
 /** Basic get request to authenticate the current (if any) JWT */
-const authToken = token => { return axios.get(`/api/authUserToken`,{ headers:apiRequestHeaders })}
+const authToken = token => { return axios.get(`/api/authUserToken`,{ headers:apiRequestHeaders() })}
 
-const authFetchUsers = id => {return axios.get(`/api/users/${id}`, {headers:apiRequestHeaders})}
+const authFetchUsers = id => {return axios.get(`/api/users/${id}`, {headers:apiRequestHeaders()})}
 
 export default {
     requestLoginWith,

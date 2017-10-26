@@ -9,7 +9,7 @@
 import axios from 'axios'
 
   /** This header must be attached to all authed-requests to the API */
-export const apiRequestHeaders = {authorization:`Bearer`+localStorage.getItem('token')}
+export function apiRequestHeaders(){ return {authorization:`Bearer`+localStorage.getItem('token')}}
 
 /** Default api response action types for success/error */
 export const API_SUCCESS = '_SUCCESS'
@@ -46,7 +46,7 @@ export const apiRequest = (endpoint, baseAction, normalizer = null, requestPaylo
         })
 
         // do the async request to API
-        return axios.get(`api/${endpoint}`, { headers: apiRequestHeaders })
+        return axios.get(`api/${endpoint}`, { headers: apiRequestHeaders() })
             .then((response) => {
                 if(normalizer && typeof normalizer === 'function'){
                     return dispatch({

@@ -1,9 +1,11 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
 import {clientsFetchAll} from '../actions'
+import FilterableSelectBox from './filterableSelectBox'
 
 class ClientsPage extends React.Component {
-    componentDidMount(){
+    componentWillMount(){
         let {dispatch} = this.props
 
         dispatch(clientsFetchAll())
@@ -12,12 +14,18 @@ class ClientsPage extends React.Component {
         console.log(error)
     }
     render(){
+        const testData = {
+
+        }
+
         return (
+            
             <div>
                 <h1>Clients page</h1>
+                <FilterableSelectBox />
             </div>
         )
     }
 }
 
-export default connect( state => ({}))(ClientsPage)
+export default withRouter(connect( state => ({}))(ClientsPage))
