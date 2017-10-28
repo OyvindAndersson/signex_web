@@ -29,6 +29,7 @@ Route::group(['middleware' => 'jwt.auth'], function (){
         $clients = Client::all();
         return response()->json(['clients' => $clients]);
     });
+    Route::post('clients/create', "ClientController@store");
 });
 
 

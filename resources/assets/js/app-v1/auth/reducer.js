@@ -8,6 +8,7 @@ import { jtwDecode } from 'jwt-decode'
 const initialState = {
   user: null,
   role: constants.AUTH_ROLE_GUEST,
+  token: localStorage.getItem('token') ? localStorage.getItem('token') : null,
   isFetching: false,
   isAuthenticating: false,
   isAuthenticated: localStorage.getItem('token') ? true : false,

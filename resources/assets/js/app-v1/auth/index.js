@@ -2,13 +2,11 @@
  * Expose the modules' API
  */
 import {authUserToken} from './actions'
+import jwt_decode from 'jwt-decode'
 
 /** Initialize auth module */
 export function initAuth(store) { 
-
-  /** @todo Check if localStorage is available. If not, create one. */
-
-  store.dispatch(authUserToken())
+    store.dispatch(authUserToken())
 }
 
 /** Components */
@@ -20,7 +18,7 @@ export {AuthRoute} from './components/authRoute'
 /** Expose module reducer */
 export {default as reducer} from './reducer'
 
-
+export {default as authWrapper} from './components/container/authWrapper'
 
  /*
 

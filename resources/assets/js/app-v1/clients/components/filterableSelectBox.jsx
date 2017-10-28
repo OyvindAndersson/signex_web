@@ -8,6 +8,8 @@ export default class FilterableSelectBox extends React.Component {
     render(){
         return (
             <div>
+                <select ref="ns" name={this.props.name}>
+                </select>
             </div>
         )
     }

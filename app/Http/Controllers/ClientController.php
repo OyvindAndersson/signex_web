@@ -42,7 +42,7 @@ class ClientController extends Controller
         {
             return response()->json($newClient);
         }
-
+        
         return view('client.index');
     }
 

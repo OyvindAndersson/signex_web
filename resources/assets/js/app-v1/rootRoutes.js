@@ -1,5 +1,8 @@
 /**
  * Wrap up all routes, from all modules, that the app is dependent upon.
+ * 
+ * @deprecated This file is no longer in use.
+ * @todo Delete this file
  */
 import React from 'react'
 import {Switch} from 'react-router-dom'

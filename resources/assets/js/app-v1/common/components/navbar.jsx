@@ -1,16 +1,38 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import {Link, withRouter} from 'react-router-dom'
+import { getRealtimeIsAuthenticated } from '../../auth/selectors'
 import { 
-Navbar as BSNavbar,
-Nav,
-NavbarToggler,
-NavbarBrand,
-Collapse,
-NavItem,
-NavLink
+    Navbar as BSNavbar,
+    Nav,
+    NavbarToggler,
+    NavbarBrand,
+    Collapse,
+    NavItem,
+    NavLink
 } from 'reactstrap'
 import {links} from '../../appRoutes'
+
+import { authWrapper } from '../../auth'
+
+// Temp 
+//-------------------------------------------------
+const UserLink = props => (
+    <span className="navbar-text">
+        <small>{props.user ? props.user.email : null}</small>
+    </span>
+)
+const AuthUserLink = connect( state => ({
+    isAuthenticated: state.auth.isAuthenticated,
+    // only show loading if user is authed, but not fetched yet.
+    isAuthenticating: state.auth.user === null && state.auth.isAuthenticated,
+    user: state.auth.user
+}))
+(authWrapper({
+    AuthenticatingComponent: () => (<span><em>Loading user...</em></span>)
+})
+(UserLink))
+//-------------------------------------------------
 
 /**
 * Main navbar
@@ -42,8 +64,8 @@ class Navbar extends React.Component {
                     </NavItem>
                 )
             })
-        // display logged-in navbar
-        } else {
+        } 
+        else {
             return links.private.map((link) => {
                 return (
                     <NavItem key={`${link.to}-key`}>
@@ -67,9 +89,7 @@ class Navbar extends React.Component {
                             {navItems}
                         </Nav>
                     </Collapse>
-                    <span className="navbar-text">
-                        <small>{this.props.user ? this.props.user.email : null}</small>
-                    </span>
+                   <AuthUserLink />
                 </BSNavbar>
             </div>
         );
@@ -79,6 +99,5 @@ class Navbar extends React.Component {
 export default withRouter(connect((state) => ({
     isAuthenticated: state.auth.isAuthenticated,
     role: state.auth.role,
-    user: state.auth.user,
-    token: state.auth.token
+    user: state.auth.user
 }))(Navbar))

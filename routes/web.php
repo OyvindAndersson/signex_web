@@ -19,9 +19,11 @@ Route::get('/{path?}', function () {
 Route::get('/', function(){
     return view('index');
 });
+
 Route::any( '{catchall}', function ( $page ) {
     return view('index');
 } )->where('catchall', '(.*)');
+
 
 Auth::routes();
 /*
