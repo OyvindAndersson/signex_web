@@ -45,7 +45,10 @@ class ClientsPage extends React.Component {
         if(this.props.clients.length !== nextProps.clients.length){
             this.props.dispatch(clientsFetchAll())
 
-            toast.info('Client list updated!')
+            //no need to toast on first fetch, only when new are added
+            if(this.props.clients.length != 0){
+                toast.info('Client list updated!')
+            }
         }
     }
     componentDidCatch(error, info) {

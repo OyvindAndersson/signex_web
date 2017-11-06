@@ -8,7 +8,11 @@ export default class FilterableSelectBox extends React.Component {
             filterText: ''
         }
     }
-
+    componentDidMount(){
+        if(this.refs.nativeInput){
+            this.refs.nativeInput.focus()
+        }
+    }
     handleFilterInputChanged(e){
         this.setState({
             filterText: e.target.value
@@ -23,15 +27,12 @@ export default class FilterableSelectBox extends React.Component {
         const {placeholderText} = this.props
         return (
             <div className="input-group">
-                <input className="form-control" 
+                <input ref="nativeInput" className="form-control" 
                     type="text" 
                     value={this.state.filterText} 
                     onChange={this.handleFilterInputChanged.bind(this)}
                     placeholder={placeholderText} 
                     aria-label={placeholderText} />
-                <span className="input-group-btn">
-                    <button className="btn" type="button">Go!</button>
-                </span>
             </div>
         )
     }

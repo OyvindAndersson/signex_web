@@ -112,6 +112,11 @@ class ClientCreateInlineFormView extends React.Component {
             org_nr: this.state.clientOrgNr
         }))
 
+        this.setState({
+            clientName: '',
+            clientOrgNr: ''
+        })
+
         toast.info(`Saving ${this.state.clientName}...`)
      }
 
