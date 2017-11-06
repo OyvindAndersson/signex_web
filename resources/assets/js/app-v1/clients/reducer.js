@@ -10,7 +10,7 @@ const initialState = {
     allIds: []
 }
 
-export default function( state = initialState, action){
+function clientsReducer( state = initialState, action){
     switch(action.type){
         case `${types.CLIENTS_FETCH_ALL}`: {
             return {
@@ -36,7 +36,36 @@ export default function( state = initialState, action){
                 isFetching: false
             }
         }
+
+        case `${types.CLIENTS_CREATE}${API_SUCCESS}`: {
+            const {payload} = action
+            const {byId} = payload
+            
+            return {
+                ...state,
+                allIds: state.allIds.concat(payload.allIds), // add the new ID ref.
+                byId: {...state.byId, ...byId}, // add the new client in with the old ones,
+                isDirty: true
+            }
+        }
         default:
         return state
     }
+}
+
+function clientsUiReducer( state = {
+    selectedClientId: 0
+}, action ){
+    switch(action.type){
+        case types.CLIENTS_PAGE_SELECTED_MASTER_ID:{
+            return { ...state, selectedClientId: action.payload}
+        }
+        default:
+        return state
+    }
+}
+
+export default {
+    clientsUiReducer,
+    clientsReducer
 }

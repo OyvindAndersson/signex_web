@@ -1,3 +1,4 @@
+import axios from 'axios'
 
 const brregFilters = {
     filterPrefix: "$filter=",
@@ -21,7 +22,7 @@ export default class Brreg {
             lastResult: []
         }
         this.onResultsCallback = onResultsCallback;
-        
+        this.isFetching = false
     }
 
     getLastResult() {
@@ -29,8 +30,7 @@ export default class Brreg {
     }
 
     searchByName(value, size = 3) {
-        if(value.length < 3 || this.state.lat){
-            console.log("Name must be > 2 chars.")
+        if(value.length < 3){
             return;
         }
 
@@ -40,25 +40,27 @@ export default class Brreg {
         url = url.replace('{antall}', size);
         url = url.replace('{filter}', "startswith(navn, '"+value+"')");
 
-        fetch(url)
-        .then( response => {
-            if (response.status !== 200) {
-                console.log('Looks like there was a problem. Status Code: ' +  
-                response.status);  
-                return;  
-            }
-            return response.json();
-        })
-        .then(response => {
-            this.state.lastResult = response.data;
+        // BRREG api does not accept this header...
+        delete window.axios.defaults.headers.common['X-CSRF-TOKEN']
+        
+        // Not used, atm...
+        this.state.isFetching = true
 
+        axios.get(url)
+        .then((response) => {
+            this.isFetching = false
+            this.state.lastResult = response.data.data;
             // Callback if any are set,
             if(this.onResultsCallback){
-                this.onResultsCallback(response.data);
+                this.onResultsCallback(response.data.data);
             }
         })
-        .catch(error => {
-            console.log("Brreg fetch Error!: " + error);
-        });
+        .catch((thrown) => {
+            if(axios.isCancel(thrown)) {
+                console.log("REQUEST CANCELLED")
+            } else {
+                console.log("BRREG: Some error occured")
+            }
+        })
     }
 }

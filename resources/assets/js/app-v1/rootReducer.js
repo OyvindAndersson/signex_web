@@ -1,13 +1,13 @@
 import { combineReducers } from 'redux'
 import authReducer from './auth/reducer'
-import clientsReducer from './clients/reducer'
+import clientsReducers from './clients/reducer'
 
 /**
  * Combine all entity reducers, specific to models/api state-keeping
  * i.e: Users, Projects, Orders etc
  */
 const entities = combineReducers({
-    clients:clientsReducer
+    clients:clientsReducers.clientsReducer
 })
 
 /**
@@ -15,7 +15,7 @@ const entities = combineReducers({
  * ie: ClientsPage, ProjectDetailPage etc.
  */
 const ui = combineReducers({
-    //
+    clientPage:clientsReducers.clientsUiReducer
 })
 
 /**
@@ -24,7 +24,7 @@ const ui = combineReducers({
 const rootReducer = combineReducers({
     auth:authReducer,
     entities:entities,
-    // ui:ui
+    ui:ui
 });
 
 export default rootReducer;

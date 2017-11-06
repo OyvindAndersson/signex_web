@@ -1,20 +1,11 @@
 import actionTypes from './actionTypes'
 import clientsApi from './api'
-import {apiRequest} from '../common/api'
-import {normalize, schema} from 'normalizr'
+import {apiRequest, apiPostRequest} from '../common/api'
+import {clientsNormalizer, singleClientNormalizer} from './schema'
 
-/** Schema for clients table */
-const clientSchema = new schema.Entity('clients')
-const clientsList = { clients: [clientSchema]}
-
-/** Normalizer for clients table */
-const clientsNormalizer = (data) => {
-    const normalizedData = normalize(data, clientsList)
-    return {
-        byId: normalizedData.entities.clients,
-        allIds: normalizedData.result.clients
-    }
-}
 
 /** Fetches all clients from the API */
-export function clientsFetchAll() { return apiRequest('clients', actionTypes.CLIENTS_FETCH_ALL, clientsNormalizer) }
+export function clientsFetchAll() { return apiRequest('clients', actionTypes.CLIENTS_FETCH_ALL, null, clientsNormalizer) }
+
+/** Creates a new client and persists in database */
+export function clientsCreate(newClient) { return apiPostRequest('clients/create', actionTypes.CLIENTS_CREATE, newClient, singleClientNormalizer) }

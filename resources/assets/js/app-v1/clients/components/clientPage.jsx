@@ -1,92 +1,21 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import {Nav, NavLink, NavItem, Collapse, Button } from 'reactstrap'
-import {clientsFetchAll} from '../actions'
-import FilterableSelectBox from './filterableSelectBox'
 import {denormalize, schema} from 'normalizr'
+import {Nav, NavLink, NavItem, Collapse, Button } from 'reactstrap'
+import { toast } from 'react-toastify';
 
-/**-------------------------------------------------
- * Master items list
- * -------------------------------------------------
- * Takes the "links"/items for a master/detail page
- * list. 
- * 
- * @todo Make this a ClientMAsterItemList class, which churns the data down to
- * a generic list, usable in a MasterItemList component...?
- */
-class MasterItemList extends React.Component {
-    constructor(props){
-        super(props)
+import {clientsFetchAll} from '../actions'
+import actionTypes from '../actionTypes'
+import {getSelectedClientUI, getDenormalizedClients} from '../selectors'
 
-        this.toggle = this.toggle.bind(this)
-        this.state = {
-            items: props.items,
-            collapsed: false
-        }
-    }
-    componentWillReceiveProps(props){
-        this.setState({ items: props.items })
-    }
-    toggle(){
-        this.setState({ collapsed: !this.state.collapsed})
-    }
-    render() {
-        return (
-            <div>
-            <Button className="d-block d-sm-none w-100" 
-                color="primary" 
-                onClick={this.toggle} 
-                style={{ marginBottom: '1rem' }}>
-                Hide / Show list
-            </Button>
-            <Collapse isOpen={!this.state.collapsed} >
-                {React.cloneElement(React.Children.only(this.props.children), {...this.props})}
-            </Collapse>
-            </div>
-        )
-    }
-}
+import MasterItemList from '../../common/components/masterItemList'
+import FilterableSelectBox from './filterableSelectBox'
+import {ClientCreateInlineForm} from './clientCreateForms'
 
-/**-------------------------------------------------
- * Clients Item List
- * -------------------------------------------------
- * Item list for Clients models. Passed as only child
- * to MasterItemList
- */
-class ClientsItemList extends React.Component {
-    render(){
-        const {items} = this.props
-        const renderItems = items.map( item => {
-            return (<ClientItemListLink key={item.id} data={item} />)
-        })
-
-        return (
-            <div className="list-group" >
-                {renderItems}
-            </div>
-        )
-    }
-}
-
-/**-------------------------------------------------
- * Client Item List Link
- * -------------------------------------------------
- * List link (item) for Clients item list display.
- */
-class ClientItemListLink extends React.Component {
-    render(){
-        const client = this.props.data
-        const name = client.name.replace(/(\w)(\w*)/g,
-        function(g0,g1,g2){return g1.toUpperCase() + g2.toLowerCase();});
-        return(
-            <a href="#" className="list-group-item list-group-item-action">
-                <h6>{name}</h6>
-                <small>{client.org_nr}</small>
-            </a>
-        )
-    }
-}
+import ClientList from './clientList'
+import ClientListLink from './clientListLink'
+import ClientDetailPane from './clientDetailPane'
 
 /**-------------------------------------------------
  * Clients page root
@@ -97,17 +26,27 @@ class ClientsPage extends React.Component {
     constructor(props){
         super(props)
 
-        this.handleClientCreateForm = this.handleClientCreateForm.bind(this)
         this.handleInputChanged = this.handleInputChanged.bind(this)
+        this.handleClientsFilterChanged = this.handleClientsFilterChanged.bind(this)
+        this.handleClientSelectionChanged = this.handleClientSelectionChanged.bind(this)
+        this.filterClients = this.filterClients.bind(this)
+
         this.state = {
             clientName: "",
-            clientOrgNr: ""
+            clientOrgNr: "",
+            filter: ""
         }
     }
     componentWillMount(){
-        let {dispatch} = this.props
-
+        const {dispatch} = this.props
         dispatch(clientsFetchAll())
+    }
+    componentWillReceiveProps(nextProps){
+        if(this.props.clients.length !== nextProps.clients.length){
+            this.props.dispatch(clientsFetchAll())
+
+            toast.info('Client list updated!')
+        }
     }
     componentDidCatch(error, info) {
         console.log(error)
@@ -122,58 +61,70 @@ class ClientsPage extends React.Component {
             [name]: value
         })
     }
-    handleClientCreateForm(e){
-        e.preventDefault()
-
-        // DEBUG, inline post request
-        // TODO: move to api.js / actions
-
-        axios.post("api/clients/create", {
-            name: this.state.clientName,
-            org_nr: this.state.clientOrgNr
-        }, { headers: { authorization:`Bearer`+localStorage.getItem('token') }})
-        .then( resp => {
-            console.log(resp)
-        }).catch(err => {
-            console.log(err)
+    handleClientsFilterChanged(filter){
+        this.setState({
+            filter
         })
     }
-    render(){
+    handleClientSelectionChanged(e){
+        const clientId = e.currentTarget.dataset.targetId
+        // Update the UI state with the newly selected client (id)
+        this.props.dispatch({
+            type: actionTypes.CLIENTS_PAGE_SELECTED_MASTER_ID,
+            payload: clientId
+        })
+    }
+
+    filterClients(){
         const clientsArray = Object.keys(this.props.clients).map( key => {
             return this.props.clients[key]
         })
 
+        const {filter} = this.state
+        return clientsArray.filter( (client) => {
+            if(filter.length == 0){
+                return true
+            }
+            else {
+                if(!isNaN(filter)){
+                    return client.org_nr.indexOf(filter) !== -1
+                }
+                return client.name.toLowerCase().indexOf(filter.toLowerCase()) !== -1
+            }
+        })
+    }
+
+    render(){
+        const filteredClients = this.filterClients()
         return (
-            
             <div>
-                <Nav>
+                <Nav className="justify-content-between">
                     <NavItem>
                         <NavLink><strong>Clients</strong></NavLink>
                     </NavItem>
+                    <ClientCreateInlineForm />
                 </Nav>
                 <hr />
-
                 <div className="container-fluid">
                     {/* Master detail */}
                     <div className="row">
                         {/* Master */}
                         <div className="col-sm-5 col-md-4 col-lg-3">
                             <div id="master-pane">
-                            <FilterableSelectBox />
-                            <MasterItemList items={clientsArray} itemComponent={ClientItemListLink}>
-                                <ClientsItemList />
-                            </MasterItemList>
+                                <FilterableSelectBox handleFilterChanged={this.handleClientsFilterChanged} 
+                                    placeholderText="Filter name, org. nr etc.." />
+                                <hr />
+                                <MasterItemList items={filteredClients}>
+                                    <ClientList handleSelectionChanged={this.handleClientSelectionChanged} 
+                                        selectedItemId={this.props.selectedClientId} />
+                                </MasterItemList>
                             </div>
                         </div>
 
                         {/* Detail */}
                         <div className="col">
                             <div id="detail-pane">
-                                <form onSubmit={this.handleClientCreateForm}>
-                                    <input type="text" name="clientName" onChange={this.handleInputChanged} placeholder="Client name" />
-                                    <input type="text" name="clientOrgNr" onChange={this.handleInputChanged} placeholder="998998998" />
-                                    <button type="submit" className="btn btn-primary">Save</button>
-                                </form>
+                                <ClientDetailPane client={this.props.selectedClient} />
                             </div>
                         </div>
                     </div>
@@ -183,11 +134,8 @@ class ClientsPage extends React.Component {
     }
 }
 
-const theSchema = new schema.Entity('clients')
-const rootSchema = {
-    clients: theSchema
-}
-
 export default withRouter(connect( state => ({
-    clients: state.entities.clients.byId
+    clients: getDenormalizedClients(state),
+    selectedClientId: state.ui.clientPage.selectedClientId,
+    selectedClient: getSelectedClientUI(state),
 }))(ClientsPage))

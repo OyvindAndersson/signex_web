@@ -26,7 +26,7 @@ Route::group(['middleware' => 'jwt.auth'], function (){
         return response()->json([ 'users' => $users ]);
     });
     Route::get('clients/{id?}', function($id = null) {
-        $clients = Client::all();
+        $clients = Client::orderBy('name')->get();
         return response()->json(['clients' => $clients]);
     });
     Route::post('clients/create', "ClientController@store");

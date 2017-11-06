@@ -10,6 +10,7 @@
 
 // Bootstrap
 @import "bootstrap/scss/bootstrap";
+@import 'react-toastify/src/scss/main';
 
 html {
     position: relative;
@@ -31,6 +32,43 @@ body {
   
 #__bs_notify__ {
     top: 80% !important;
+}
+
+#detail-pane {
+    height:100%;
+
+    .empty-title {
+        padding-top:150px;
+        font-size:42px;
+        color: #777;
+    }
+}
+
+.data-select {
+    .result-box {
+        //background: #ffffff;
+        //border: 1px solid #cccccc;
+        position: absolute !important;
+        max-width:500px;
+        min-width:300px;
+        max-height: 500px;
+        //padding:10px;
+        z-index: 20;
+        //opacity: 0;
+        overflow-y: scroll;
+        overflow-x: hidden;
+
+        a {
+            max-width: 100%;
+            ul {
+                list-style: none;
+                padding:0;
+                li {
+                    font-size:0.9rem;
+                }
+            }
+        }
+    }
 }
 
 /*
