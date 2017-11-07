@@ -1,29 +1,29 @@
 import {schema, normalize} from 'normalizr'
 
-/** Schema for clients table */
+/** Schema for orders table */
 /*
-export const clientSchema = new schema.Entity('clients')
-export const clientListSchema = { clients: [clientSchema]}
+export const orderSchema = new schema.Entity('orders')
+export const orderListSchema = { orders: [orderSchema]}
 */
-export const clientSchema = new schema.Entity('clients')
-export const clientListSchema = new schema.Array(clientSchema)
+export const orderSchema = new schema.Entity('orders')
+export const orderListSchema = new schema.Array(orderSchema)
 
-/** Normalizer for clients table */
-export const clientsNormalizer = (data) => {
-    const normalizedData = normalize(data.clients, clientListSchema)
+/** Normalizer for orders table */
+export const ordersNormalizer = (data) => {
+    const normalizedData = normalize(data.orders, orderListSchema)
 
     return {
-        byId: normalizedData.entities.clients,
+        byId: normalizedData.entities.orders,
         allIds: normalizedData.result
     }
 }
 
-export const singleClientNormalizer = (client) => {
-    const normalizedData = normalize(client, clientSchema)
-    console.log("NORMALIZED CLIENT DATA")
+export const singleOrderNormalizer = (order) => {
+    const normalizedData = normalize(order, orderSchema)
+    console.log("NORMALIZED order DATA")
     console.log(normalizedData)
     return {
-        byId: normalizedData.entities.clients,
+        byId: normalizedData.entities.orders,
         allIds: [normalizedData.result]
     }
 }
