@@ -11,7 +11,12 @@ export const orderListSchema = new schema.Array(orderSchema)
 /** Normalizer for orders table */
 export const ordersNormalizer = (data) => {
     const normalizedData = normalize(data.orders, orderListSchema)
-
+    if(data.orders.length === 0){
+        return {
+            byId: {},
+            allIds: []
+        }
+    }
     return {
         byId: normalizedData.entities.orders,
         allIds: normalizedData.result

@@ -58,7 +58,7 @@ function ordersUiReducer( state = {
 }, action ){
     switch(action.type){
         case types.ORDERS_PAGE_SELECTED_MASTER_ID:{
-            return { ...state, selectedClientId: action.payload}
+            return { ...state, selectedOrderId: action.payload}
         }
         default:
         return state

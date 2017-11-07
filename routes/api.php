@@ -1,6 +1,7 @@
 <?php
 use App\Client;
 use App\User;
+use App\Order;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -30,6 +31,11 @@ Route::group(['middleware' => 'jwt.auth'], function (){
         return response()->json(['clients' => $clients]);
     });
     Route::post('clients/create', "ClientController@store");
+
+    Route::get('orders/{id?}', function($id = null) {
+        $orders = Order::orderBy('created_at')->get();
+        return response()->json(['orders' => $orders]);
+    });
 });
 
 

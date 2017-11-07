@@ -67,9 +67,12 @@ export default function(state = initialState, action) {
         return {
           ...state, 
           isFetching: false, 
+          isAuthenticating: false,
           isAuthenticated:false,
           role: constants.AUTH_ROLE_GUEST,
-          error: action.payload
+          error: action.payload,
+          user: null,
+          token:null
         }
       }
 

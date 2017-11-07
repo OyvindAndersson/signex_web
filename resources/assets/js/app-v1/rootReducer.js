@@ -1,13 +1,15 @@
 import { combineReducers } from 'redux'
 import authReducer from './auth/reducer'
 import clientsReducers from './clients/reducer'
+import ordersReducers from './orders/reducer'
 
 /**
  * Combine all entity reducers, specific to models/api state-keeping
  * i.e: Users, Projects, Orders etc
  */
 const entities = combineReducers({
-    clients:clientsReducers.clientsReducer
+    clients:clientsReducers.clientsReducer,
+    orders:ordersReducers.ordersReducer
 })
 
 /**
@@ -15,7 +17,8 @@ const entities = combineReducers({
  * ie: ClientsPage, ProjectDetailPage etc.
  */
 const ui = combineReducers({
-    clientPage:clientsReducers.clientsUiReducer
+    clientPage:clientsReducers.clientsUiReducer,
+    orderPage: ordersReducers.ordersUiReducer
 })
 
 /**

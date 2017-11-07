@@ -13,14 +13,55 @@ import {getSelectedOrderUI, getDenormalizedOrders} from '../selectors'
 //import MasterItemList from '../../common/components/masterItemList'
 
 /**-------------------------------------------------
- * Orders page root
+ * TODOS
  * -------------------------------------------------
  * 
+ * - Show order info on ItemLink, and detail pane
+ * 
+ * 
+ * 
  */
-export default class OrdersPage extends React.Component {
-    render(){
-        return(<h1>ORDERS</h1>)
+
+
+class FilterableSelectBox extends React.Component {
+    constructor(props){
+        super(props)
+
+        this.state = {
+            filterText: ''
+        }
     }
+    componentDidMount(){
+        if(this.refs.nativeInput){
+            this.refs.nativeInput.focus()
+        }
+    }
+    handleFilterInputChanged(e){
+        this.setState({
+            filterText: e.target.value
+        }, () => {
+            if(this.props.handleFilterChanged){
+                this.props.handleFilterChanged(this.state.filterText)
+            }
+        })
+        
+    }
+    render(){
+        const {placeholderText} = this.props
+        return (
+            <div className="input-group">
+                <input ref="nativeInput" className="form-control" 
+                    type="text" 
+                    value={this.state.filterText} 
+                    onChange={this.handleFilterInputChanged.bind(this)}
+                    placeholder={placeholderText} 
+                    aria-label={placeholderText} />
+            </div>
+        )
+    }
+}
+FilterableSelectBox.defaultProps = {
+    placeholderText: "Filter..."
 }
 
 class MasterItemListItem extends React.Component {
@@ -38,32 +79,59 @@ class MasterItemListItem extends React.Component {
     }
     render(){
         const classes = `list-group-item list-group-item-action ${this.state.active ? 'active' : ''}`
+
+        const childrenWithProps = React.Children.map(this.props.children, (child) => 
+            React.cloneElement(child, {
+                item: this.props.item
+            })
+        );
         return(
-            <a href="#" className={classes} {...this.props.linkProps}>
-                {this.props.children}
+            <a href="#" className={classes} onClick={this.props.onClick} data-id={this.props.item.id}>
+                THIS IS IT!
             </a>
         )
     }
 }
 MasterItemListItem.propTypes = {
     active: PropTypes.bool,
-    item: PropTypes.object.isRequired,
-    linkProps: PropTypes.shape({
-        onClick: PropTypes.func,
-    })
+    item: PropTypes.shape({
+        id: PropTypes.number.isRequired
+    }).isRequired,
+    onClick: PropTypes.func
 }
 
-class MasterItemList extends React.Component {
+class OrdersMasterList extends React.Component {
     constructor(props){
         super(props)
     }
+    componentWillReceiveProps(next){
+        console.log(next)
+    }
     render(){
-        return(
+        const {items, selectedItemId, handleItemSelectionChanged} = this.props
+
+        const renderItems = items.map( item => {
+            const active = item.id == selectedItemId
+            return (
+                <MasterItemListItem 
+                    key={item.id} 
+                    item={item} 
+                    active={active}
+                    onClick={handleItemSelectionChanged} />
+            )
+        })
+
+        return (
             <div className="list-group" >
-                {this.props.children}
+                {renderItems}
             </div>
         )
     }
+}
+OrdersMasterList.propTypes = {
+    items: PropTypes.array,
+    selectedItemId: PropTypes.number,
+    handleItemSelectionChanged: PropTypes.func
 }
 
 class MasterPane extends React.Component {
@@ -73,10 +141,6 @@ class MasterPane extends React.Component {
         this.handleInputChanged = this.handleInputChanged.bind(this)
         this.handleItemFilterChanged = this.handleItemFilterChanged.bind(this)
         this.handleItemSelectionChanged = this.handleItemSelectionChanged.bind(this)
-        this.filterItems = this.filterItems.bind(this)
-
-        this.updateItems = this.updateItems.bind(this)
-        this.updateSelectedItem = this.updateSelectedItem.bind(this)
 
         this.state = {
             filter: ""
@@ -100,21 +164,33 @@ class MasterPane extends React.Component {
         })
     }
     handleItemSelectionChanged(e){
-        //e.persist()
         this.props.updateSelectedItem(e)
     }
+
     render() {
-        const filteredItems = this.props.filterItems(this.state.filter)
+        const showFilterBox = this.props.filterItems ? true : false
+        const filteredItems = showFilterBox ? this.props.filterItems(this.state.filter) : this.props.items
         const selectedItemId = this.props.selectedItemId ? this.props.selectedItemId : 0
+
+        
+        const childrenWithProps = React.Children.map(this.props.children, (child) => 
+            React.cloneElement(child, {
+                handleItemSelectionChanged: this.handleItemSelectionChanged,
+                items: filteredItems,
+                selectedItemId: selectedItemId
+            })
+        );
 
         return(
             <div className="col-sm-5 col-md-4 col-lg-3">
                 <div id="master-pane">
-                    <FilterableSelectBox {...this.props.filterBoxProps} />
+                    { showFilterBox ? (
+                    <FilterableSelectBox {...this.props.filterBoxProps} handleFilterChanged={this.handleItemFilterChanged} />
+                    ) : null }
                     <hr />
-                    <MasterItemList items={filteredItems}>
-                        <ItemList handleSelectionChanged={this.handleItemSelectionChanged} selectedItemId={selectedItemId} />
-                    </MasterItemList>
+                    <div className="list-group" >
+                        {childrenWithProps}
+                    </div>
                 </div>
             </div>
         )
@@ -127,9 +203,9 @@ MasterPane.propTypes = {
 
     updateItems: PropTypes.func.isRequired,
     updateSelectedItem: PropTypes.func.isRequired,
+    filterItems: PropTypes.func,
 
     filterBoxProps: PropTypes.shape({
-        handleFilterChanged: PropTypes.func.isRequired,
         placeholderText: PropTypes.string
     }),
 }
@@ -175,25 +251,28 @@ Page.propTypes = {
     pageTitle: PropTypes.string
 }
 
-function ordersPageHOC(Page){
+function ordersPageHOC(WrappedComponent){
     return class OrdersMasterDetailPage extends React.Component {
         constructor(props){
             super(props)
 
-            this.handleFilterChanged = this.handleFilterChanged.bind(this)
+            this.filterOrders = this.filterOrders.bind(this)
             this.updateOrders = this.updateOrders.bind(this)
             this.updateSelectedItem = this.updateSelectedItem.bind(this)
         }
         
-        handleFilterChanged(filter){
-            console.log("HOC: Handle filter changed")
+        filterOrders(filter){
+            console.log("HOC: Handle filter items" + filter)
+            return this.props.orders
         }
-        updateOrder(){
+        updateOrders(){
             console.log("HOC: Update order")
+            this.props.dispatch(ordersFetchAll())
         }
-        updateSelectedItem(){
+        updateSelectedItem(e){
             console.log("HOC: Update selected item")
             // set prop for detailPane: selectedItem
+            console.log(e.target.dataset)
         }
 
         render(){
@@ -208,29 +287,34 @@ function ordersPageHOC(Page){
                 updateItems: this.updateOrders,
                 updateSelectedItem: this.updateSelectedItem,
 
+                filterItems: this.filterOrders,
                 filterBoxProps: {
-                    handleFilterChanged: this.handleFilterChanged,
                     placeholderText: "Filter orders..."
                 }
             }
 
             return (
-                <Page {...this.props} {...pageProps}>
+                <WrappedComponent {...this.props} {...pageProps}>
                     <MasterPane {...masterPaneProps}>
-                        <OrdersList />
+                        <OrdersMasterList />
                     </MasterPane>
                     <DetailPane>
-                        <OrdersDetail />
+                        {/* <OrdersDetail /> */}
+                        <p>Detail pane</p>
                     </DetailPane>
-                </Page>
+                </WrappedComponent>
             )
         }
     }
+    OrdersMasterDetailPage.propTypes = {
+        orders: PropTypes.array.isRequired,
+        selectedOrder: PropTypes.object.isRequired,
+        selectedOrderId: PropTypes.number.isRequired
+    }
 }
 
-/*
 export default withRouter(connect( state => ({
     orders: getDenormalizedOrders(state),
     selectedOrderId: state.ui.orderPage.selectedOrderId,
     selectedOrder: getSelectedOrderUI(state),
-}))(OrdersPage))*/
+}))(ordersPageHOC(Page)))
