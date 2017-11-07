@@ -38,6 +38,7 @@
     "material-components-web": "^0.22.0",
     "material-design-icons": "^3.0.1",
     "moxios": "^0.4.0",
+    "prop-types": "^15.6.0",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
     "react-popper": "^0.7.3",

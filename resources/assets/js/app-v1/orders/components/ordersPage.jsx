@@ -47,7 +47,7 @@ class MasterItemListItem extends React.Component {
 }
 MasterItemListItem.propTypes = {
     active: PropTypes.bool,
-    item: object.isRequired,
+    item: PropTypes.object.isRequired,
     linkProps: PropTypes.shape({
         onClick: PropTypes.func,
     })
@@ -105,7 +105,6 @@ class MasterPane extends React.Component {
     }
     render() {
         const filteredItems = this.props.filterItems(this.state.filter)
-        const selectedItem = this.props.selectedItem ? this.props.selectedItem : null
         const selectedItemId = this.props.selectedItemId ? this.props.selectedItemId : 0
 
         return(
@@ -137,6 +136,7 @@ MasterPane.propTypes = {
 
 class DetailPane extends React.Component {
     render(){
+        const selectedItem = this.props.selectedItem ? this.props.selectedItem : null
         return(
             <div className="col">
                 <div id="detail-pane">
@@ -147,12 +147,12 @@ class DetailPane extends React.Component {
     }
 }
 DetailPane.propTypes = {
-    //
+    selectedItem: PropTypes.object
 }
 
-class MasterDetailPage extends React.Component {
+class Page extends React.Component {
     render(){
-        const pageTitle = this.props.pageTitle ? this.props.pageTitle : "MasterDetailPage"
+        const pageTitle = this.props.pageTitle ? this.props.pageTitle : "Page"
 
         return (
             <div>
@@ -163,7 +163,6 @@ class MasterDetailPage extends React.Component {
                 </Nav>
                 <hr />
                 <div className="container-fluid">
-                    {/* Master detail */}
                     <div className="row">
                         {this.props.children}
                     </div>
@@ -172,11 +171,11 @@ class MasterDetailPage extends React.Component {
         )
     }
 }
-MasterDetailPage.propTypes = {
+Page.propTypes = {
     pageTitle: PropTypes.string
 }
 
-function ordersPageHOC(MasterDetailPage){
+function ordersPageHOC(Page){
     return class OrdersMasterDetailPage extends React.Component {
         constructor(props){
             super(props)
@@ -194,11 +193,14 @@ function ordersPageHOC(MasterDetailPage){
         }
         updateSelectedItem(){
             console.log("HOC: Update selected item")
+            // set prop for detailPane: selectedItem
         }
 
         render(){
-            const newProps = {
-                pageTitle: "Orders page yo",
+            const pageProps = {
+                pageTitle: "My orders page"
+            }
+            const masterPaneProps = {
                 items: this.props.orders,
                 selectedItem: this.props.selectedOrder,
                 selectedItemId: this.props.selectedOrderId,
@@ -213,14 +215,14 @@ function ordersPageHOC(MasterDetailPage){
             }
 
             return (
-                <MasterDetailPage {...this.props} pageTitle: "Orders page yo">
-                    <MasterPane {...newProps}>
+                <Page {...this.props} {...pageProps}>
+                    <MasterPane {...masterPaneProps}>
                         <OrdersList />
                     </MasterPane>
                     <DetailPane>
                         <OrdersDetail />
                     </DetailPane>
-                </MasterDetailPage>
+                </Page>
             )
         }
     }

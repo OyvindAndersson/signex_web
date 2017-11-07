@@ -10,16 +10,16 @@ const initialState = {
     allIds: []
 }
 
-function clientsReducer( state = initialState, action){
+function ordersReducer( state = initialState, action){
     switch(action.type){
-        case `${types.CLIENTS_FETCH_ALL}`: {
+        case `${types.ORDERS_FETCH_ALL}`: {
             return {
                 ...state,
                 isFetching: true
             }
         }
 
-        case `${types.CLIENTS_FETCH_ALL}${API_SUCCESS}`: {
+        case `${types.ORDERS_FETCH_ALL}${API_SUCCESS}`: {
             const {payload} = action
 
             return {
@@ -30,14 +30,14 @@ function clientsReducer( state = initialState, action){
             }
         }
 
-        case `${types.CLIENTS_FETCH_ALL}${API_REJECTED}`: {
+        case `${types.ORDERS_FETCH_ALL}${API_REJECTED}`: {
             return {
                 ...state,
                 isFetching: false
             }
         }
 
-        case `${types.CLIENTS_CREATE}${API_SUCCESS}`: {
+        case `${types.ORDERS_CREATE}${API_SUCCESS}`: {
             const {payload} = action
             const {byId} = payload
             
@@ -53,11 +53,11 @@ function clientsReducer( state = initialState, action){
     }
 }
 
-function clientsUiReducer( state = {
-    selectedClientId: 0
+function ordersUiReducer( state = {
+    selectedOrderId: 0
 }, action ){
     switch(action.type){
-        case types.CLIENTS_PAGE_SELECTED_MASTER_ID:{
+        case types.ORDERS_PAGE_SELECTED_MASTER_ID:{
             return { ...state, selectedClientId: action.payload}
         }
         default:
@@ -66,6 +66,6 @@ function clientsUiReducer( state = {
 }
 
 export default {
-    clientsUiReducer,
-    clientsReducer
+    ordersUiReducer,
+    ordersReducer
 }
