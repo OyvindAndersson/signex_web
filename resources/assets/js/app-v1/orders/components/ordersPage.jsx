@@ -7,112 +7,48 @@ import { Nav, NavLink, NavItem, Collapse, Button } from 'reactstrap'
 import { toast } from 'react-toastify';
 
 import {ordersFetchAll} from '../actions'
+import {clientsFetchAll} from '../../clients/actions'
 import actionTypes from '../actionTypes'
 import {getSelectedOrderUI, getDenormalizedOrders} from '../selectors'
 
-//import MasterItemList from '../../common/components/masterItemList'
+import Page from '../../common/components/page'
+import { DetailPane, MasterPane, MasterItemListItem } from '../../common/components/masterDetailPage'
 
 /**-------------------------------------------------
- * TODOS
+ * Orders Master List
  * -------------------------------------------------
  * 
- * - Show order info on detail pane
- * - Move generic components to Common module
- * 
- * 
+ * Handle Order-model specific rendering
+ * @todo Refine style
  */
-
-
-class FilterableSelectBox extends React.Component {
-    constructor(props){
-        super(props)
-
-        this.state = {
-            filterText: ''
-        }
-    }
-    componentDidMount(){
-        if(this.refs.nativeInput){
-            this.refs.nativeInput.focus()
-        }
-    }
-    handleFilterInputChanged(e){
-        this.setState({
-            filterText: e.target.value
-        }, () => {
-            if(this.props.handleFilterChanged){
-                this.props.handleFilterChanged(this.state.filterText)
-            }
-        })
-        
-    }
-    render(){
-        const {placeholderText} = this.props
-        return (
-            <div className="input-group">
-                <input ref="nativeInput" className="form-control" 
-                    type="text" 
-                    value={this.state.filterText} 
-                    onChange={this.handleFilterInputChanged.bind(this)}
-                    placeholder={placeholderText} 
-                    aria-label={placeholderText} />
-            </div>
-        )
-    }
-}
-FilterableSelectBox.defaultProps = {
-    placeholderText: "Filter..."
-}
-
-class MasterItemListItem extends React.Component {
-    constructor(props){
-        super(props)
-
-        this.state = {
-            active: false
-        }
-    }
-    componentWillReceiveProps(newProps){
-        if(newProps.active !== this.props.active){
-            this.setState({ active: newProps.active })
-        }
-    }
-    render(){
-        const classes = `list-group-item list-group-item-action ${this.state.active ? 'active' : ''}`
-        return(
-            <a href="#" className={classes} onClick={this.props.onClick} data-id={this.props.item.id}>
-                {this.props.children}
-            </a>
-        )
-    }
-}
-MasterItemListItem.propTypes = {
-    active: PropTypes.bool,
-    item: PropTypes.shape({
-        id: PropTypes.number.isRequired
-    }).isRequired,
-    onClick: PropTypes.func
-}
-
 class OrdersMasterList extends React.Component {
     constructor(props){
         super(props)
     }
     componentWillReceiveProps(next){
-        console.log(next)
+        //console.log(next)
     }
     render(){
         const {items, selectedItemId, handleItemSelectionChanged} = this.props
 
         const renderItems = items.map( item => {
             const active = item.id == selectedItemId
+            const orderDateText = item.created_at.split('-')
             return (
                 <MasterItemListItem 
                     key={item.id} 
                     item={item} 
                     active={active}
+                    classes={'flex-column align-items-start'}
                     onClick={handleItemSelectionChanged}>
-                    <h6>{item.code}</h6>
+
+                    <div className="d-flex w-100 justify-content-between">
+                        <h5 className="mb-1" style={{ fontSize: 14 +'px'}}><strong>#{item.code}</strong></h5>
+                        <small >{`${orderDateText[1]}, ${orderDateText[0]}`}</small>
+                    </div>
+                    <p className="mb-1">{item.client.name}</p>
+                    <small>Reg. by: {item.registrar.name}</small>
+
                 </MasterItemListItem>
             )
         })
@@ -133,124 +69,38 @@ OrdersMasterList.propTypes = {
     handleItemSelectionChanged: PropTypes.func
 }
 
-class MasterPane extends React.Component {
-    constructor(props){
-        super(props)
-
-        this.handleInputChanged = this.handleInputChanged.bind(this)
-        this.handleItemFilterChanged = this.handleItemFilterChanged.bind(this)
-        this.handleItemSelectionChanged = this.handleItemSelectionChanged.bind(this)
-
-        this.state = {
-            filter: ""
-        }
-    }
-    componentWillMount(){
-        this.props.updateItems()
-    }
-    handleInputChanged(e){
-        const target = e.target
-        const value = target.type === 'checkbox' ? target.checked : target.value
-        const name = target.name
-
-        this.setState({
-            [name]: value
-        })
-    }
-    handleItemFilterChanged(filter){
-        this.setState({
-            filter
-        })
-    }
-    handleItemSelectionChanged(e){
-        this.props.updateSelectedItem(e)
-    }
-
+/**-------------------------------------------------
+ * Orders Master List
+ * -------------------------------------------------
+ * 
+ * Order model view
+ * @todo Implement fully
+ */
+class OrderDetailPane extends React.Component {
     render() {
-        const showFilterBox = this.props.filterItems ? true : false
-        const filteredItems = showFilterBox ? this.props.filterItems(this.state.filter) : this.props.items
-        const selectedItemId = this.props.selectedItemId ? this.props.selectedItemId : 0
-
+        const {order} = this.props
+        if(!order){
+            return(
+                <div className="row align-items-center">
+                    <div className="col"></div>
+                    <div className="col align-self-center">
+                        <div className="empty-title">Select an order</div>
+                    </div>
+                    <div className="col"></div>
+                </div>
+            )
+        } else {
+            return(
+                <div className="row align-items-center">
+                    <div className="col">
+                        <p>I have an order!</p>
+                        <p>From: {order.registrar.name}, regarding {order.client.name} ({order.client.org_nr})</p>
+                    </div>
+                </div>
+            )
+        }
         
-        const childrenWithProps = React.Children.map(this.props.children, (child) => 
-            React.cloneElement(child, {
-                handleItemSelectionChanged: this.handleItemSelectionChanged,
-                items: filteredItems,
-                selectedItemId: selectedItemId
-            })
-        );
-
-        return(
-            <div className="col-sm-5 col-md-4 col-lg-3">
-                <div id="master-pane">
-                    { showFilterBox ? (
-                    <FilterableSelectBox {...this.props.filterBoxProps} handleFilterChanged={this.handleItemFilterChanged} />
-                    ) : null }
-                    <hr />
-                    <div className="list-group" >
-                        {childrenWithProps}
-                    </div>
-                </div>
-            </div>
-        )
     }
-}
-MasterPane.propTypes = {
-    items: PropTypes.array.isRequired,
-    selectedItem: PropTypes.object,
-    selectedItemId: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.number
-    ]),
-
-    updateItems: PropTypes.func.isRequired,
-    updateSelectedItem: PropTypes.func.isRequired,
-    filterItems: PropTypes.func,
-
-    filterBoxProps: PropTypes.shape({
-        placeholderText: PropTypes.string
-    }),
-}
-
-class DetailPane extends React.Component {
-    render(){
-        const selectedItem = this.props.selectedItem ? this.props.selectedItem : null
-        return(
-            <div className="col">
-                <div id="detail-pane">
-                    {this.props.children}
-                </div>
-            </div>
-        )
-    }
-}
-DetailPane.propTypes = {
-    selectedItem: PropTypes.object
-}
-
-class Page extends React.Component {
-    render(){
-        const pageTitle = this.props.pageTitle ? this.props.pageTitle : "Page"
-
-        return (
-            <div>
-                <Nav className="justify-content-between">
-                    <NavItem>
-                        <NavLink><strong>{pageTitle}</strong></NavLink>
-                    </NavItem>
-                </Nav>
-                <hr />
-                <div className="container-fluid">
-                    <div className="row">
-                        {this.props.children}
-                    </div>
-                </div>
-            </div>
-        )
-    }
-}
-Page.propTypes = {
-    pageTitle: PropTypes.string
 }
 
 /**-------------------------------------------------
@@ -260,6 +110,10 @@ Page.propTypes = {
  * HOC of the OrderPage. Wraps the generic 'Page' component
  * to implement 'Order' specific data and display
  * @param {React.Component} WrappedComponent 
+ * 
+ * @todo Refine filter method
+ * @todo Add recursive filtering (return a filtered result-set, to filter again. Multiple filters seperated by commas, i.e.)
+ * @todo Perhaps add dropdown-buttons for filterbox, to change context of filtering.
  */
 function ordersPageHOC(WrappedComponent){
     return class OrdersMasterDetailPage extends React.Component {
@@ -272,11 +126,61 @@ function ordersPageHOC(WrappedComponent){
         }
         
         filterOrders(filter){
-            console.log("HOC: Handle filter items" + filter)
-            return this.props.orders
+            //console.log("HOC: Handle filter items" + filter)
+            return this.props.orders.filter( order => {
+
+                // TEXT FILTERING
+                if(isNaN(filter)){
+
+                    // YYYY-M(M) || YYYY-M(M)-D(D)
+                    if(/^(20\d{2}-\d{1,2})$|^(20\d{2}-\d{1,2}-\d{1,2})$/.test(filter)) {
+                        const parts = filter.split("-")
+                        const day = parseInt(parts[2], 10)
+                        const month = parseInt(parts[1], 10)
+                        const year = parseInt(parts[0], 10)
+
+                        const orderDate = order.created_at.split('-')
+                        if(!day && orderDate[0] == year && orderDate[1] == month) {
+                            console.log("Filtering by order created date (YYYY-MM), is NAN")
+                            return true
+                        } else if( orderDate[0] == year && orderDate[1] == month && orderDate[2].indexOf(day) !== -1) {
+                            console.log("Filtering by order created date (YYYY-MM-DD), is NAN")
+                            return true
+                        }
+                        
+                    } else {
+                        if(order.client.name.toLowerCase().indexOf(filter.toLowerCase()) !== -1 || 
+                            order.registrar.name.toLowerCase().indexOf(filter.toLowerCase()) !== -1){
+                            console.log("Filtering by order-client name OR registrar name")
+                            return true
+                        }
+                    }
+                } else { // NUMERIC FILTERING
+                    
+                    // YYYY
+                    if(/^(\d{4})$/.test(filter)) { 
+                        console.log("Filtering by order created date, IS NUMBER")
+                        // Filter by order created date
+                        const year = parseInt(filter, 10)
+                        if(order.created_at.split('-')[0] == year){
+                            // matches year
+                            return true
+                        }
+                    } 
+
+                    // Filter by code
+                    if(order.code.indexOf(filter) !== -1){
+                        console.log("Filtering by order code")
+                        return true
+                    }
+                }
+                return false
+            })
+            //return this.props.orders
         }
         updateOrders(){
-            console.log("HOC: Update order")
+            //console.log("HOC: Update order")
+            this.props.dispatch(clientsFetchAll())
             this.props.dispatch(ordersFetchAll())
         }
         updateSelectedItem(e){
@@ -311,8 +215,7 @@ function ordersPageHOC(WrappedComponent){
                         <OrdersMasterList />
                     </MasterPane>
                     <DetailPane>
-                        {/* <OrdersDetail /> */}
-                        <p>Detail pane</p>
+                        <OrderDetailPane order={this.props.selectedOrder} />
                     </DetailPane>
                 </WrappedComponent>
             )

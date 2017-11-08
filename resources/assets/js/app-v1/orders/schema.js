@@ -1,12 +1,12 @@
 import {schema, normalize} from 'normalizr'
 
+import { clientSchema } from '../clients/schema'
+import { userSchema } from '../auth/schema'
+
 /** Schema for orders table */
-/*
-export const orderSchema = new schema.Entity('orders')
-export const orderListSchema = { orders: [orderSchema]}
-*/
 export const orderSchema = new schema.Entity('orders')
 export const orderListSchema = new schema.Array(orderSchema)
+
 
 /** Normalizer for orders table */
 export const ordersNormalizer = (data) => {

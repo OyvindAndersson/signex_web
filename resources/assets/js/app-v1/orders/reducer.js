@@ -60,6 +60,7 @@ function ordersUiReducer( state = {
         case types.ORDERS_PAGE_SELECTED_MASTER_ID:{
             return { ...state, selectedOrderId: action.payload}
         }
+        
         default:
         return state
     }

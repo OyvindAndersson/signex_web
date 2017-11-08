@@ -51,6 +51,13 @@ class ClientDataSelectItem extends React.Component {
     }
 }
 
+/**-------------------------------------------------
+ * Client Create Inline Form View
+ * -------------------------------------------------
+ * Inline/navbar form for quickly creating new clients
+ * 
+ * @todo Auto-focus / tab to list when results show, so we can navigate the results with up/down/tab keys
+ */
 class ClientCreateInlineFormView extends React.Component {
      constructor(props){
          super(props)

@@ -33,7 +33,7 @@ Route::group(['middleware' => 'jwt.auth'], function (){
     Route::post('clients/create', "ClientController@store");
 
     Route::get('orders/{id?}', function($id = null) {
-        $orders = Order::orderBy('created_at')->get();
+        $orders = Order::orderBy('created_at')->with(['client', 'registrar'])->get();
         return response()->json(['orders' => $orders]);
     });
 });

@@ -22,6 +22,10 @@ class Order extends Model
         'client_id', 'client_ref_id', 'user_id', 'is_quote', 'status_id', 'due_at',
     ];
 
+    public function registrar()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 
     public function client()
     {

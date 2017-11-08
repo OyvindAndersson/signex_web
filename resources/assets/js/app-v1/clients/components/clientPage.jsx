@@ -21,6 +21,8 @@ import ClientDetailPane from './clientDetailPane'
  * Clients page root
  * -------------------------------------------------
  * 
+ * @todo Implement master/detail generic components
+ * from 'Common' module; which is based on this impl.
  */
 class ClientsPage extends React.Component {
     constructor(props){
