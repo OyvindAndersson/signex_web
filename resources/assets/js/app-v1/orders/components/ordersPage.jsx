@@ -16,8 +16,8 @@ import {getSelectedOrderUI, getDenormalizedOrders} from '../selectors'
  * TODOS
  * -------------------------------------------------
  * 
- * - Show order info on ItemLink, and detail pane
- * 
+ * - Show order info on detail pane
+ * - Move generic components to Common module
  * 
  * 
  */
@@ -79,15 +79,9 @@ class MasterItemListItem extends React.Component {
     }
     render(){
         const classes = `list-group-item list-group-item-action ${this.state.active ? 'active' : ''}`
-
-        const childrenWithProps = React.Children.map(this.props.children, (child) => 
-            React.cloneElement(child, {
-                item: this.props.item
-            })
-        );
         return(
             <a href="#" className={classes} onClick={this.props.onClick} data-id={this.props.item.id}>
-                THIS IS IT!
+                {this.props.children}
             </a>
         )
     }
@@ -117,7 +111,9 @@ class OrdersMasterList extends React.Component {
                     key={item.id} 
                     item={item} 
                     active={active}
-                    onClick={handleItemSelectionChanged} />
+                    onClick={handleItemSelectionChanged}>
+                    <h6>{item.code}</h6>
+                </MasterItemListItem>
             )
         })
 
@@ -130,7 +126,10 @@ class OrdersMasterList extends React.Component {
 }
 OrdersMasterList.propTypes = {
     items: PropTypes.array,
-    selectedItemId: PropTypes.number,
+    selectedItemId: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.number
+    ]),
     handleItemSelectionChanged: PropTypes.func
 }
 
@@ -199,7 +198,10 @@ class MasterPane extends React.Component {
 MasterPane.propTypes = {
     items: PropTypes.array.isRequired,
     selectedItem: PropTypes.object,
-    selectedItemId: PropTypes.number,
+    selectedItemId: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.number
+    ]),
 
     updateItems: PropTypes.func.isRequired,
     updateSelectedItem: PropTypes.func.isRequired,
@@ -251,6 +253,14 @@ Page.propTypes = {
     pageTitle: PropTypes.string
 }
 
+/**-------------------------------------------------
+ * Orders Page Higher Order Component
+ * -------------------------------------------------
+ * 
+ * HOC of the OrderPage. Wraps the generic 'Page' component
+ * to implement 'Order' specific data and display
+ * @param {React.Component} WrappedComponent 
+ */
 function ordersPageHOC(WrappedComponent){
     return class OrdersMasterDetailPage extends React.Component {
         constructor(props){
@@ -271,8 +281,10 @@ function ordersPageHOC(WrappedComponent){
         }
         updateSelectedItem(e){
             console.log("HOC: Update selected item")
-            // set prop for detailPane: selectedItem
-            console.log(e.target.dataset)
+            this.props.dispatch({
+                type: actionTypes.ORDERS_PAGE_SELECTED_MASTER_ID,
+                payload: e.currentTarget.dataset.id
+            })
         }
 
         render(){
