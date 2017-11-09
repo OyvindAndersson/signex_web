@@ -1,10 +1,11 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom'
+import {Route, Link, Redirect, Switch, withRouter} from 'react-router-dom'
 import PropTypes from 'prop-types'
 import {denormalize, schema} from 'normalizr'
-import { Nav, NavLink, NavItem, Collapse, Button } from 'reactstrap'
+import moment from 'moment'
 import { toast } from 'react-toastify';
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
 
 import {ordersFetchAll} from '../actions'
 import {clientsFetchAll} from '../../clients/actions'
@@ -12,7 +13,8 @@ import actionTypes from '../actionTypes'
 import {getSelectedOrderUI, getDenormalizedOrders} from '../selectors'
 
 import Page from '../../common/components/page'
-import { DetailPane, MasterPane, MasterItemListItem } from '../../common/components/masterDetailPage'
+import PageSubNavbar from '../../common/components/pageSubNavbar'
+import { DetailPane, MasterPane, MasterItemListItem, EmptyDetailPane } from '../../common/components/masterDetailPage'
 
 /**-------------------------------------------------
  * Orders Master List
@@ -34,19 +36,27 @@ class OrdersMasterList extends React.Component {
         const renderItems = items.map( item => {
             const active = item.id == selectedItemId
             const orderDateText = item.created_at.split('-')
+            
+            const due = moment(item.due_at)
+            const now = moment()
+            const dueIn = due.diff(now, 'days') // days until due
+            const humanDueIn = due.from(now) // display text
+
+            const severityClass = (dueIn < 4 && dueIn >= 2) ? 'bg-warning text-white' : ( dueIn <= 1 ? 'bg-danger text-white' : '')
+
             return (
                 <MasterItemListItem 
                     key={item.id} 
                     item={item} 
                     active={active}
-                    classes={'flex-column align-items-start'}
+                    classes={`flex-column align-items-start`}
                     onClick={handleItemSelectionChanged}>
 
                     <div className="d-flex w-100 justify-content-between">
                         <h5 className="mb-1" style={{ fontSize: 14 +'px'}}><strong>#{item.code}</strong></h5>
-                        <small >{`${orderDateText[1]}, ${orderDateText[0]}`}</small>
+                        <span className={`badge badge-info ${severityClass}`}>{`Due ${humanDueIn}`}</span>
                     </div>
-                    <p className="mb-1">{item.client.name}</p>
+                    <p className="orders-master-list-item-client mb-1 font-weight-bold">{item.client.name}</p>
                     <small>Reg. by: {item.registrar.name}</small>
 
                 </MasterItemListItem>
@@ -79,32 +89,66 @@ OrdersMasterList.propTypes = {
 class OrderDetailPane extends React.Component {
     render() {
         const {order} = this.props
-        if(!order){
-            return(
-                <div className="row align-items-center">
-                    <div className="col"></div>
-                    <div className="col align-self-center">
-                        <div className="empty-title">Select an order</div>
-                    </div>
-                    <div className="col"></div>
+        return(
+            <div className="row align-items-center">
+                <div className="col">
+                    <h2>{order.client.name} <small>#{order.code}</small></h2>
+                    <hr />
+
                 </div>
-            )
-        } else {
-            return(
-                <div className="row align-items-center">
-                    <div className="col">
-                        <p>I have an order!</p>
-                        <p>From: {order.registrar.name}, regarding {order.client.name} ({order.client.org_nr})</p>
-                    </div>
-                </div>
-            )
-        }
-        
+            </div>
+        )
     }
 }
 
 /**-------------------------------------------------
- * Orders Page Higher Order Component
+ * Create Order view (/orders/create)
+ * -------------------------------------------------
+ * 
+ */
+class CreateOrder extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+          modal: true
+        };
+    
+        this.toggle = this.toggle.bind(this);
+      }
+
+      componentDidMount(){
+          this.toggle()
+      }
+    
+      toggle() {
+        this.setState({
+          modal: !this.state.modal
+        }, () => {
+            if(!this.state.modal) {
+
+            }
+        })
+      }
+    render(){
+        return(
+        <div>
+            <form>
+            <div className="form-group">
+              <label htmlFor="formGroupExampleInput">Example label</label>
+              <input type="text" className="form-control" id="formGroupExampleInput" placeholder="Example input"/>
+            </div>
+            <div className="form-group">
+              <label htmlFor="formGroupExampleInput2">Another label</label>
+              <input type="text" className="form-control" id="formGroupExampleInput2" placeholder="Another input"/>
+            </div>
+          </form>
+        </div>
+        )
+    }
+}
+
+/**-------------------------------------------------
+ * Orders Page Higher Order Component (/orders/)
  * -------------------------------------------------
  * 
  * HOC of the OrderPage. Wraps the generic 'Page' component
@@ -192,9 +236,19 @@ function ordersPageHOC(WrappedComponent){
         }
 
         render(){
-            const pageProps = {
-                pageTitle: "My orders page"
+            const {selectedOrder, computedMatch, match, dispatch} = this.props 
+
+            /**
+             * Props specific to the Order page sub-navbar
+             */
+            const pageNavbarProps = {
+                pageLinks: [ 
+                    { title: "My orders page", props: { to: `${match.url}`, tag: Link }, strong: true },
+                    { title: "Create new", props: { to: `${match.url}/create`, tag: Link }} 
+                ]
             }
+
+            /** Most logic is tied together by master pane */
             const masterPaneProps = {
                 items: this.props.orders,
                 selectedItem: this.props.selectedOrder,
@@ -209,15 +263,39 @@ function ordersPageHOC(WrappedComponent){
                 }
             }
 
+            
+            //const {computedMatch, isAuthenticated, match, user, dispatch} = this.props
             return (
-                <WrappedComponent {...this.props} {...pageProps}>
-                    <MasterPane {...masterPaneProps}>
-                        <OrdersMasterList />
-                    </MasterPane>
-                    <DetailPane>
-                        <OrderDetailPane order={this.props.selectedOrder} />
-                    </DetailPane>
-                </WrappedComponent>
+                <div>
+                    <PageSubNavbar {...pageNavbarProps}>
+                    </PageSubNavbar>
+                    
+                    {/* ORDERS - INDEX */}
+                    <Route exact path={`${match.url}`} render={ routeProps => (
+                        <WrappedComponent {...this.props} fluid={true}>
+                            <MasterPane {...masterPaneProps}>
+                                <OrdersMasterList />
+                            </MasterPane>
+                            <DetailPane>
+                            { selectedOrder ? (
+                                <OrderDetailPane order={selectedOrder} />
+                            ) : (
+                                <EmptyDetailPane>
+                                </EmptyDetailPane>
+                            ) }
+                            </DetailPane>
+                        </WrappedComponent>
+                    )} />
+                    
+                    {/* ORDERS/CREATE */}
+                    <Route path={`${match.url}/create`} render={ routeProps => (
+                        <WrappedComponent {...this.props} fluid={false}>
+                            <CreateOrder {...routeProps} /> 
+                        </WrappedComponent>
+                    )} />
+
+                    
+                </div>
             )
         }
     }
@@ -227,6 +305,7 @@ function ordersPageHOC(WrappedComponent){
         selectedOrderId: PropTypes.number.isRequired
     }
 }
+
 
 export default withRouter(connect( state => ({
     orders: getDenormalizedOrders(state),

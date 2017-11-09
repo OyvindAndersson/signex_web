@@ -12,6 +12,10 @@
 @import "bootstrap/scss/bootstrap";
 @import 'react-toastify/src/scss/main';
 
+.badge {
+    border-radius: 0;
+}
+
 html {
     position: relative;
     min-height: 100%;
@@ -32,6 +36,23 @@ body {
   
 #__bs_notify__ {
     top: 80% !important;
+}
+
+#master-pane {
+
+    .list-group {
+        height:690px;
+        overflow-y:auto;
+        overflow-x: hidden;
+
+        @include media-breakpoint-down(sm) { 
+            height:100px;
+         }
+    }
+
+    .orders-master-list-item-client {
+        text-overflow:ellipsis;
+    }
 }
 
 #detail-pane {

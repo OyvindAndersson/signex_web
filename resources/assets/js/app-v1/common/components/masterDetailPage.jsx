@@ -20,9 +20,7 @@ export class MasterItemListItem extends React.Component {
         }
     }
     componentWillReceiveProps(newProps){
-        if(newProps.active !== this.props.active){
-            this.setState({ active: newProps.active })
-        }
+        this.setState({ active: newProps.active })
     }
     render(){
         const {classes} = this.props
@@ -147,3 +145,23 @@ export class DetailPane extends React.Component {
     }
 }
 
+/**-------------------------------------------------
+ * Detail Pane
+ * -------------------------------------------------
+ * 
+ * @param {object} props 
+ * 
+ * @todo Show appropriate message if no items are in master list.
+ */
+export const EmptyDetailPane = (props) => {
+    return (
+        <div className="row align-items-center">
+            <div className="col"></div>
+            <div className="col align-self-center">
+                <div className="empty-title">{"<-"} Select something!</div>
+                {props.children}
+            </div>
+            <div className="col"></div>
+        </div>
+    )
+}
