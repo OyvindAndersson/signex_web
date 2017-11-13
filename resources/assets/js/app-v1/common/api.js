@@ -48,8 +48,9 @@ export const apiRequest = (endpoint, baseAction, requestPayload = null, normaliz
         })
 
         // do the async request to API
-        return axios.get(`api/${endpoint}`, { headers: apiRequestHeaders() })
+        return axios.get(`/api/${endpoint}`, { headers: apiRequestHeaders() })
             .then((response) => {
+                console.log(response)
                 if(normalizer && typeof normalizer === 'function'){
                     return dispatch({
                         type: `${baseAction}${API_SUCCESS}`,
@@ -64,6 +65,7 @@ export const apiRequest = (endpoint, baseAction, requestPayload = null, normaliz
                 }
             })
             .catch((err) => {
+                
                 return dispatch({
                     type: `${baseAction}${API_REJECTED}`,
                     payload: { message: err.message, reason: err.response ? err.response.data : '' }
@@ -102,7 +104,7 @@ export const apiPostRequest = (endpoint, baseAction, requestPayload, normalizer 
         })
 
         // do the async request to API
-        return axios.post(`api/${endpoint}`, requestPayload, { headers: apiRequestHeaders() })
+        return axios.post(`/api/${endpoint}`, requestPayload, { headers: apiRequestHeaders() })
             .then((response) => {
                 if(normalizer && typeof normalizer === 'function'){
                     return dispatch({

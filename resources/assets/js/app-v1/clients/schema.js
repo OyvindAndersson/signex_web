@@ -10,6 +10,7 @@ export const clientListSchema = new schema.Array(clientSchema)
 
 /** Normalizer for clients table */
 export const clientsNormalizer = (data) => {
+    console.log(data)
     const normalizedData = normalize(data.clients, clientListSchema)
 
     return {

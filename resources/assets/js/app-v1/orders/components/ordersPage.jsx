@@ -15,6 +15,7 @@ import {getSelectedOrderUI, getDenormalizedOrders} from '../selectors'
 import Page from '../../common/components/page'
 import PageSubNavbar from '../../common/components/pageSubNavbar'
 import { DetailPane, MasterPane, MasterItemListItem, EmptyDetailPane } from '../../common/components/masterDetailPage'
+import CreateOrderView from './createOrderView'
 
 /**-------------------------------------------------
  * Orders Master List
@@ -97,52 +98,6 @@ class OrderDetailPane extends React.Component {
 
                 </div>
             </div>
-        )
-    }
-}
-
-/**-------------------------------------------------
- * Create Order view (/orders/create)
- * -------------------------------------------------
- * 
- */
-class CreateOrder extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-          modal: true
-        };
-    
-        this.toggle = this.toggle.bind(this);
-      }
-
-      componentDidMount(){
-          this.toggle()
-      }
-    
-      toggle() {
-        this.setState({
-          modal: !this.state.modal
-        }, () => {
-            if(!this.state.modal) {
-
-            }
-        })
-      }
-    render(){
-        return(
-        <div>
-            <form>
-            <div className="form-group">
-              <label htmlFor="formGroupExampleInput">Example label</label>
-              <input type="text" className="form-control" id="formGroupExampleInput" placeholder="Example input"/>
-            </div>
-            <div className="form-group">
-              <label htmlFor="formGroupExampleInput2">Another label</label>
-              <input type="text" className="form-control" id="formGroupExampleInput2" placeholder="Another input"/>
-            </div>
-          </form>
-        </div>
         )
     }
 }
@@ -290,7 +245,7 @@ function ordersPageHOC(WrappedComponent){
                     {/* ORDERS/CREATE */}
                     <Route path={`${match.url}/create`} render={ routeProps => (
                         <WrappedComponent {...this.props} fluid={false}>
-                            <CreateOrder {...routeProps} /> 
+                            <CreateOrderView {...routeProps} /> 
                         </WrappedComponent>
                     )} />
 
