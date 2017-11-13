@@ -1,14 +1,43 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import Select from 'react-select'
+import { Form, Text, FormField } from 'react-form'
 
 import {clientsFetchAll} from '../../clients/actions'
 import {getDenormalizedClients} from '../../clients/selectors'
+
+class SelectWrapper extends React.Component {
+    render() {
+        const {fieldApi, options, ...rest} = this.props
+        const {
+            getValue, getError, getWarning, getSuccess,
+            setValue, setTouched
+        } = fieldApi
+
+        return(
+            <div>
+                <Select 
+                    value={getValue()}
+                    onChange={(e) => {
+                        setValue(e ? e.value : e)
+                    }}
+                    options={options}
+                    {...rest} />
+            </div>
+        )
+    }
+}
+const SelectField = FormField(SelectWrapper)
+
 
 /**-------------------------------------------------
  * Create Order view (/orders/create)
  * -------------------------------------------------
  * 
+ * @todo Store form-state in localstorage/redux *if* the 
+ * form is not set to "submitted = true", so that the
+ * user can return to the page, and continue filling
+ * fields.
  */
 class CreateOrderView extends React.Component {
     constructor(props) {
@@ -46,53 +75,50 @@ class CreateOrderView extends React.Component {
         })
     }
     handleSubmit(e){
-        e.preventDefault()
-        /*
-        e.preventDefault()
-        e.persist()
+        console.log("FORM SUBMITTED")
         console.log(e)
-        for(var i = 0; i < e.target.length; i++){
-            console.log(e.target[i].defaultValue, e.target[i].name)
-        }*/
     }
     render(){
         // Map the clients to the Select required format (value - label)
         const clientOptions = this.props.clients.map( client => {
             return { value: client.id, label: client.name }
         })
+        // FIXME: Fetch api
+        const users = [
+            { value: 1, label: "Øyvind Andersson"},
+            { value: 2, label: "Gianni Rebaudo"},
+            { value: 3, label: "Stinni Atlason"}
+        ]
 
         return(
         <div className="col-md-12">
             <div className="row">
                 <div className="col-md-6">
-                    <form onSubmit={this.handleSubmit} noValidate>
-                        <div className="form-group">
-                            <label htmlFor="clientInput">Client</label>
-                            <Select 
-                                name="order[client_id]"
-                                value={this.state.selectedClientId} 
-                                options={clientOptions}
-                                onChange={this.handleSelectChange}
-                                required={true}
-                            />
-                         </div>
-                        <div className="form-group">
-                            <label htmlFor="userInput">Registrar</label>
-                            <input 
-                                name="order[user_id]"
-                                type="text" 
-                                className="form-control" 
-                                id="userInput" 
-                                value={this.state['order[user_id]']}
-                                onChange={this.handleInputChange}
-                                placeholder="Another input"
-                                required />
-                        </div>
+                    <Form onSubmit={this.handleSubmit}>
+                    { formApi => (
+                        <form onSubmit={formApi.submitForm}>
+                            <div className="form-group">
+                                <label htmlFor="clientInput">Client</label>
+                                <SelectField 
+                                    field="order.client" 
+                                    id="clientInput" 
+                                    options={clientOptions}
+                                    required />
 
-                        <div className="form-group">
-                            <button className="btn btn-primary" type="submit">Lagre</button>
-                        </div>
-                    </form>
+                                <label htmlFor="userInput">Registrar</label>
+                                <SelectField 
+                                    field="order.user_id" 
+                                    id="userInput"
+                                    options={users}
+                                    required />
+                            </div>
+
+                            <div className="form-group">
+                                <button className="btn btn-primary" type="submit">Lagre</button>
+                            </div>
+                        </form>
+                    )}
+                    </Form>
                 </div>
             </div>
         </div>
