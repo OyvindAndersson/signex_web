@@ -15,4 +15,9 @@ mix.react('resources/assets/js/index.js', 'public/js/app.js')
    .sass('resources/assets/sass/app.scss', 'public/css', {
     includePaths: ['node_modules']
    })
+   .styles([
+       'node_modules/react-datetime/css/react-datetime.css',
+       'node_modules/open-iconic/font/css/open-iconic-bootstrap.css'
+    ], 'public/css/vendor.css')
+    .copy('node_modules/open-iconic/font/fonts', 'public/fonts')
    .browserSync('signex.app');

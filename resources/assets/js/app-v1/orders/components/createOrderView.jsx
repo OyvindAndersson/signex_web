@@ -1,33 +1,14 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import Select from 'react-select'
-import { Form, Text, FormField } from 'react-form'
+import { Form, Text } from 'react-form'
+import moment from 'moment'
+
+import {SelectField, DateTimeField} from '../../utils/react-form-hocs'
+import {LabeledFormGroup, FormGroup} from '../../utils/bootstrap'
 
 import {clientsFetchAll} from '../../clients/actions'
 import {getDenormalizedClients} from '../../clients/selectors'
-
-class SelectWrapper extends React.Component {
-    render() {
-        const {fieldApi, options, ...rest} = this.props
-        const {
-            getValue, getError, getWarning, getSuccess,
-            setValue, setTouched
-        } = fieldApi
-
-        return(
-            <div>
-                <Select 
-                    value={getValue()}
-                    onChange={(e) => {
-                        setValue(e ? e.value : e)
-                    }}
-                    options={options}
-                    {...rest} />
-            </div>
-        )
-    }
-}
-const SelectField = FormField(SelectWrapper)
 
 
 /**-------------------------------------------------
@@ -83,6 +64,13 @@ class CreateOrderView extends React.Component {
         const clientOptions = this.props.clients.map( client => {
             return { value: client.id, label: client.name }
         })
+
+        // Auto-select the currently authed user as the "our ref" selection.
+        const authUserId = this.props.user ? this.props.user.id : null
+
+        const dueAt = moment().add(7, 'days')
+        const now = moment()
+        
         // FIXME: Fetch api
         const users = [
             { value: 1, label: "Øyvind Andersson"},
@@ -97,25 +85,37 @@ class CreateOrderView extends React.Component {
                     <Form onSubmit={this.handleSubmit}>
                     { formApi => (
                         <form onSubmit={formApi.submitForm}>
-                            <div className="form-group">
-                                <label htmlFor="clientInput">Client</label>
+
+                            <LabeledFormGroup htmlFor="clientInput" label="Client" rowFormat>
                                 <SelectField 
                                     field="order.client" 
                                     id="clientInput" 
-                                    options={clientOptions}
-                                    required />
-
-                                <label htmlFor="userInput">Registrar</label>
+                                    options={clientOptions} />
+                            </LabeledFormGroup>
+                            <LabeledFormGroup htmlFor="userInput" label="Our ref" rowFormat>
                                 <SelectField 
                                     field="order.user_id" 
                                     id="userInput"
                                     options={users}
-                                    required />
-                            </div>
+                                    value={authUserId} />
+                            </LabeledFormGroup>
+                            <LabeledFormGroup htmlFor="createdAtInput" label="Registration date" rowFormat>
+                                <DateTimeField 
+                                    field="order.registered_at"
+                                    id="createdAtInput"
+                                    defaultValue={now} />
+                            </LabeledFormGroup>
+                            <LabeledFormGroup htmlFor="dueAtInput" label="Due date" rowFormat>
+                                <DateTimeField 
+                                    field="order.due_at"
+                                    id="dueAtInput"
+                                    defaultValue={dueAt} />
+                            </LabeledFormGroup>
 
-                            <div className="form-group">
+                            <FormGroup>
                                 <button className="btn btn-primary" type="submit">Lagre</button>
-                            </div>
+                            </FormGroup>
+
                         </form>
                     )}
                     </Form>
