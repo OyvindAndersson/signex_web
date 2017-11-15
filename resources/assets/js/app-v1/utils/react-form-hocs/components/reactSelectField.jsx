@@ -12,7 +12,7 @@ import { Form, Text, FormField } from 'react-form'
  */
 class SelectWrapper extends React.Component {
     render() {
-        const {fieldApi, options, onChange, ...rest} = this.props
+        const {fieldApi, options, onChange, value, ...rest} = this.props
         const {
             getValue, getError, getWarning, getSuccess,
             setValue, setTouched
@@ -21,7 +21,7 @@ class SelectWrapper extends React.Component {
         return(
             <div>
                 <Select 
-                    value={getValue()}
+                    value={getValue() || setValue(value)}
                     onChange={(e) => {
                         setValue(e ? e.value : e)
                         if(onChange){

@@ -16,6 +16,7 @@ const defaultProps = {
  * Wraps the react-datetime component for use
  * with react-form
  * 
+ * @todo DefaultValue is not set for react-form. Need to setValue() somewhere...
  * @see react-datetime API for props and options https://github.com/YouCanBookMe/react-datetime
  */
 class DateTimeWrapper extends React.Component {
@@ -25,7 +26,7 @@ class DateTimeWrapper extends React.Component {
         this.renderInput = this.renderInput.bind(this)
     }
     render(){
-        const { fieldApi, onChange, onBlur, ...rest } = this.props
+        const { fieldApi, onChange, onBlur, value, ...rest } = this.props
         const { getValue, setValue, setTouched } = fieldApi
         
         // We need to format for every setValue, or else it (weirdly) clears
@@ -35,7 +36,7 @@ class DateTimeWrapper extends React.Component {
 
         return(
             <DateTime {...rest} 
-                value={getValue()} 
+                value={getValue() || setValue(value)} 
                 onChange={ e => {
                     setValue(e.format(fullFormat))
                     if(onChange){
