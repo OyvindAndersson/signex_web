@@ -37922,7 +37922,6 @@ function ordersPageHOC(WrappedComponent) {
                     }
                     return false;
                 });
-                //return this.props.orders
             }
         }, {
             key: 'updateOrders',
@@ -38006,12 +38005,12 @@ function ordersPageHOC(WrappedComponent) {
 
         return OrdersMasterDetailPage;
     }(__WEBPACK_IMPORTED_MODULE_0_react___default.a.Component);
-    OrdersMasterDetailPage.propTypes = {
-        orders: __WEBPACK_IMPORTED_MODULE_3_prop_types___default.a.array.isRequired,
-        selectedOrder: __WEBPACK_IMPORTED_MODULE_3_prop_types___default.a.object.isRequired,
-        selectedOrderId: __WEBPACK_IMPORTED_MODULE_3_prop_types___default.a.number.isRequired
-    };
 }
+ordersPageHOC.propTypes = {
+    orders: __WEBPACK_IMPORTED_MODULE_3_prop_types___default.a.array.isRequired,
+    selectedOrder: __WEBPACK_IMPORTED_MODULE_3_prop_types___default.a.object.isRequired,
+    selectedOrderId: __WEBPACK_IMPORTED_MODULE_3_prop_types___default.a.number.isRequired
+};
 
 /* harmony default export */ __webpack_exports__["a"] = (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_react_router_dom__["c" /* withRouter */])(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1_react_redux__["connect"])(function (state) {
     return {
@@ -38409,6 +38408,24 @@ var DateTimeWrapper = function (_React$Component) {
     }
 
     _createClass(DateTimeWrapper, [{
+        key: 'componentWillReceiveProps',
+        value: function componentWillReceiveProps(next) {
+            var fieldApi = next.fieldApi,
+                defaultValue = next.defaultValue;
+            var setValue = fieldApi.setValue,
+                getValue = fieldApi.getValue;
+
+
+            var fullFormat = '' + this.props.dateFormat + this.props.timeFormat;
+
+            // If initially we don't have a value set, we must hack it in here
+            // for react-form to read it as submitted data, if the user dont
+            // manually change the default value interactively.
+            if (!getValue()) {
+                setValue(defaultValue.format(fullFormat));
+            }
+        }
+    }, {
         key: 'render',
         value: function render() {
             var _props = this.props,
@@ -38429,7 +38446,7 @@ var DateTimeWrapper = function (_React$Component) {
             var fullFormat = '' + this.props.dateFormat + this.props.timeFormat;
 
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_react_datetime___default.a, _extends({}, rest, {
-                value: getValue() || setValue(value),
+                value: getValue(),
                 onChange: function onChange(e) {
                     setValue(e.format(fullFormat));
                     if (_onChange) {
@@ -38461,6 +38478,14 @@ var DateTimeWrapper = function (_React$Component) {
                     )
                 )
             );
+        }
+    }, {
+        key: 'componentDidCatch',
+        value: function componentDidCatch(error, info) {
+            // Display fallback UI
+            //this.setState({ hasError: true });
+            // You can also log the error to an error reporting service
+            console.log("ÆRROR", error, info);
         }
     }]);
 
@@ -38518,6 +38543,19 @@ var SelectWrapper = function (_React$Component) {
     }
 
     _createClass(SelectWrapper, [{
+        key: 'componentWillReceiveProps',
+        value: function componentWillReceiveProps(next) {
+            var fieldApi = next.fieldApi,
+                value = next.value;
+            var setValue = fieldApi.setValue,
+                getValue = fieldApi.getValue;
+
+
+            if (!getValue()) {
+                setValue(value);
+            }
+        }
+    }, {
         key: 'render',
         value: function render() {
             var _props = this.props,
@@ -38539,7 +38577,7 @@ var SelectWrapper = function (_React$Component) {
                 'div',
                 null,
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_react_select___default.a, _extends({
-                    value: getValue() || setValue(value),
+                    value: getValue(),
                     onChange: function onChange(e) {
                         setValue(e ? e.value : e);
                         if (_onChange) {

@@ -25,6 +25,21 @@ class DateTimeWrapper extends React.Component {
 
         this.renderInput = this.renderInput.bind(this)
     }
+
+    componentWillReceiveProps(next){
+        const { fieldApi, defaultValue } = next
+        const { setValue, getValue } = fieldApi
+
+        const fullFormat = `${this.props.dateFormat}${this.props.timeFormat}`
+
+        // If initially we don't have a value set, we must hack it in here
+        // for react-form to read it as submitted data, if the user dont
+        // manually change the default value interactively.
+        if(!getValue()){
+            setValue(defaultValue.format(fullFormat))
+        }
+    }
+
     render(){
         const { fieldApi, onChange, onBlur, value, ...rest } = this.props
         const { getValue, setValue, setTouched } = fieldApi
@@ -36,7 +51,7 @@ class DateTimeWrapper extends React.Component {
 
         return(
             <DateTime {...rest} 
-                value={getValue() || setValue(value)} 
+                value={getValue()}
                 onChange={ e => {
                     setValue(e.format(fullFormat))
                     if(onChange){
@@ -64,6 +79,13 @@ class DateTimeWrapper extends React.Component {
             </div>  
         )
     }
+
+    componentDidCatch(error, info) {
+        // Display fallback UI
+        //this.setState({ hasError: true });
+        // You can also log the error to an error reporting service
+        console.log("ÆRROR",error, info);
+      }
 }
 DateTimeWrapper.defaultProps = defaultProps
 

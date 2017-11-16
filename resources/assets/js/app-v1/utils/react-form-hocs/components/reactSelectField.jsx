@@ -11,6 +11,16 @@ import { Form, Text, FormField } from 'react-form'
  * API for general use.
  */
 class SelectWrapper extends React.Component {
+
+    componentWillReceiveProps(next){
+        const { fieldApi, value } = next
+        const { setValue, getValue } = fieldApi
+
+        if(!getValue()){
+            setValue(value)
+        }
+    }
+    
     render() {
         const {fieldApi, options, onChange, value, ...rest} = this.props
         const {
@@ -21,7 +31,7 @@ class SelectWrapper extends React.Component {
         return(
             <div>
                 <Select 
-                    value={getValue() || setValue(value)}
+                    value={getValue()}
                     onChange={(e) => {
                         setValue(e ? e.value : e)
                         if(onChange){

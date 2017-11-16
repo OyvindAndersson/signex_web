@@ -175,7 +175,6 @@ function ordersPageHOC(WrappedComponent){
                 }
                 return false
             })
-            //return this.props.orders
         }
         updateOrders(){
             //console.log("HOC: Update order")
@@ -254,11 +253,12 @@ function ordersPageHOC(WrappedComponent){
             )
         }
     }
-    OrdersMasterDetailPage.propTypes = {
-        orders: PropTypes.array.isRequired,
-        selectedOrder: PropTypes.object.isRequired,
-        selectedOrderId: PropTypes.number.isRequired
-    }
+    
+}
+ordersPageHOC.propTypes = {
+    orders: PropTypes.array.isRequired,
+    selectedOrder: PropTypes.object.isRequired,
+    selectedOrderId: PropTypes.number.isRequired
 }
 
 
