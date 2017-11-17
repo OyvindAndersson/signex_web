@@ -37560,23 +37560,29 @@ var CreateOrderView = function (_React$Component) {
 
             // FIXME: Fetch api
             var users = [{ value: 1, label: "Øyvind Andersson" }, { value: 2, label: "Gianni Rebaudo" }, { value: 3, label: "Stinni Atlason" }];
+            var orderTypes = [{ value: 1, label: "Misc" }, { value: 2, label: "Other" }, { value: 3, label: "Production" }];
 
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'div',
                 { className: 'col-md-12' },
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'div',
-                    { className: 'row' },
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'div',
-                        { className: 'col-md-6' },
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            __WEBPACK_IMPORTED_MODULE_3_react_form__["Form"],
-                            { onSubmit: this.handleSubmit },
-                            function (formApi) {
-                                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    'form',
-                                    { onSubmit: formApi.submitForm },
+                    __WEBPACK_IMPORTED_MODULE_3_react_form__["Form"],
+                    { onSubmit: this.handleSubmit },
+                    function (formApi) {
+                        return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'form',
+                            { onSubmit: formApi.submitForm },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'div',
+                                { className: 'row' },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    'div',
+                                    { className: 'col-md-4' },
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        'h5',
+                                        { className: 'mb-4' },
+                                        'Order details'
+                                    ),
                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                         __WEBPACK_IMPORTED_MODULE_6__utils_bootstrap__["a" /* LabeledFormGroup */],
                                         { htmlFor: 'clientInput', label: 'Client', rowFormat: true },
@@ -37596,7 +37602,7 @@ var CreateOrderView = function (_React$Component) {
                                     ),
                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                         __WEBPACK_IMPORTED_MODULE_6__utils_bootstrap__["a" /* LabeledFormGroup */],
-                                        { htmlFor: 'createdAtInput', label: 'Registration date', rowFormat: true },
+                                        { htmlFor: 'createdAtInput', label: 'Taken at:', rowFormat: true },
                                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__utils_react_form_hocs__["b" /* DateTimeField */], {
                                             field: 'order.registered_at',
                                             id: 'createdAtInput',
@@ -37604,12 +37610,55 @@ var CreateOrderView = function (_React$Component) {
                                     ),
                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                         __WEBPACK_IMPORTED_MODULE_6__utils_bootstrap__["a" /* LabeledFormGroup */],
-                                        { htmlFor: 'dueAtInput', label: 'Due date', rowFormat: true },
+                                        { htmlFor: 'dueAtInput', label: 'Due at:', rowFormat: true },
                                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__utils_react_form_hocs__["b" /* DateTimeField */], {
                                             field: 'order.due_at',
                                             id: 'dueAtInput',
                                             defaultValue: dueAt })
                                     ),
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        __WEBPACK_IMPORTED_MODULE_6__utils_bootstrap__["a" /* LabeledFormGroup */],
+                                        { htmlFor: 'typeInput', label: 'Type', rowFormat: true },
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__utils_react_form_hocs__["a" /* SelectField */], {
+                                            field: 'order.type',
+                                            id: 'typeInput',
+                                            options: orderTypes,
+                                            value: 1 })
+                                    )
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    'div',
+                                    { className: 'col-md-4' },
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        'h5',
+                                        { className: 'mb-4' },
+                                        'Order lines'
+                                    ),
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        __WEBPACK_IMPORTED_MODULE_6__utils_bootstrap__["a" /* LabeledFormGroup */],
+                                        { htmlFor: 'orderInput', label: 'Taken at:', rowFormat: true },
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__utils_react_form_hocs__["b" /* DateTimeField */], {
+                                            field: 'order.lines.0.date',
+                                            id: 'orderInput',
+                                            defaultValue: now })
+                                    )
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    'div',
+                                    { className: 'col-md-4' },
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        'h5',
+                                        { className: 'mb-4' },
+                                        'Order tasks'
+                                    )
+                                )
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'div',
+                                { className: 'row' },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    'div',
+                                    { className: 'col-md-6' },
                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                         __WEBPACK_IMPORTED_MODULE_6__utils_bootstrap__["b" /* FormGroup */],
                                         null,
@@ -37619,10 +37668,10 @@ var CreateOrderView = function (_React$Component) {
                                             'Lagre'
                                         )
                                     )
-                                );
-                            }
-                        )
-                    )
+                                )
+                            )
+                        );
+                    }
                 )
             );
         }

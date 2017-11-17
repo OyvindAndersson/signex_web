@@ -77,50 +77,83 @@ class CreateOrderView extends React.Component {
             { value: 2, label: "Gianni Rebaudo"},
             { value: 3, label: "Stinni Atlason"}
         ]
+        const orderTypes = [
+            { value: 1, label: "Misc"},
+            { value: 2, label: "Other"},
+            { value: 3, label: "Production"}
+        ]
 
         return(
         <div className="col-md-12">
-            <div className="row">
-                <div className="col-md-6">
-                    <Form onSubmit={this.handleSubmit}>
-                    { formApi => (
-                        <form onSubmit={formApi.submitForm}>
+            <Form onSubmit={this.handleSubmit}>
+            { formApi => (
+            <form onSubmit={formApi.submitForm}>
+                <div className="row">
+                    {/* Order details*/}
+                    <div className="col-md-4">
+                        <h5 className="mb-4">Order details</h5>
+                        <LabeledFormGroup htmlFor="clientInput" label="Client" rowFormat>
+                            <SelectField 
+                                field="order.client" 
+                                id="clientInput" 
+                                options={clientOptions} />
+                        </LabeledFormGroup>
+                        <LabeledFormGroup htmlFor="userInput" label="Our ref" rowFormat>
+                            <SelectField 
+                                field="order.user_id" 
+                                id="userInput"
+                                options={users}
+                                value={authUserId} />
+                        </LabeledFormGroup>
+                        <LabeledFormGroup htmlFor="createdAtInput" label="Taken at:" rowFormat>
+                            <DateTimeField 
+                                field="order.registered_at"
+                                id="createdAtInput"
+                                defaultValue={now} />
+                        </LabeledFormGroup>
+                        <LabeledFormGroup htmlFor="dueAtInput" label="Due at:" rowFormat>
+                            <DateTimeField 
+                                field="order.due_at"
+                                id="dueAtInput"
+                                defaultValue={dueAt} />
+                        </LabeledFormGroup>
+                        <LabeledFormGroup htmlFor="typeInput" label="Type" rowFormat>
+                            <SelectField 
+                                field="order.type" 
+                                id="typeInput"
+                                options={orderTypes}
+                                value={1} />
+                        </LabeledFormGroup>
+                        
+                    </div>
 
-                            <LabeledFormGroup htmlFor="clientInput" label="Client" rowFormat>
-                                <SelectField 
-                                    field="order.client" 
-                                    id="clientInput" 
-                                    options={clientOptions} />
-                            </LabeledFormGroup>
-                            <LabeledFormGroup htmlFor="userInput" label="Our ref" rowFormat>
-                                <SelectField 
-                                    field="order.user_id" 
-                                    id="userInput"
-                                    options={users}
-                                    value={authUserId} />
-                            </LabeledFormGroup>
-                            <LabeledFormGroup htmlFor="createdAtInput" label="Registration date" rowFormat>
-                                <DateTimeField 
-                                    field="order.registered_at"
-                                    id="createdAtInput"
-                                    defaultValue={now} />
-                            </LabeledFormGroup>
-                            <LabeledFormGroup htmlFor="dueAtInput" label="Due date" rowFormat>
-                                <DateTimeField 
-                                    field="order.due_at"
-                                    id="dueAtInput"
-                                    defaultValue={dueAt} />
-                            </LabeledFormGroup>
+                    {/* Products */}
+                    <div className="col-md-4">
+                        <h5 className="mb-4">Order lines</h5>
 
-                            <FormGroup>
-                                <button className="btn btn-primary" type="submit">Lagre</button>
-                            </FormGroup>
+                        <LabeledFormGroup htmlFor="orderInput" label="Taken at:" rowFormat>
+                            <DateTimeField 
+                                field="order.lines.0.date"
+                                id="orderInput"
+                                defaultValue={now} />
+                        </LabeledFormGroup>
+                    </div>
 
-                        </form>
-                    )}
-                    </Form>
+                    {/* Tasks */}
+                    <div className="col-md-4">
+                        <h5 className="mb-4">Order tasks</h5>
+                    </div>
                 </div>
-            </div>
+                <div className="row">
+                    <div className="col-md-6">
+                        <FormGroup>
+                            <button className="btn btn-primary" type="submit">Lagre</button>
+                        </FormGroup>
+                    </div>
+                </div>
+            </form>
+            )}
+            </Form>
         </div>
         )
     }
