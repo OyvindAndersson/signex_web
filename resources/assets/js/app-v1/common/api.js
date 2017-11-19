@@ -50,7 +50,7 @@ export const apiRequest = (endpoint, baseAction, requestPayload = null, normaliz
         // do the async request to API
         return axios.get(`/api/${endpoint}`, { headers: apiRequestHeaders() })
             .then((response) => {
-                console.log(response)
+                //console.log(response)
                 if(normalizer && typeof normalizer === 'function'){
                     return dispatch({
                         type: `${baseAction}${API_SUCCESS}`,

@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import {denormalize, schema} from 'normalizr'
 import {Nav, NavLink, NavItem, Collapse, Button } from 'reactstrap'
-import { toast } from 'react-toastify';
+import { toast } from 'react-toastify'
 
 import {clientsFetchAll} from '../actions'
 import actionTypes from '../actionTypes'

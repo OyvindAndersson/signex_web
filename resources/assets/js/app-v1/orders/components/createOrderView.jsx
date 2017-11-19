@@ -1,14 +1,21 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import Select from 'react-select'
-import { Form, Text } from 'react-form'
 import moment from 'moment'
 
+// presentation
+import Select from 'react-select'
+import { Form, Text } from 'react-form'
+import { UncontrolledAlert  } from 'reactstrap'
 import {SelectField, DateTimeField} from '../../utils/react-form-hocs'
 import {LabeledFormGroup, FormGroup} from '../../utils/bootstrap'
+import { toast } from 'react-toastify'
 
+// actions and selectors
 import {clientsFetchAll} from '../../clients/actions'
 import {getDenormalizedClients} from '../../clients/selectors'
+import {getDenormalizedUsers} from '../../auth/selectors'
+import {getOrderErrors} from '../selectors'
+import { ordersCreate } from "../actions"
 
 
 /**-------------------------------------------------
@@ -58,19 +65,20 @@ class CreateOrderView extends React.Component {
     handleSubmit(e){
         console.log("FORM SUBMITTED")
         console.log(e)
+
+        // format to MYSQL
+        e.order.due_at = moment(e.order.due_at, "DD.MM.Y H:m").format('YYYY-MM-DD HH:MM:SS')
+
+        const {dispatch} = this.props
+        if(dispatch){
+            dispatch(ordersCreate(e))
+        }
     }
     render(){
         // Map the clients to the Select required format (value - label)
         const clientOptions = this.props.clients.map( client => {
             return { value: client.id, label: client.name }
         })
-
-        // Auto-select the currently authed user as the "our ref" selection.
-        const authUserId = this.props.user ? this.props.user.id : null
-
-        const dueAt = moment().add(7, 'days')
-        const now = moment()
-        
         // FIXME: Fetch api
         const users = [
             { value: 1, label: "Øyvind Andersson"},
@@ -83,6 +91,11 @@ class CreateOrderView extends React.Component {
             { value: 3, label: "Production"}
         ]
 
+        // Auto-select the currently authed user as the "our ref" selection.
+        const authUserId = this.props.user ? this.props.user.id : null
+        const dueAt = moment().add(7, 'days')
+        const now = moment()
+
         return(
         <div className="col-md-12">
             <Form onSubmit={this.handleSubmit}>
@@ -94,7 +107,7 @@ class CreateOrderView extends React.Component {
                         <h5 className="mb-4">Order details</h5>
                         <LabeledFormGroup htmlFor="clientInput" label="Client" rowFormat>
                             <SelectField 
-                                field="order.client" 
+                                field="order.client_id" 
                                 id="clientInput" 
                                 options={clientOptions} />
                         </LabeledFormGroup>
@@ -131,7 +144,7 @@ class CreateOrderView extends React.Component {
                     <div className="col-md-4">
                         <h5 className="mb-4">Order lines</h5>
 
-                        <LabeledFormGroup htmlFor="orderInput" label="Taken at:" rowFormat>
+                        <LabeledFormGroup htmlFor="orderInput" label="Add at:" rowFormat>
                             <DateTimeField 
                                 field="order.lines.0.date"
                                 id="orderInput"
@@ -161,5 +174,7 @@ class CreateOrderView extends React.Component {
 
 export default connect( state => ({
     clients: getDenormalizedClients(state),
-    user: state.auth.user
+    users: getDenormalizedUsers(state),
+    user: state.auth.user,
+    errors: getOrderErrors(state)
 }))(CreateOrderView)

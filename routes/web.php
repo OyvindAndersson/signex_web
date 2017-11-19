@@ -2,6 +2,7 @@
 
 use App\User;
 use Tymon\JWTAuth\Facades\JWTAuth;
+//use JavaScript;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -12,24 +13,23 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 | contains the "web" middleware group. Now create something great!
 |
 */
-/*
-Route::get('/{path?}', function () {
-    return view('index');
-});*/
 Route::get('/', function(){
     return view('index');
 });
 
+/**
+ * Catchall web requests.
+ * JS Handles client-side routing and auth callbacks.
+ * Pass in any useful from-server bootstrap to JS here, in JavaScript::put
+ * i.e: data to hydrate redux state, etc.
+ */
 Route::any( '{catchall}', function ( $page ) {
+    
+    JavaScript::put([
+        'SHIT' => "CUNT"
+    ]);
+
     return view('index');
 } )->where('catchall', '(.*)');
 
-
-Auth::routes();
-/*
-//Route::get('/orders', 'OrderController@index')->name('orders')->middleware('auth');
-Route::resource('orders', 'OrderController')->middleware('auth');
-Route::resource('clients', 'ClientController')->middleware('auth');
-Route::resource('projects', 'ProjectController')->middleware('auth');
-
-Route::post('orderWithProject', 'OrderProjectController@store')->middleware('auth');*/
+// Auth::routes()

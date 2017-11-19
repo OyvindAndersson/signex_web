@@ -3,7 +3,7 @@
 //@import url("https://fonts.googleapis.com/css?family=Raleway:300,400,600");
 
 // Variables
-//@import "variables";
+@import "variables";
 
 //@import "material-components-web/material-components-web";
 //@import "node_modules/bootstrap/dist/css/bootstrap.css";
@@ -12,6 +12,8 @@
 @import "bootstrap/scss/bootstrap";
 @import 'react-toastify/src/scss/main';
 @import 'react-select/dist/react-select';
+
+
 
 .badge {
     border-radius: 0;

@@ -35,6 +35,8 @@ class ApiAuthController extends Controller
             if (! $user = JWTAuth::parseToken()->authenticate()) {
                 return response()->json(['user_not_found'], 404);
             }
+            // Refresh token
+            $newToken =  JWTAuth::parseToken()->refresh();
         } 
         catch (Tymon\JWTAuth\Exceptions\TokenExpiredException $e) 
         {
@@ -48,8 +50,11 @@ class ApiAuthController extends Controller
         {
             return response()->json(['token_absent'], $e->getStatusCode());
         }
+        
+        //$response->headers->set('Authorization', 'Bearer '.$newToken);
     
         // the token is valid and we have found the user via the sub claim
-        return response()->json(compact('user'));
+        // send the refreshed token back for update
+        return response()->json(compact('user', 'newToken'));
     }
 }

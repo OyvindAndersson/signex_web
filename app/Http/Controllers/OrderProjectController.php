@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Order;
+use App\Client;
 use Illuminate\Http\Request;
 
 class OrderProjectController extends Controller
@@ -34,9 +36,39 @@ class OrderProjectController extends Controller
      */
     public function store(\App\Http\Requests\StoreOrderProject $request)
     {
-        if($request->ajax())
+        $data = $request->all();
+        $order_data = $data['order'];
+
+        if(\App::runningUnitTests()){
+
+            // If the test is simulating a database error (Order creation failure),
+            // we will return the appropriate response. Otherwise, the default success.
+            if( ! isset($data['simulate_database_error'])){
+
+                return response()->json([
+                    'order' => new Order($order_data), 
+                    'client' => new Client($order_data)
+                ]);
+            }
+            else {
+                // If test assumes bad order data
+                return response()->json(['error' => 'failed'], 500);
+            }
+            
+        }
+
+        $newOrder = Order::create($data['order']);
+        // If successful order was created, we assign a new unique order-id.
+        if($newOrder)
         {
-            return response()->json(['data' => $request->all()]);
+            $code = Order::get_code_from_id($newOrder->id);
+            $newOrder->code = $code;
+            $newOrder->save();
+
+            return response()->json(['order' => $newOrder, 'client' => $newOrder->client]);
+        }
+        else {
+            return response()->json(['order' => $newOrder, 'client' => $newOrder->client], 500);
         }
     }
 

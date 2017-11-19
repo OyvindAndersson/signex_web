@@ -6,8 +6,6 @@ import {
     Card, CardText, CardBody, CardLink, CardTitle, CardSubtitle
 } from 'reactstrap'
 
-import {authFetchUsers} from '../../auth/actions'
-
 console.log("LandingPage.jsx")
 
 /**
@@ -23,9 +21,6 @@ class QuickStats extends React.Component {
     }
     componentWillReceiveProps(nextProps){
         this.setState({loaded: true})
-    }
-    componentDidMount(){
-        this.props.dispatch(authFetchUsers(null));
     }
     render(){
         const {user} = this.props

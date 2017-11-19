@@ -1,11 +1,12 @@
 import types from './actionTypes'
 import constants from './constants'
+import {API_SUCCESS, API_REJECTED} from '../common/api'
 import { jtwDecode } from 'jwt-decode'
 
 /**
  * Initial auth state
  */
-const initialState = {
+const initialAuthState = {
   user: null,
   role: constants.AUTH_ROLE_GUEST,
   token: localStorage.getItem('token') ? localStorage.getItem('token') : null,
@@ -20,7 +21,7 @@ const initialState = {
  * @param {*} state 
  * @param {*} action 
  */
-export default function(state = initialState, action) {
+function authReducer(state = initialAuthState, action) {
 
     switch (action.type) {   
       case types.AUTH_LOGIN_USER: {
@@ -39,6 +40,8 @@ export default function(state = initialState, action) {
           isAuthenticating: false,
           isAuthenticated:false, 
           error: action.payload,
+          user: null,
+          token:null,
           role: constants.AUTH_ROLE_GUEST
         }
       }
@@ -83,6 +86,7 @@ export default function(state = initialState, action) {
           isFetching: false, 
           isAuthenticated:true,
           user: action.payload.user,
+          token: action.payload.newToken, // Refreshed token
           role: constants.AUTH_ROLE_ADMIN // TODO: Get from payload!
         }
       }
@@ -103,4 +107,53 @@ export default function(state = initialState, action) {
       default:
           return state;
     }
+}
+
+const initialUsersState = {
+    isFetching: false,
+    isDirty: false,
+    byId: {},
+    allIds: []
+}
+/**
+ * 
+ * @param {*} state 
+ * @param {*} action 
+ */
+function usersReducer(state = initialUsersState, action){
+  switch(action.type){
+
+    case `${types.AUTH_FETCH_USERS}`: {
+      return {
+          ...state,
+          isFetching: true
+      }
+    }
+
+    case `${types.AUTH_FETCH_USERS}${API_SUCCESS}`: {
+      return {
+          ...state,
+          isFetching: false,
+          isDirty: false,
+          ...action.payload
+      }
+    }
+
+    case `${types.AUTH_FETCH_USERS}${API_REJECTED}`: {
+      return {
+          ...state,
+          isFetching: false,
+          byId: {},
+          allIds: []
+      }
+    }
+
+    default:
+      return state
+  }
+}
+
+export default {
+  authReducer,
+  usersReducer
 }

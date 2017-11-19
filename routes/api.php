@@ -22,20 +22,22 @@ Route::post("/login", "ApiAuthController@login");
 
 Route::group(['middleware' => 'jwt.auth'], function (){
     Route::get('authUserToken', "ApiAuthController@authUserToken");
+
     Route::get('users/{id?}', function($id = null) {
-        $users = User::all();
+        $users = User::orderBy('id')->get();
         return response()->json([ 'users' => $users ]);
     });
     Route::get('clients/{id?}', function($id = null) {
         $clients = Client::orderBy('name')->get();
         return response()->json(['clients' => $clients]);
     });
-    Route::post('clients/create', "ClientController@store");
-
     Route::get('orders/{id?}', function($id = null) {
         $orders = Order::orderBy('due_at')->with(['client', 'registrar'])->get();
         return response()->json(['orders' => $orders]);
     });
+
+    Route::post('clients/create', "ClientController@store");
+    Route::post('orders/create', "OrderProjectController@store");
 });
 
 

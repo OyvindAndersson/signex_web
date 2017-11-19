@@ -20,20 +20,20 @@ function clientsReducer( state = initialState, action){
         }
 
         case `${types.CLIENTS_FETCH_ALL}${API_SUCCESS}`: {
-            const {payload} = action
-
             return {
                 ...state,
                 isFetching: false,
                 isDirty: false,
-                ...payload
+                ...action.payload
             }
         }
 
         case `${types.CLIENTS_FETCH_ALL}${API_REJECTED}`: {
             return {
                 ...state,
-                isFetching: false
+                isFetching: false,
+                byId: {},
+                allIds: []
             }
         }
 

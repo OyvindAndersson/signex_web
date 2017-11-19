@@ -7,7 +7,7 @@ export const userListSchema = new schema.Array(userSchema)
 
 
 /** Normalizer for users table */
-/*
+
 export const usersNormalizer = (data) => {
     const normalizedData = normalize(data.users, userListSchema)
     if(data.users.length === 0){
@@ -31,4 +31,3 @@ export const singleUserNormalizer = (user) => {
         allIds: [normalizedData.result]
     }
 }
-*/

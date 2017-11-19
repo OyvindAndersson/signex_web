@@ -93,7 +93,7 @@ class OrderDetailPane extends React.Component {
         return(
             <div className="row align-items-center">
                 <div className="col">
-                    <h2>{order.client.name} <small>#{order.code}</small></h2>
+                    <h2 className="text-primary">{order.client.name} <small>#{order.code}</small></h2>
                     <hr />
 
                 </div>
@@ -122,6 +122,18 @@ function ordersPageHOC(WrappedComponent){
             this.filterOrders = this.filterOrders.bind(this)
             this.updateOrders = this.updateOrders.bind(this)
             this.updateSelectedItem = this.updateSelectedItem.bind(this)
+
+            this.state = {
+                hasError: false
+            }
+        }
+
+        
+        componentDidCatch(error, info) {
+            // Display fallback UI
+            this.setState({ hasError: true });
+            // You can also log the error to an error reporting service
+            console.log(error, info);
         }
         
         filterOrders(filter){
@@ -217,6 +229,16 @@ function ordersPageHOC(WrappedComponent){
                 }
             }
 
+            if(this.state.hasError){
+                return (
+                    <div>
+                        <PageSubNavbar {...pageNavbarProps}>
+                        </PageSubNavbar>
+
+                        <h1>AN ERROR OCCURED!</h1>
+                    </div>
+                )
+            }
             
             //const {computedMatch, isAuthenticated, match, user, dispatch} = this.props
             return (

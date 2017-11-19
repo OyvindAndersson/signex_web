@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux'
-import authReducer from './auth/reducer'
+import authReducers from './auth/reducer'
 import clientsReducers from './clients/reducer'
 import ordersReducers from './orders/reducer'
 
@@ -8,6 +8,7 @@ import ordersReducers from './orders/reducer'
  * i.e: Users, Projects, Orders etc
  */
 const entities = combineReducers({
+    users:authReducers.usersReducer,
     clients:clientsReducers.clientsReducer,
     orders:ordersReducers.ordersReducer
 })
@@ -25,7 +26,7 @@ const ui = combineReducers({
  * Combine all reducers into the single app-state object
  */
 const rootReducer = combineReducers({
-    auth:authReducer,
+    auth:authReducers.authReducer,
     entities:entities,
     ui:ui
 });

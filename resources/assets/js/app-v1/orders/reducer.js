@@ -33,7 +33,9 @@ function ordersReducer( state = initialState, action){
         case `${types.ORDERS_FETCH_ALL}${API_REJECTED}`: {
             return {
                 ...state,
-                isFetching: false
+                isFetching: false,
+                byId: {},
+                allIds: []
             }
         }
 
@@ -41,6 +43,10 @@ function ordersReducer( state = initialState, action){
             const {payload} = action
             const {byId} = payload
             
+            return state
+
+            // FIXME: New state here is not merged properly. Creates undefined subobjects
+            // TODO: Check normalizer who supplies the payload here..
             return {
                 ...state,
                 allIds: state.allIds.concat(payload.allIds), // add the new ID ref.
@@ -48,8 +54,19 @@ function ordersReducer( state = initialState, action){
                 isDirty: true
             }
         }
+
+        case `${types.ORDERS_CREATE}${API_REJECTED}`: {
+            const {reason} = action.payload
+            const {errors} = reason
+
+            return {
+                ...state,
+                errors
+            }
+        }
+
         default:
-        return state
+            return state
     }
 }
 

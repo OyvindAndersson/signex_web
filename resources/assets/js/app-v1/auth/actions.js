@@ -1,5 +1,7 @@
 import types from './actionTypes'
 import authApi from './api'
+import {apiRequest} from '../common/api'
+import {usersNormalizer} from './schema'
 
 /**
  * A simple action to kick off the state of "isFetching"
@@ -53,7 +55,8 @@ export function authUserToken(token = localStorage.getItem('token')){
 
         return authApi.authToken(token)
         .then((response) => {
-            // token auth succes.
+            // token auth succes. Update locally stored token to the refreshed-token
+            localStorage.setItem("token", response.data.newToken);
             dispatch({
                 type: types.AUTH_TOKEN_SUCCESS,
                 payload: response.data
@@ -74,29 +77,6 @@ export function authUserToken(token = localStorage.getItem('token')){
     }
 }
 
-export function requestAuthFetchUsers(ids = []){
-    return {
-        type: types.AUTH_FETCH_USERS,
-        payload: ids
-    }
-}
-
-export function authFetchUsers(ids = []){
-    return (dispatch) => {
-        dispatch(requestAuthFetchUsers(ids))
-
-       return authApi.authFetchUsers(ids)
-       .then((response) => {
-           return dispatch({
-               type:types.AUTH_FETCH_USERS_SUCCESS,
-               payload: response.data.users
-           })
-       })
-       .catch((err) => {
-        return dispatch({
-               type:types.AUTH_FETCH_USERS_REJECTED,
-               payload: { message: err.message, reason: err.response.data }
-           })
-       })
-    }
+export function usersFetchAll() { 
+    return apiRequest('users', types.AUTH_FETCH_USERS, null, usersNormalizer) 
 }
