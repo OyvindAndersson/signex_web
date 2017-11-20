@@ -4,8 +4,8 @@ import moment from 'moment'
 
 // presentation
 import Select from 'react-select'
-import { Form, Text } from 'react-form'
-import { UncontrolledAlert  } from 'reactstrap'
+import { Form, Text, TextArea } from 'react-form'
+import { UncontrolledAlert } from 'reactstrap'
 import {SelectField, DateTimeField} from '../../utils/react-form-hocs'
 import {LabeledFormGroup, FormGroup} from '../../utils/bootstrap'
 import { toast } from 'react-toastify'
@@ -79,12 +79,11 @@ class CreateOrderView extends React.Component {
         const clientOptions = this.props.clients.map( client => {
             return { value: client.id, label: client.name }
         })
+        const userOptions = this.props.users.map( user => {
+            return { value: user.id, label: user.name }
+        })
+
         // FIXME: Fetch api
-        const users = [
-            { value: 1, label: "Øyvind Andersson"},
-            { value: 2, label: "Gianni Rebaudo"},
-            { value: 3, label: "Stinni Atlason"}
-        ]
         const orderTypes = [
             { value: 1, label: "Misc"},
             { value: 2, label: "Other"},
@@ -115,9 +114,17 @@ class CreateOrderView extends React.Component {
                             <SelectField 
                                 field="order.user_id" 
                                 id="userInput"
-                                options={users}
+                                options={userOptions}
                                 value={authUserId} />
                         </LabeledFormGroup>
+                        
+                        <LabeledFormGroup htmlFor="descriptionInput" label="Description">
+                            <TextArea 
+                                id="descriptionInput" 
+                                field="order.description"
+                                className="form-control"></TextArea>
+                        </LabeledFormGroup>
+
                         <LabeledFormGroup htmlFor="createdAtInput" label="Taken at:" rowFormat>
                             <DateTimeField 
                                 field="order.registered_at"
@@ -143,13 +150,6 @@ class CreateOrderView extends React.Component {
                     {/* Products */}
                     <div className="col-md-4">
                         <h5 className="mb-4">Order lines</h5>
-
-                        <LabeledFormGroup htmlFor="orderInput" label="Add at:" rowFormat>
-                            <DateTimeField 
-                                field="order.lines.0.date"
-                                id="orderInput"
-                                defaultValue={now} />
-                        </LabeledFormGroup>
                     </div>
 
                     {/* Tasks */}

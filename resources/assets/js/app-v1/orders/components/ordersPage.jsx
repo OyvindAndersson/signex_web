@@ -90,12 +90,40 @@ OrdersMasterList.propTypes = {
 class OrderDetailPane extends React.Component {
     render() {
         const {order} = this.props
+        console.log(order)
+        console.log(SIGNEX)
+
+        const dueAt = moment(order.due_at).format(SIGNEX.humanDateFormat)
+        const createdAt = moment(order.created_at).format(SIGNEX.humanDateFormat)
+
         return(
             <div className="row align-items-center">
                 <div className="col">
-                    <h2 className="text-primary">{order.client.name} <small>#{order.code}</small></h2>
+                    <h2 className="text-primary">{order.client.name} 
+                        <small className="text-dark"> #{order.code}</small>
+                    </h2>
                     <hr />
-
+                    <div className="row">
+                        <div className="col-md-6">
+                            <p>{order.description}</p>
+                        </div>
+                        <div className="col-md-6">
+                            <ul className="list-group">
+                                <li className="list-group-item">
+                                    <small>Manager: </small>
+                                    <a href="#">{order.registrar.name}</a>
+                                </li>
+                                <li className="list-group-item">
+                                    <small>Registered: </small>
+                                    {createdAt}
+                                </li>
+                                <li className="list-group-item">
+                                    <small>Due: </small>
+                                    {dueAt}
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
         )

@@ -26,7 +26,7 @@ Route::get('/', function(){
 Route::any( '{catchall}', function ( $page ) {
     
     JavaScript::put([
-        'SHIT' => "CUNT"
+        'humanDateFormat' => "DD.MM.Y H:mm"
     ]);
 
     return view('index');

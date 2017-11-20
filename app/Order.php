@@ -19,7 +19,7 @@ class Order extends Model
      * @var array
      */
      protected $fillable = [
-        'client_id', 'client_ref_id', 'user_id', 'is_quote', 'status_id', 'due_at',
+        'client_id', 'client_ref_id', 'user_id', 'is_quote', 'status_id', 'due_at', 'description'
     ];
 
     public function registrar()
