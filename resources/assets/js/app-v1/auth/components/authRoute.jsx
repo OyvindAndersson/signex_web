@@ -3,20 +3,6 @@ import {Route, Redirect} from 'react-router-dom'
 import {connect} from 'react-redux'
 import constants from '../constants'
 
-/*
-const AuthRoute = ({ component: Component, ...rest }) => (  
-    <Route {...rest} render={props => (
-      localStorage.getItem('token') ? (
-        <Component {...props}/>
-      ) : (
-        <Redirect to={{
-          pathname: constants.LOGIN_PATH,
-          state: { from: props.location }
-        }}/>
-      )
-    )}/>
-  ) */
-
   /**
    * Auth Route Wrapper
    * 
@@ -24,6 +10,7 @@ const AuthRoute = ({ component: Component, ...rest }) => (
    * authenticated status and role, if defined
    * 
    * @todo implement role checks
+   * @todo validate token on every update (receive props) properly (against server?)
    */
   class AuthRouteWrapper extends React.Component {
     constructor(props){
@@ -39,15 +26,19 @@ const AuthRoute = ({ component: Component, ...rest }) => (
 
     componentWillMount(){
       console.log("AuthRoute - Component will mount")
-      if(localStorage.getItem('token')){
-        this.setState({isGuest: false})
+
+      const localToken = localStorage.getItem('token')
+
+      if(localToken && jwtDecode(localToken)){
+        this.setState({isGuest: false}, () => { console.log("AuthRoute: IS AUTHED")})
+      } else {
+        this.setState({isGuest: true}, () => { console.log("AuthRoute: IS GUEST")})
       }
     }
 
     componentWillReceiveProps(nextProps){
-      //console.log(nextProps)
+      const { token } = nextProps
 
-      const {token} = nextProps
       if(localStorage.getItem('token') && token){
         console.log("AuthRoute Update: is authenticated with token")
         this.setState({ isGuest: false })
