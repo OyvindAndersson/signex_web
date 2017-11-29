@@ -14,7 +14,7 @@ import jwt_decode from 'jwt-decode'
 export function initAuth(store) { 
     // Always update user auth status at every new request
     store.dispatch(authUserToken())
-    store.dispatch(usersFetchAll())
+    //store.dispatch(usersFetchAll())
 }
 
 /** Components */

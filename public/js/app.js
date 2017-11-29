@@ -5439,10 +5439,11 @@ exports.f = __webpack_require__(16) ? Object.defineProperty : function definePro
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(43);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
-/* harmony export (immutable) */ __webpack_exports__["e"] = apiRequestHeaders;
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return API_SUCCESS; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return API_REJECTED; });
+/* harmony export (immutable) */ __webpack_exports__["c"] = apiRequestHeaders;
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return API_SUCCESS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return API_REJECTED; });
 /* unused harmony export API_INVALID_REQUEST */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return API_TOKEN_REFRESHED; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return apiRequest; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return apiPostRequest; });
 /**
@@ -5464,6 +5465,7 @@ function apiRequestHeaders() {
 var API_SUCCESS = '_SUCCESS';
 var API_REJECTED = '_REJECTED';
 var API_INVALID_REQUEST = 'API_INVALID_REQUEST';
+var API_TOKEN_REFRESHED = 'API_TOKEN_REFRESHED';
 
 /**
  * Generic API GET request that starts of with @param baseAction and returns either
@@ -5501,7 +5503,18 @@ var apiRequest = function apiRequest(endpoint, baseAction) {
 
         // do the async request to API
         return __WEBPACK_IMPORTED_MODULE_0_axios___default.a.get('/api/' + endpoint, { headers: apiRequestHeaders() }).then(function (response) {
-            //console.log(response)
+
+            // Set refresh token
+            var newToken = response.data.newToken;
+
+            if (newToken) {
+                localStorage.setItem('token', newToken);
+                dispatch({
+                    type: API_TOKEN_REFRESHED,
+                    payload: { token: newToken }
+                });
+            }
+
             if (normalizer && typeof normalizer === 'function') {
                 return dispatch({
                     type: '' + baseAction + API_SUCCESS,
@@ -5556,6 +5569,18 @@ var apiPostRequest = function apiPostRequest(endpoint, baseAction, requestPayloa
 
         // do the async request to API
         return __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post('/api/' + endpoint, requestPayload, { headers: apiRequestHeaders() }).then(function (response) {
+
+            // Set refresh token
+            var newToken = response.data.newToken;
+
+            if (newToken) {
+                localStorage.setItem('token', newToken);
+                dispatch({
+                    type: API_TOKEN_REFRESHED,
+                    payload: { token: newToken }
+                });
+            }
+
             if (normalizer && typeof normalizer === 'function') {
                 return dispatch({
                     type: '' + baseAction + API_SUCCESS,
@@ -11862,8 +11887,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 */
 function initAuth(store) {
   // Always update user auth status at every new request
-  store.dispatch(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__actions__["a" /* authUserToken */])());
-  store.dispatch(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__actions__["b" /* usersFetchAll */])());
+  store.dispatch(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__actions__["b" /* authUserToken */])());
+  //store.dispatch(usersFetchAll())
 }
 
 /** Components */
@@ -15998,8 +16023,8 @@ var links = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__schema__ = __webpack_require__(68);
 /* unused harmony export requestLogin */
 /* harmony export (immutable) */ __webpack_exports__["c"] = authLoginUser;
-/* harmony export (immutable) */ __webpack_exports__["a"] = authUserToken;
-/* harmony export (immutable) */ __webpack_exports__["b"] = usersFetchAll;
+/* harmony export (immutable) */ __webpack_exports__["b"] = authUserToken;
+/* harmony export (immutable) */ __webpack_exports__["a"] = usersFetchAll;
 
 
 
@@ -16320,8 +16345,15 @@ var initialAuthState = {
           isFetching: false,
           isAuthenticated: true,
           user: action.payload.user,
-          token: action.payload.newToken, // Refreshed token
+          token: action.payload.newToken, // Refreshed token. Also handled by API_TOKEN_REFRESHED, but included here since it's an initial token auth action.
           role: __WEBPACK_IMPORTED_MODULE_1__constants__["a" /* default */].AUTH_ROLE_ADMIN // TODO: Get from payload!
+        });
+      }
+
+    case __WEBPACK_IMPORTED_MODULE_2__common_api__["f" /* API_TOKEN_REFRESHED */]:
+      {
+        return _extends({}, state, {
+          token: action.payload.token // refreshed token
         });
       }
 
@@ -16366,7 +16398,7 @@ var initialUsersState = {
         });
       }
 
-    case '' + __WEBPACK_IMPORTED_MODULE_0__actionTypes__["a" /* default */].AUTH_FETCH_USERS + __WEBPACK_IMPORTED_MODULE_2__common_api__["c" /* API_SUCCESS */]:
+    case '' + __WEBPACK_IMPORTED_MODULE_0__actionTypes__["a" /* default */].AUTH_FETCH_USERS + __WEBPACK_IMPORTED_MODULE_2__common_api__["d" /* API_SUCCESS */]:
       {
         return _extends({}, state, {
           isFetching: false,
@@ -16374,7 +16406,7 @@ var initialUsersState = {
         }, action.payload);
       }
 
-    case '' + __WEBPACK_IMPORTED_MODULE_0__actionTypes__["a" /* default */].AUTH_FETCH_USERS + __WEBPACK_IMPORTED_MODULE_2__common_api__["d" /* API_REJECTED */]:
+    case '' + __WEBPACK_IMPORTED_MODULE_0__actionTypes__["a" /* default */].AUTH_FETCH_USERS + __WEBPACK_IMPORTED_MODULE_2__common_api__["e" /* API_REJECTED */]:
       {
         return _extends({}, state, {
           isFetching: false,
@@ -35298,11 +35330,11 @@ var requestLoginWith = function requestLoginWith(credentials) {
 
 /** Basic get request to authenticate the current (if any) JWT */
 var authToken = function authToken(token) {
-  return __WEBPACK_IMPORTED_MODULE_0_axios___default.a.get('/api/authUserToken', { headers: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__common_api__["e" /* apiRequestHeaders */])() });
+  return __WEBPACK_IMPORTED_MODULE_0_axios___default.a.get('/api/authUserToken', { headers: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__common_api__["c" /* apiRequestHeaders */])() });
 };
 
 var authFetchUsers = function authFetchUsers(id) {
-  return __WEBPACK_IMPORTED_MODULE_0_axios___default.a.get('/api/users/' + id, { headers: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__common_api__["e" /* apiRequestHeaders */])() });
+  return __WEBPACK_IMPORTED_MODULE_0_axios___default.a.get('/api/users/' + id, { headers: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__common_api__["c" /* apiRequestHeaders */])() });
 };
 
 /* harmony default export */ __webpack_exports__["a"] = ({
@@ -35321,6 +35353,12 @@ var authFetchUsers = function authFetchUsers(id) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_router_dom__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_redux__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__constants__ = __webpack_require__(44);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_jwt_decode__ = __webpack_require__(53);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_jwt_decode___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_jwt_decode__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_moment__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_moment__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__actions__ = __webpack_require__(110);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__actionTypes__ = __webpack_require__(67);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AuthRoute; });
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -35333,6 +35371,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+
+
 
 
 
@@ -35359,6 +35402,7 @@ var AuthRouteWrapper = function (_React$Component) {
 
     _this.renderAuth = _this.renderAuth.bind(_this);
     _this.renderGuest = _this.renderGuest.bind(_this);
+    _this.simpleValidate = _this.simpleValidate.bind(_this);
 
     _this.state = {
       isGuest: true
@@ -35370,26 +35414,47 @@ var AuthRouteWrapper = function (_React$Component) {
     key: 'componentWillMount',
     value: function componentWillMount() {
       console.log("AuthRoute - Component will mount");
-
+      // At init, we don't have the token from the store yet.
+      // check local storage initially.
       var localToken = localStorage.getItem('token');
-
-      if (localToken && jwtDecode(localToken)) {
-        this.setState({ isGuest: false }, function () {
-          console.log("AuthRoute: IS AUTHED");
-        });
-      } else {
-        this.setState({ isGuest: true }, function () {
-          console.log("AuthRoute: IS GUEST");
-        });
-      }
+      this.simpleValidate(localToken);
     }
   }, {
     key: 'componentWillReceiveProps',
     value: function componentWillReceiveProps(nextProps) {
-      var token = nextProps.token;
+      // get token from store on subsequent updates
+      var token = nextProps.token,
+          dispatch = nextProps.dispatch;
+
+      this.simpleValidate(token);
+    }
+
+    /**
+     * Simple client-side validation. This is NOT a secure check;
+     * only for UI responsiveness. The server API handles the
+     * rejection and will not deliver data without a valid
+     * token either way.
+     * @param {jwt token} token 
+     */
+
+  }, {
+    key: 'simpleValidate',
+    value: function simpleValidate(token) {
+      var dispatch = this.props.dispatch;
 
 
-      if (localStorage.getItem('token') && token) {
+      if (token) {
+        var decodedToken = __WEBPACK_IMPORTED_MODULE_4_jwt_decode___default()(token);
+        var dateNow = __WEBPACK_IMPORTED_MODULE_5_moment___default()().unix();
+
+        if (decodedToken.exp < dateNow) {
+          console.log("AuthRoute Update: Token expired. Is now Guest.");
+          this.setState({ isGuest: true });
+
+          dispatch({ type: __WEBPACK_IMPORTED_MODULE_7__actionTypes__["a" /* default */].AUTH_LOGOUT_USER });
+          return;
+        }
+
         console.log("AuthRoute Update: is authenticated with token");
         this.setState({ isGuest: false });
       } else {
@@ -36662,7 +36727,7 @@ function clientsReducer() {
                 });
             }
 
-        case '' + __WEBPACK_IMPORTED_MODULE_0__actionTypes__["a" /* default */].CLIENTS_FETCH_ALL + __WEBPACK_IMPORTED_MODULE_3__common_api__["c" /* API_SUCCESS */]:
+        case '' + __WEBPACK_IMPORTED_MODULE_0__actionTypes__["a" /* default */].CLIENTS_FETCH_ALL + __WEBPACK_IMPORTED_MODULE_3__common_api__["d" /* API_SUCCESS */]:
             {
                 return _extends({}, state, {
                     isFetching: false,
@@ -36670,7 +36735,7 @@ function clientsReducer() {
                 }, action.payload);
             }
 
-        case '' + __WEBPACK_IMPORTED_MODULE_0__actionTypes__["a" /* default */].CLIENTS_FETCH_ALL + __WEBPACK_IMPORTED_MODULE_3__common_api__["d" /* API_REJECTED */]:
+        case '' + __WEBPACK_IMPORTED_MODULE_0__actionTypes__["a" /* default */].CLIENTS_FETCH_ALL + __WEBPACK_IMPORTED_MODULE_3__common_api__["e" /* API_REJECTED */]:
             {
                 return _extends({}, state, {
                     isFetching: false,
@@ -36679,7 +36744,7 @@ function clientsReducer() {
                 });
             }
 
-        case '' + __WEBPACK_IMPORTED_MODULE_0__actionTypes__["a" /* default */].CLIENTS_CREATE + __WEBPACK_IMPORTED_MODULE_3__common_api__["c" /* API_SUCCESS */]:
+        case '' + __WEBPACK_IMPORTED_MODULE_0__actionTypes__["a" /* default */].CLIENTS_CREATE + __WEBPACK_IMPORTED_MODULE_3__common_api__["d" /* API_SUCCESS */]:
             {
                 var payload = action.payload;
                 var byId = payload.byId;
@@ -37672,20 +37737,22 @@ if (document.getElementById('app')) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_redux__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_moment__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_moment__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_react_select__ = __webpack_require__(296);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_react_select___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_react_select__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_react_form__ = __webpack_require__(98);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_react_form___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_react_form__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_reactstrap__ = __webpack_require__(17);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__utils_react_form_hocs__ = __webpack_require__(363);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__utils_bootstrap__ = __webpack_require__(358);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_react_toastify__ = __webpack_require__(42);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_react_toastify___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8_react_toastify__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__clients_actions__ = __webpack_require__(46);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__clients_selectors__ = __webpack_require__(115);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__auth_selectors__ = __webpack_require__(334);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__selectors__ = __webpack_require__(120);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__actions__ = __webpack_require__(118);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_react_router_dom__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_react_select__ = __webpack_require__(296);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_react_select___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_react_select__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react_form__ = __webpack_require__(98);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react_form___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_react_form__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_reactstrap__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__utils_react_form_hocs__ = __webpack_require__(363);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__utils_bootstrap__ = __webpack_require__(358);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_react_toastify__ = __webpack_require__(42);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_react_toastify___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9_react_toastify__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__clients_actions__ = __webpack_require__(46);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__auth_actions__ = __webpack_require__(110);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__clients_selectors__ = __webpack_require__(115);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__auth_selectors__ = __webpack_require__(334);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__selectors__ = __webpack_require__(120);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__actions__ = __webpack_require__(118);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -37693,6 +37760,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 
 
 
@@ -37707,6 +37775,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 // actions and selectors
+
 
 
 
@@ -37737,7 +37806,8 @@ var CreateOrderView = function (_React$Component) {
         _this.state = {
             'order[client_id': 0,
             'order[user_id]': 0,
-            user: null
+            user: null,
+            users: []
         };
         return _this;
     }
@@ -37745,13 +37815,20 @@ var CreateOrderView = function (_React$Component) {
     _createClass(CreateOrderView, [{
         key: 'componentDidMount',
         value: function componentDidMount() {
-            this.props.dispatch(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_9__clients_actions__["a" /* clientsFetchAll */])());
+            this.props.dispatch(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_10__clients_actions__["a" /* clientsFetchAll */])());
+            this.props.dispatch(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_11__auth_actions__["a" /* usersFetchAll */])());
         }
     }, {
         key: 'componentWillReceiveProps',
         value: function componentWillReceiveProps(next) {
+            console.log("NEXT PROPS");
+            console.log(next);
             if (next.user !== this.state.user) {
-                this.setState({ 'order[user_id]': next.user.id, user: next.user });
+                this.setState({
+                    'order[user_id]': next.user.id,
+                    user: next.user,
+                    users: next.users
+                });
             }
         }
     }, {
@@ -37784,7 +37861,7 @@ var CreateOrderView = function (_React$Component) {
             var dispatch = this.props.dispatch;
 
             if (dispatch) {
-                dispatch(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_13__actions__["b" /* ordersCreate */])(e));
+                dispatch(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_15__actions__["b" /* ordersCreate */])(e));
             }
         }
     }, {
@@ -37810,7 +37887,7 @@ var CreateOrderView = function (_React$Component) {
                 'div',
                 { className: 'col-md-12' },
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    __WEBPACK_IMPORTED_MODULE_4_react_form__["Form"],
+                    __WEBPACK_IMPORTED_MODULE_5_react_form__["Form"],
                     { onSubmit: this.handleSubmit },
                     function (formApi) {
                         return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -37828,50 +37905,50 @@ var CreateOrderView = function (_React$Component) {
                                         'Order details'
                                     ),
                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        __WEBPACK_IMPORTED_MODULE_7__utils_bootstrap__["a" /* LabeledFormGroup */],
+                                        __WEBPACK_IMPORTED_MODULE_8__utils_bootstrap__["a" /* LabeledFormGroup */],
                                         { htmlFor: 'clientInput', label: 'Client', rowFormat: true },
-                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6__utils_react_form_hocs__["a" /* SelectField */], {
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7__utils_react_form_hocs__["a" /* SelectField */], {
                                             field: 'order.client_id',
                                             id: 'clientInput',
                                             options: clientOptions })
                                     ),
                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        __WEBPACK_IMPORTED_MODULE_7__utils_bootstrap__["a" /* LabeledFormGroup */],
+                                        __WEBPACK_IMPORTED_MODULE_8__utils_bootstrap__["a" /* LabeledFormGroup */],
                                         { htmlFor: 'userInput', label: 'Our ref', rowFormat: true },
-                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6__utils_react_form_hocs__["a" /* SelectField */], {
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7__utils_react_form_hocs__["a" /* SelectField */], {
                                             field: 'order.user_id',
                                             id: 'userInput',
                                             options: userOptions,
                                             value: authUserId })
                                     ),
                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        __WEBPACK_IMPORTED_MODULE_7__utils_bootstrap__["a" /* LabeledFormGroup */],
+                                        __WEBPACK_IMPORTED_MODULE_8__utils_bootstrap__["a" /* LabeledFormGroup */],
                                         { htmlFor: 'descriptionInput', label: 'Description' },
-                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4_react_form__["TextArea"], {
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5_react_form__["TextArea"], {
                                             id: 'descriptionInput',
                                             field: 'order.description',
                                             className: 'form-control' })
                                     ),
                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        __WEBPACK_IMPORTED_MODULE_7__utils_bootstrap__["a" /* LabeledFormGroup */],
+                                        __WEBPACK_IMPORTED_MODULE_8__utils_bootstrap__["a" /* LabeledFormGroup */],
                                         { htmlFor: 'createdAtInput', label: 'Taken at:', rowFormat: true },
-                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6__utils_react_form_hocs__["b" /* DateTimeField */], {
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7__utils_react_form_hocs__["b" /* DateTimeField */], {
                                             field: 'order.registered_at',
                                             id: 'createdAtInput',
                                             defaultValue: now })
                                     ),
                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        __WEBPACK_IMPORTED_MODULE_7__utils_bootstrap__["a" /* LabeledFormGroup */],
+                                        __WEBPACK_IMPORTED_MODULE_8__utils_bootstrap__["a" /* LabeledFormGroup */],
                                         { htmlFor: 'dueAtInput', label: 'Due at:', rowFormat: true },
-                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6__utils_react_form_hocs__["b" /* DateTimeField */], {
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7__utils_react_form_hocs__["b" /* DateTimeField */], {
                                             field: 'order.due_at',
                                             id: 'dueAtInput',
                                             defaultValue: dueAt })
                                     ),
                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        __WEBPACK_IMPORTED_MODULE_7__utils_bootstrap__["a" /* LabeledFormGroup */],
+                                        __WEBPACK_IMPORTED_MODULE_8__utils_bootstrap__["a" /* LabeledFormGroup */],
                                         { htmlFor: 'typeInput', label: 'Type', rowFormat: true },
-                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6__utils_react_form_hocs__["a" /* SelectField */], {
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7__utils_react_form_hocs__["a" /* SelectField */], {
                                             field: 'order.type',
                                             id: 'typeInput',
                                             options: orderTypes,
@@ -37904,7 +37981,7 @@ var CreateOrderView = function (_React$Component) {
                                     'div',
                                     { className: 'col-md-6' },
                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        __WEBPACK_IMPORTED_MODULE_7__utils_bootstrap__["b" /* FormGroup */],
+                                        __WEBPACK_IMPORTED_MODULE_8__utils_bootstrap__["b" /* FormGroup */],
                                         null,
                                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                             'button',
@@ -37924,14 +38001,14 @@ var CreateOrderView = function (_React$Component) {
     return CreateOrderView;
 }(__WEBPACK_IMPORTED_MODULE_0_react___default.a.Component);
 
-/* harmony default export */ __webpack_exports__["a"] = (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1_react_redux__["connect"])(function (state) {
+/* harmony default export */ __webpack_exports__["a"] = (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3_react_router_dom__["c" /* withRouter */])(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1_react_redux__["connect"])(function (state) {
     return {
-        clients: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_10__clients_selectors__["a" /* getDenormalizedClients */])(state),
-        users: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_11__auth_selectors__["a" /* getDenormalizedUsers */])(state),
+        clients: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_12__clients_selectors__["a" /* getDenormalizedClients */])(state),
+        users: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_13__auth_selectors__["a" /* getDenormalizedUsers */])(state),
         user: state.auth.user,
-        errors: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_12__selectors__["c" /* getOrderErrors */])(state)
+        errors: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_14__selectors__["c" /* getOrderErrors */])(state)
     };
-})(CreateOrderView));
+})(CreateOrderView)));
 
 /***/ }),
 /* 354 */
@@ -38438,7 +38515,7 @@ function ordersReducer() {
                 });
             }
 
-        case '' + __WEBPACK_IMPORTED_MODULE_0__actionTypes__["a" /* default */].ORDERS_FETCH_ALL + __WEBPACK_IMPORTED_MODULE_3__common_api__["c" /* API_SUCCESS */]:
+        case '' + __WEBPACK_IMPORTED_MODULE_0__actionTypes__["a" /* default */].ORDERS_FETCH_ALL + __WEBPACK_IMPORTED_MODULE_3__common_api__["d" /* API_SUCCESS */]:
             {
                 var payload = action.payload;
 
@@ -38449,7 +38526,7 @@ function ordersReducer() {
                 }, payload);
             }
 
-        case '' + __WEBPACK_IMPORTED_MODULE_0__actionTypes__["a" /* default */].ORDERS_FETCH_ALL + __WEBPACK_IMPORTED_MODULE_3__common_api__["d" /* API_REJECTED */]:
+        case '' + __WEBPACK_IMPORTED_MODULE_0__actionTypes__["a" /* default */].ORDERS_FETCH_ALL + __WEBPACK_IMPORTED_MODULE_3__common_api__["e" /* API_REJECTED */]:
             {
                 return _extends({}, state, {
                     isFetching: false,
@@ -38458,7 +38535,7 @@ function ordersReducer() {
                 });
             }
 
-        case '' + __WEBPACK_IMPORTED_MODULE_0__actionTypes__["a" /* default */].ORDERS_CREATE + __WEBPACK_IMPORTED_MODULE_3__common_api__["c" /* API_SUCCESS */]:
+        case '' + __WEBPACK_IMPORTED_MODULE_0__actionTypes__["a" /* default */].ORDERS_CREATE + __WEBPACK_IMPORTED_MODULE_3__common_api__["d" /* API_SUCCESS */]:
             {
                 var _payload = action.payload;
                 var byId = _payload.byId;
@@ -38475,7 +38552,7 @@ function ordersReducer() {
                 });
             }
 
-        case '' + __WEBPACK_IMPORTED_MODULE_0__actionTypes__["a" /* default */].ORDERS_CREATE + __WEBPACK_IMPORTED_MODULE_3__common_api__["d" /* API_REJECTED */]:
+        case '' + __WEBPACK_IMPORTED_MODULE_0__actionTypes__["a" /* default */].ORDERS_CREATE + __WEBPACK_IMPORTED_MODULE_3__common_api__["e" /* API_REJECTED */]:
             {
                 var reason = action.payload.reason;
                 var errors = reason.errors;
@@ -38585,9 +38662,7 @@ var rootReducer = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_redux__["com
 var loggerMiddleware = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_redux_logger__["createLogger"])();
 
 function configureStore(preloadedState) {
-  return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_redux__["createStore"])(__WEBPACK_IMPORTED_MODULE_3__rootReducer__["a" /* default */], preloadedState, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_redux__["applyMiddleware"])(__WEBPACK_IMPORTED_MODULE_1_redux_thunk___default.a
-  //loggerMiddleware
-  ));
+  return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_redux__["createStore"])(__WEBPACK_IMPORTED_MODULE_3__rootReducer__["a" /* default */], preloadedState, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_redux__["applyMiddleware"])(__WEBPACK_IMPORTED_MODULE_1_redux_thunk___default.a, loggerMiddleware));
 }
 
 var appStore = configureStore();

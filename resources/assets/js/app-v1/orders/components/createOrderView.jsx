@@ -1,6 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import moment from 'moment'
+import {withRouter} from 'react-router-dom'
 
 // presentation
 import Select from 'react-select'
@@ -12,6 +13,7 @@ import { toast } from 'react-toastify'
 
 // actions and selectors
 import {clientsFetchAll} from '../../clients/actions'
+import {usersFetchAll} from '../../auth/actions'
 import {getDenormalizedClients} from '../../clients/selectors'
 import {getDenormalizedUsers} from '../../auth/selectors'
 import {getOrderErrors} from '../selectors'
@@ -37,15 +39,23 @@ class CreateOrderView extends React.Component {
         this.state = {
             'order[client_id': 0,
             'order[user_id]': 0,
-            user: null
+            user: null,
+            users: []
         }
     }
     componentDidMount(){
         this.props.dispatch(clientsFetchAll())
+        this.props.dispatch(usersFetchAll())
     }
     componentWillReceiveProps(next){
+        console.log("NEXT PROPS")
+        console.log(next)
         if(next.user !== this.state.user){
-            this.setState({ 'order[user_id]': next.user.id, user: next.user})
+            this.setState({ 
+                'order[user_id]': next.user.id, 
+                user: next.user,
+                users: next.users
+            })
         }
     }
     handleSelectChange(val){
@@ -172,9 +182,9 @@ class CreateOrderView extends React.Component {
     }
 }
 
-export default connect( state => ({
+export default withRouter(connect( state => ({
     clients: getDenormalizedClients(state),
     users: getDenormalizedUsers(state),
     user: state.auth.user,
     errors: getOrderErrors(state)
-}))(CreateOrderView)
+}))(CreateOrderView))

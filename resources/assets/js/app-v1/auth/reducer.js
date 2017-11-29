@@ -1,6 +1,6 @@
 import types from './actionTypes'
 import constants from './constants'
-import {API_SUCCESS, API_REJECTED} from '../common/api'
+import {API_SUCCESS, API_REJECTED, API_TOKEN_REFRESHED} from '../common/api'
 import { jtwDecode } from 'jwt-decode'
 
 /**
@@ -86,8 +86,15 @@ function authReducer(state = initialAuthState, action) {
           isFetching: false, 
           isAuthenticated:true,
           user: action.payload.user,
-          token: action.payload.newToken, // Refreshed token
+          token: action.payload.newToken, // Refreshed token. Also handled by API_TOKEN_REFRESHED, but included here since it's an initial token auth action.
           role: constants.AUTH_ROLE_ADMIN // TODO: Get from payload!
+        }
+      }
+
+      case API_TOKEN_REFRESHED: {
+        return {
+          ...state,
+          token: action.payload.token // refreshed token
         }
       }
 

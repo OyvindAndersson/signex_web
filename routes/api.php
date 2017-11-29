@@ -24,16 +24,25 @@ Route::group(['middleware' => 'jwt.auth'], function (){
     Route::get('authUserToken', "ApiAuthController@authUserToken");
 
     Route::get('users/{id?}', function($id = null) {
+        // Refresh token
+        $newToken =  JWTAuth::parseToken()->refresh();
+
         $users = User::orderBy('id')->get();
-        return response()->json([ 'users' => $users ]);
+        return response()->json([ 'users' => $users, 'newToken' => $newToken ]);
     });
     Route::get('clients/{id?}', function($id = null) {
+        // Refresh token
+        $newToken =  JWTAuth::parseToken()->refresh();
+
         $clients = Client::orderBy('name')->get();
-        return response()->json(['clients' => $clients]);
+        return response()->json(['clients' => $clients, 'newToken' => $newToken]);
     });
     Route::get('orders/{id?}', function($id = null) {
+        // Refresh token
+        $newToken =  JWTAuth::parseToken()->refresh();
+        
         $orders = Order::orderBy('due_at')->with(['client', 'registrar'])->get();
-        return response()->json(['orders' => $orders]);
+        return response()->json(['orders' => $orders, 'newToken' => $newToken]);
     });
 
     Route::post('clients/create', "ClientController@store");

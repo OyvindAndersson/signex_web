@@ -15,6 +15,7 @@ export function apiRequestHeaders(){ return {authorization:`Bearer`+localStorage
 export const API_SUCCESS = '_SUCCESS'
 export const API_REJECTED = '_REJECTED'
 export const API_INVALID_REQUEST = 'API_INVALID_REQUEST'
+export const API_TOKEN_REFRESHED = 'API_TOKEN_REFRESHED'
 
 /**
  * Generic API GET request that starts of with @param baseAction and returns either
@@ -50,7 +51,17 @@ export const apiRequest = (endpoint, baseAction, requestPayload = null, normaliz
         // do the async request to API
         return axios.get(`/api/${endpoint}`, { headers: apiRequestHeaders() })
             .then((response) => {
-                //console.log(response)
+
+                // Set refresh token
+                const {newToken} = response.data
+                if(newToken){
+                    localStorage.setItem('token', newToken)
+                    dispatch({
+                        type: API_TOKEN_REFRESHED,
+                        payload: {token: newToken}
+                    })
+                }
+                
                 if(normalizer && typeof normalizer === 'function'){
                     return dispatch({
                         type: `${baseAction}${API_SUCCESS}`,
@@ -106,6 +117,17 @@ export const apiPostRequest = (endpoint, baseAction, requestPayload, normalizer 
         // do the async request to API
         return axios.post(`/api/${endpoint}`, requestPayload, { headers: apiRequestHeaders() })
             .then((response) => {
+
+                // Set refresh token
+                const {newToken} = response.data
+                if(newToken){
+                    localStorage.setItem('token', newToken)
+                    dispatch({
+                        type: API_TOKEN_REFRESHED,
+                        payload: {token: newToken}
+                    })
+                }
+
                 if(normalizer && typeof normalizer === 'function'){
                     return dispatch({
                         type: `${baseAction}${API_SUCCESS}`,

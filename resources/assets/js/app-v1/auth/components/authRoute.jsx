@@ -2,6 +2,11 @@ import React from 'react'
 import {Route, Redirect} from 'react-router-dom'
 import {connect} from 'react-redux'
 import constants from '../constants'
+import jwtDecode from 'jwt-decode'
+import moment from 'moment'
+
+import { authUserToken } from '../actions'
+import types from '../actionTypes'
 
   /**
    * Auth Route Wrapper
@@ -18,6 +23,7 @@ import constants from '../constants'
 
       this.renderAuth = this.renderAuth.bind(this)
       this.renderGuest = this.renderGuest.bind(this)
+      this.simpleValidate = this.simpleValidate.bind(this)
 
       this.state = {
         isGuest: true
@@ -26,22 +32,43 @@ import constants from '../constants'
 
     componentWillMount(){
       console.log("AuthRoute - Component will mount")
-
+      // At init, we don't have the token from the store yet.
+      // check local storage initially.
       const localToken = localStorage.getItem('token')
-
-      if(localToken && jwtDecode(localToken)){
-        this.setState({isGuest: false}, () => { console.log("AuthRoute: IS AUTHED")})
-      } else {
-        this.setState({isGuest: true}, () => { console.log("AuthRoute: IS GUEST")})
-      }
+      this.simpleValidate(localToken)
     }
 
     componentWillReceiveProps(nextProps){
-      const { token } = nextProps
+      // get token from store on subsequent updates
+      const { token, dispatch } = nextProps
+      this.simpleValidate(token)
+    }
 
-      if(localStorage.getItem('token') && token){
+    /**
+     * Simple client-side validation. This is NOT a secure check;
+     * only for UI responsiveness. The server API handles the
+     * rejection and will not deliver data without a valid
+     * token either way.
+     * @param {jwt token} token 
+     */
+    simpleValidate(token){
+      const {dispatch} = this.props
+
+      if(token){
+        const decodedToken = jwtDecode(token)
+        const dateNow = moment().unix()
+
+        if(decodedToken.exp < dateNow){
+          console.log("AuthRoute Update: Token expired. Is now Guest.")
+          this.setState({ isGuest: true })
+
+          dispatch({type: types.AUTH_LOGOUT_USER })
+          return
+        }
+
         console.log("AuthRoute Update: is authenticated with token")
         this.setState({ isGuest: false })
+
       } else {
         console.log("AuthRoute Update: is guest.")
         this.setState({ isGuest: true })
