@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 import {denormalize, schema} from 'normalizr'
 import moment from 'moment'
 import { toast } from 'react-toastify';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Alert } from 'reactstrap'
 
 import {ordersFetchAll} from '../actions'
 import {clientsFetchAll} from '../../clients/actions'
@@ -80,6 +80,8 @@ OrdersMasterList.propTypes = {
     handleItemSelectionChanged: PropTypes.func
 }
 
+
+
 /**-------------------------------------------------
  * Orders Master List
  * -------------------------------------------------
@@ -88,12 +90,15 @@ OrdersMasterList.propTypes = {
  * @todo Implement fully
  */
 class OrderDetailPane extends React.Component {
+    componentDidMount(){
+    }
     render() {
         const {order} = this.props
         console.log(order)
         console.log(SIGNEX)
 
         const dueAt = moment(order.due_at).format(SIGNEX.humanDateFormat)
+        const dueAtWeek = moment(order.due_at).isoWeek()
         const createdAt = moment(order.created_at).format(SIGNEX.humanDateFormat)
 
         return(
@@ -110,6 +115,10 @@ class OrderDetailPane extends React.Component {
                         <div className="col-md-6">
                             <ul className="list-group">
                                 <li className="list-group-item">
+                                    <small>Status: </small>
+                                    <a href="#" title={order.status.description}>{order.status.name}</a>
+                                </li>
+                                <li className="list-group-item">
                                     <small>Manager: </small>
                                     <a href="#">{order.registrar.name}</a>
                                 </li>
@@ -119,7 +128,7 @@ class OrderDetailPane extends React.Component {
                                 </li>
                                 <li className="list-group-item">
                                     <small>Due: </small>
-                                    {dueAt}
+                                    {dueAt} <em>(Week {dueAtWeek})</em>
                                 </li>
                             </ul>
                         </div>
@@ -152,47 +161,66 @@ function ordersPageHOC(WrappedComponent){
             this.updateSelectedItem = this.updateSelectedItem.bind(this)
 
             this.state = {
-                hasError: false
+                hasError: false,
+                errorMessage: ''
             }
         }
 
-        
         componentDidCatch(error, info) {
             // Display fallback UI
-            this.setState({ hasError: true });
-            // You can also log the error to an error reporting service
-            console.log(error, info);
+            console.log(error)
+            this.setState({ hasError: true, errorMessage: `${error.message} @ ${error.fileName} | L: ${error.lineNumber}` })
         }
         
-        filterOrders(filter){
-            //console.log("HOC: Handle filter items" + filter)
+        filterOrders(filter, context){
+            console.log("HOC | Filter: ",filter, "Context: ", context ? context.name : "null")
             return this.props.orders.filter( order => {
+
+                // CONTEXT FILTERING: Set the context for which the orders should be filtered.
+                // Only filter orders with status id == context.value
+                if(context && _.startsWith(context.name, 'status_id')){
+                    if(order.status_id != context.value){
+                        return false
+                    }
+                }
+                // Only filter orders with user id == context.value (registrar)
+                if(context && _.startsWith(context.name, 'user_id')){
+                    if(order.user_id != context.value){
+                        return false
+                    }
+                }
+                // Only filter orders due urgently (1-2 days)
+                if(context && context.name === 'due#1'){
+                    const due = moment(order.due_at)
+                    const now = moment()
+                    const daysUntil = due.diff(now, 'days')+1 // Count start also
+                    if(daysUntil > 2){
+                        return false
+                    }
+                }
+                // Only filter orders due this week (or the weeks before...)
+                if(context && context.name === 'due#2'){
+                    const due = moment(order.due_at)
+                    const now = moment()
+                    if(due.isoWeek() > now.isoWeek()){
+                        return false
+                    }
+                }
+                // Only filter orders due next week
+                if(context && context.name === 'due#3'){
+                    const due = moment(order.due_at)
+                    const then = moment().add(1, 'weeks')
+                    if(due.isoWeek() !== then.isoWeek()){
+                        return false
+                    }
+                }
 
                 // TEXT FILTERING
                 if(isNaN(filter)){
-
-                    // YYYY-M(M) || YYYY-M(M)-D(D)
-                    if(/^(20\d{2}-\d{1,2})$|^(20\d{2}-\d{1,2}-\d{1,2})$/.test(filter)) {
-                        const parts = filter.split("-")
-                        const day = parseInt(parts[2], 10)
-                        const month = parseInt(parts[1], 10)
-                        const year = parseInt(parts[0], 10)
-
-                        const orderDate = order.created_at.split('-')
-                        if(!day && orderDate[0] == year && orderDate[1] == month) {
-                            console.log("Filtering by order created date (YYYY-MM), is NAN")
-                            return true
-                        } else if( orderDate[0] == year && orderDate[1] == month && orderDate[2].indexOf(day) !== -1) {
-                            console.log("Filtering by order created date (YYYY-MM-DD), is NAN")
-                            return true
-                        }
-                        
-                    } else {
-                        if(order.client.name.toLowerCase().indexOf(filter.toLowerCase()) !== -1 || 
-                            order.registrar.name.toLowerCase().indexOf(filter.toLowerCase()) !== -1){
-                            console.log("Filtering by order-client name OR registrar name")
-                            return true
-                        }
+                    if(order.client.name.toLowerCase().indexOf(filter.toLowerCase()) !== -1 || 
+                        order.registrar.name.toLowerCase().indexOf(filter.toLowerCase()) !== -1){
+                        console.log("Filtering by order-client name OR registrar name")
+                        return true
                     }
                 } else { // NUMERIC FILTERING
                     
@@ -242,7 +270,13 @@ function ordersPageHOC(WrappedComponent){
                 ]
             }
 
-            /** Most logic is tied together by master pane */
+            /** 
+             * Most logic is tied together by master pane 
+             * 
+             * contextOptions: 
+             * @todo: Get display strings and values from the store (statuses, users, types)
+             * 
+            */
             const masterPaneProps = {
                 items: this.props.orders,
                 selectedItem: this.props.selectedOrder,
@@ -253,7 +287,25 @@ function ordersPageHOC(WrappedComponent){
 
                 filterItems: this.filterOrders,
                 filterBoxProps: {
-                    placeholderText: "Filter orders..."
+                    placeholderText: "Search...",
+                    contextOptions: [
+                        { name: 'dueHeader', display: 'Due', header:true },
+                        { name: 'due#1', display: 'Urgently!' },
+                        { name: 'due#2', display: 'This week' },
+                        { name: 'due#3', display: 'Next week' },
+                        { name: 'statusHeader', display: 'Statuses', header:true },
+                        { name: 'status_id#1', value: 1, display: 'Quote' },
+                        { name: 'status_id#2', value: 2, display: 'Registered' },
+                        { name: 'status_id#3', value: 3, display: 'In progress' },
+                        { name: 'status_id#4', value: 4, display: 'Finished / Sent' },
+                        { name: 'status_id#5', value: 5, display: 'Archived' },
+                        { name: 'userHeader', display: 'Registrar', header:true },
+                        { name: 'user_id#1', value: 1, display: 'Øyvind' },
+                        { name: 'user_id#2', value: 2, display: 'Gianni' },
+                        { name: 'user_id#3', value: 3, display: 'Stinny' },
+                        { name: 'typeHeader', display: 'Types', header:true },
+                        { name: 'type_id#1', value: 1, display: 'Some type' }
+                    ]   
                 }
             }
 
@@ -263,7 +315,21 @@ function ordersPageHOC(WrappedComponent){
                         <PageSubNavbar {...pageNavbarProps}>
                         </PageSubNavbar>
 
-                        <h1>AN ERROR OCCURED!</h1>
+                        <WrappedComponent>
+                            <div className="col-md-12">
+
+                                <Alert color="danger">
+                                    <h4 className="alert-heading">Oops!</h4>
+                                    <p>
+                                    An error occured while trying to render this page. Contact administrator for help.
+                                    </p>
+                                    <hr />
+                                    <p className="mb-0">
+                                    Code: <code>{this.state.errorMessage}</code>
+                                    </p>
+                                </Alert>
+                            </div>
+                        </WrappedComponent>
                     </div>
                 )
             }

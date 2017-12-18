@@ -56,7 +56,8 @@ export class MasterPane extends React.Component {
         this.handleItemSelectionChanged = this.handleItemSelectionChanged.bind(this)
 
         this.state = {
-            filter: ""
+            filter: "",
+            context: null
         }
     }
     componentWillMount(){
@@ -71,9 +72,10 @@ export class MasterPane extends React.Component {
             [name]: value
         })
     }
-    handleItemFilterChanged(filter){
+    handleItemFilterChanged(filter, context){
         this.setState({
-            filter
+            filter,
+            context
         })
     }
     handleItemSelectionChanged(e){
@@ -82,7 +84,7 @@ export class MasterPane extends React.Component {
 
     render() {
         const showFilterBox = this.props.filterItems ? true : false
-        const filteredItems = showFilterBox ? this.props.filterItems(this.state.filter) : this.props.items
+        const filteredItems = showFilterBox ? this.props.filterItems(this.state.filter, this.state.context) : this.props.items
         const selectedItemId = this.props.selectedItemId ? this.props.selectedItemId : 0
 
         

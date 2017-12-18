@@ -9,7 +9,7 @@
 import axios from 'axios'
 
   /** This header must be attached to all authed-requests to the API */
-export function apiRequestHeaders(){ return {authorization:`Bearer`+localStorage.getItem('token')}}
+export function apiRequestHeaders(){ return {authorization:`Bearer`+localStorage.getItem('token')} }
 
 /** Default api response action types for success/error */
 export const API_SUCCESS = '_SUCCESS'
@@ -53,6 +53,7 @@ export const apiRequest = (endpoint, baseAction, requestPayload = null, normaliz
             .then((response) => {
 
                 // Set refresh token
+                
                 const {newToken} = response.data
                 if(newToken){
                     localStorage.setItem('token', newToken)
@@ -119,6 +120,7 @@ export const apiPostRequest = (endpoint, baseAction, requestPayload, normalizer 
             .then((response) => {
 
                 // Set refresh token
+                /*
                 const {newToken} = response.data
                 if(newToken){
                     localStorage.setItem('token', newToken)
@@ -126,7 +128,7 @@ export const apiPostRequest = (endpoint, baseAction, requestPayload, normalizer 
                         type: API_TOKEN_REFRESHED,
                         payload: {token: newToken}
                     })
-                }
+                }*/
 
                 if(normalizer && typeof normalizer === 'function'){
                     return dispatch({

@@ -25,24 +25,18 @@ Route::group(['middleware' => 'jwt.auth'], function (){
 
     Route::get('users/{id?}', function($id = null) {
         // Refresh token
-        $newToken =  JWTAuth::parseToken()->refresh();
+        $newToken =  JWTAuth::getToken();
 
         $users = User::orderBy('id')->get();
-        return response()->json([ 'users' => $users, 'newToken' => $newToken ]);
+        return response()->json([ 'users' => $users]);
     });
     Route::get('clients/{id?}', function($id = null) {
-        // Refresh token
-        $newToken =  JWTAuth::parseToken()->refresh();
-
         $clients = Client::orderBy('name')->get();
-        return response()->json(['clients' => $clients, 'newToken' => $newToken]);
+        return response()->json(['clients' => $clients]);
     });
     Route::get('orders/{id?}', function($id = null) {
-        // Refresh token
-        $newToken =  JWTAuth::parseToken()->refresh();
-        
-        $orders = Order::orderBy('due_at')->with(['client', 'registrar'])->get();
-        return response()->json(['orders' => $orders, 'newToken' => $newToken]);
+        $orders = Order::orderBy('due_at')->with(['client', 'registrar', 'status'])->get();
+        return response()->json(['orders' => $orders]);
     });
 
     Route::post('clients/create', "ClientController@store");

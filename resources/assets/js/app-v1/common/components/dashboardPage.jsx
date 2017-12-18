@@ -6,8 +6,6 @@ import {
     Card, CardText, CardBody, CardLink, CardTitle, CardSubtitle
 } from 'reactstrap'
 
-console.log("LandingPage.jsx")
-
 /**
  * Debug component - test subnav links
  */

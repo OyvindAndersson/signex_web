@@ -42,6 +42,11 @@ class Order extends Model
         return $this->belongsToMany('App\OrderType', 'order_order_type', 'order_id', 'order_type_id');
     }
 
+    public function status()
+    {
+        return $this->belongsTo(\App\OrderStatus::class);
+    }
+
     public static function get_code_from_id($id)
     {
         return CodeRules::get_code_format_string('order', $id);

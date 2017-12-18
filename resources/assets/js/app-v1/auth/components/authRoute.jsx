@@ -41,6 +41,14 @@ import types from '../actionTypes'
     componentWillReceiveProps(nextProps){
       // get token from store on subsequent updates
       const { token, dispatch } = nextProps
+
+      // If the token is manually deleted in the local storage we force a login.
+      // The store still persists, so the token is active there and will result in open routing, but no data
+      // since the app assumes a valid token in localStorage, mirrored in the store.
+      if(token != localStorage.getItem('token')){
+        console.warn("Token has been manually removed from storage.")
+        return this.simpleValidate(null)
+      }
       this.simpleValidate(token)
     }
 

@@ -48,8 +48,6 @@ class CreateOrderView extends React.Component {
         this.props.dispatch(usersFetchAll())
     }
     componentWillReceiveProps(next){
-        console.log("NEXT PROPS")
-        console.log(next)
         if(next.user !== this.state.user){
             this.setState({ 
                 'order[user_id]': next.user.id, 
@@ -100,6 +98,15 @@ class CreateOrderView extends React.Component {
             { value: 3, label: "Production"}
         ]
 
+        // FIXME: Fetch api
+        const orderStatuses = [
+            { value: 1, label: "Quote"},
+            { value: 2, label: "Registered"},
+            { value: 3, label: "In progress"},
+            { value: 4, label: "Finished / Sent"},
+            { value: 5, label: "Archived"},
+        ]
+
         // Auto-select the currently authed user as the "our ref" selection.
         const authUserId = this.props.user ? this.props.user.id : null
         const dueAt = moment().add(7, 'days')
@@ -126,6 +133,13 @@ class CreateOrderView extends React.Component {
                                 id="userInput"
                                 options={userOptions}
                                 value={authUserId} />
+                        </LabeledFormGroup>
+                        <LabeledFormGroup htmlFor="statusInput" label="Status" rowFormat>
+                            <SelectField 
+                                field="order.status_id" 
+                                id="statusInput"
+                                options={orderStatuses}
+                                value={1} />
                         </LabeledFormGroup>
                         
                         <LabeledFormGroup htmlFor="descriptionInput" label="Description">
