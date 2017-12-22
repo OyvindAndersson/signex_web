@@ -40,15 +40,9 @@ import types from '../actionTypes'
 
     componentWillReceiveProps(nextProps){
       // get token from store on subsequent updates
-      const { token, dispatch } = nextProps
+      //const { token } = nextProps
 
-      // If the token is manually deleted in the local storage we force a login.
-      // The store still persists, so the token is active there and will result in open routing, but no data
-      // since the app assumes a valid token in localStorage, mirrored in the store.
-      if(token != localStorage.getItem('token')){
-        console.warn("Token has been manually removed from storage.")
-        return this.simpleValidate(null)
-      }
+      const token = localStorage.getItem('token')
       this.simpleValidate(token)
     }
 
@@ -63,19 +57,25 @@ import types from '../actionTypes'
       const {dispatch} = this.props
 
       if(token){
-        const decodedToken = jwtDecode(token)
-        const dateNow = moment().unix()
+        try {
+          const decodedToken = jwtDecode(token)
+          const dateNow = moment().unix()
 
-        if(decodedToken.exp < dateNow){
-          console.log("AuthRoute Update: Token expired. Is now Guest.")
+          if(decodedToken.exp < dateNow){
+            console.log("AuthRoute Update: Token expired. Is now Guest.")
+            this.setState({ isGuest: true })
+
+            dispatch({type: types.AUTH_LOGOUT_USER })
+            return
+          }
+
+          console.log("AuthRoute Update: is authenticated with token")
+          this.setState({ isGuest: false })
+        } catch(e){
+          console.error(e)
+          console.log("AuthRoute Update: is guest.")
           this.setState({ isGuest: true })
-
-          dispatch({type: types.AUTH_LOGOUT_USER })
-          return
         }
-
-        console.log("AuthRoute Update: is authenticated with token")
-        this.setState({ isGuest: false })
 
       } else {
         console.log("AuthRoute Update: is guest.")

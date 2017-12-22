@@ -55,8 +55,7 @@ export function authUserToken(token = localStorage.getItem('token')){
 
         return authApi.authToken(token)
         .then((response) => {
-            // token auth succes. Update locally stored token to the refreshed-token
-            localStorage.setItem("token", response.data.newToken);
+            
             dispatch({
                 type: types.AUTH_TOKEN_SUCCESS,
                 payload: response.data

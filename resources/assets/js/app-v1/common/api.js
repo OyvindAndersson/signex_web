@@ -53,7 +53,7 @@ export const apiRequest = (endpoint, baseAction, requestPayload = null, normaliz
             .then((response) => {
 
                 // Set refresh token
-                
+                /*
                 const {newToken} = response.data
                 if(newToken){
                     localStorage.setItem('token', newToken)
@@ -61,7 +61,7 @@ export const apiRequest = (endpoint, baseAction, requestPayload = null, normaliz
                         type: API_TOKEN_REFRESHED,
                         payload: {token: newToken}
                     })
-                }
+                }*/
                 
                 if(normalizer && typeof normalizer === 'function'){
                     return dispatch({
