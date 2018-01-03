@@ -2,6 +2,7 @@
  * The API file takes care of all calls to the backend,
  * to avoid cluttering the action creators, as well
  * as to give API access to native js code.
+ * 
  */
 import axios from 'axios'
 import {apiRequestHeaders} from '../common/api'

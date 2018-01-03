@@ -1,7 +1,6 @@
 import types from './actionTypes'
 import constants from './constants'
 import {API_SUCCESS, API_REJECTED, API_TOKEN_REFRESHED} from '../common/api'
-import { jtwDecode } from 'jwt-decode'
 
 /**
  * Initial auth state
@@ -9,10 +8,9 @@ import { jtwDecode } from 'jwt-decode'
 const initialAuthState = {
   user: null,
   role: constants.AUTH_ROLE_GUEST,
-  token: localStorage.getItem('token') ? localStorage.getItem('token') : null,
   isFetching: false,
   isAuthenticating: false,
-  isAuthenticated: localStorage.getItem('token') ? true : false,
+  isAuthenticated: false, //localStorage.getItem('token') ? true : false,
   error: null
 }
 
@@ -41,7 +39,6 @@ function authReducer(state = initialAuthState, action) {
           isAuthenticated:false, 
           error: action.payload,
           user: null,
-          token:null,
           role: constants.AUTH_ROLE_GUEST
         }
       }
@@ -54,7 +51,6 @@ function authReducer(state = initialAuthState, action) {
           isAuthenticating: false,
           isAuthenticated:true,
           user: action.payload.user,
-          token: action.payload.token,
           role: constants.AUTH_ROLE_ADMIN // TODO! Get from payload.
         }
       }
@@ -62,7 +58,7 @@ function authReducer(state = initialAuthState, action) {
       case types.AUTH_TOKEN: {
         return {
           ...state, 
-          isFetching: true,
+          isAuthenticating: true,
         }
       }
 
@@ -74,8 +70,7 @@ function authReducer(state = initialAuthState, action) {
           isAuthenticated:false,
           role: constants.AUTH_ROLE_GUEST,
           error: action.payload,
-          user: null,
-          token:null
+          user: null
         }
       }
 
@@ -83,18 +78,10 @@ function authReducer(state = initialAuthState, action) {
         return {
           ...state, 
           error: null,
-          isFetching: false, 
+          isAuthenticating: false, 
           isAuthenticated:true,
           user: action.payload.user,
-          token: action.payload.newToken, // Refreshed token. Also handled by API_TOKEN_REFRESHED, but included here since it's an initial token auth action.
           role: constants.AUTH_ROLE_ADMIN // TODO: Get from payload!
-        }
-      }
-
-      case API_TOKEN_REFRESHED: {
-        return {
-          ...state,
-          token: action.payload.token // refreshed token
         }
       }
 
@@ -106,7 +93,6 @@ function authReducer(state = initialAuthState, action) {
           isAuthenticating: false,
           isAuthenticated:false,
           user: null,
-          token: null,
           role: constants.AUTH_ROLE_GUEST
         }
       }

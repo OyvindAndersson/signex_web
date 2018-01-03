@@ -22,7 +22,6 @@ import appStore from './store'
 import {Main} from './common'
 
 console.log("Initializing app...")
-//console.log(SIGNEX)
 
 /** Run initial auth-check and fetch user details */
 let {initAuth} = require('./auth')

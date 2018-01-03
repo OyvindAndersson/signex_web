@@ -17,7 +17,7 @@ import types from '../actionTypes'
    * @todo implement role checks
    * @todo validate token on every update (receive props) properly (against server?)
    */
-  class AuthRouteWrapper extends React.Component {
+  export default class AuthRoute extends React.Component {
     constructor(props){
       super(props)
 
@@ -32,18 +32,12 @@ import types from '../actionTypes'
 
     componentWillMount(){
       console.log("AuthRoute - Component will mount")
-      // At init, we don't have the token from the store yet.
-      // check local storage initially.
-      const localToken = localStorage.getItem('token')
-      this.simpleValidate(localToken)
+      this.simpleValidate()
     }
 
     componentWillReceiveProps(nextProps){
-      // get token from store on subsequent updates
-      //const { token } = nextProps
-
-      const token = localStorage.getItem('token')
-      this.simpleValidate(token)
+      console.log("AuthRoute - Component will update")
+      this.simpleValidate()
     }
 
     /**
@@ -53,7 +47,7 @@ import types from '../actionTypes'
      * token either way.
      * @param {jwt token} token 
      */
-    simpleValidate(token){
+    simpleValidate(token = localStorage.getItem('token')){
       const {dispatch} = this.props
 
       if(token){
@@ -69,11 +63,12 @@ import types from '../actionTypes'
             return
           }
 
-          console.log("AuthRoute Update: is authenticated with token")
+          console.log("AuthRoute Update: is authenticated")
           this.setState({ isGuest: false })
         } catch(e){
+          
           console.error(e)
-          console.log("AuthRoute Update: is guest.")
+          console.log("AuthRoute Update: is guest. (See error above)")
           this.setState({ isGuest: true })
         }
 
@@ -111,8 +106,4 @@ import types from '../actionTypes'
       return this.state.isGuest ? this.renderGuest() : this.renderAuth()
     }
   }
-
-  export const AuthRoute = connect( state => ({
-    token: state.auth.token
-  }))(AuthRouteWrapper)
   

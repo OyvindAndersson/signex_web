@@ -29,8 +29,9 @@ export function authLoginUser(credentials){
         // Send login request with credentials to the API
         return authApi.requestLoginWith(credentials)
         .then((response) => {
-            // Login succes.
+            // Store token
             localStorage.setItem("token", response.data.token);
+            // Login succes.
             dispatch({
                 type: types.AUTH_LOGIN_USER_SUCCESS,
                 payload: response.data
@@ -46,13 +47,18 @@ export function authLoginUser(credentials){
     }
 }
 
+/**
+ * 
+ * @todo Verify on server, or simply check localStorage??
+ * @param {*} token 
+ */
 export function authUserToken(token = localStorage.getItem('token')){
     return (dispatch) => {
         
         dispatch({
             type: types.AUTH_TOKEN
         })
-
+        
         return authApi.authToken(token)
         .then((response) => {
             
@@ -60,7 +66,6 @@ export function authUserToken(token = localStorage.getItem('token')){
                 type: types.AUTH_TOKEN_SUCCESS,
                 payload: response.data
             })
-
             
         })
         .catch((err) => {

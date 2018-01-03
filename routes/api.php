@@ -20,7 +20,7 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 Route::post("/login", "ApiAuthController@login");
 
 
-Route::group(['middleware' => 'jwt.auth'], function (){
+Route::group(['middleware' => ['jwt.auth']], function (){
     Route::get('authUserToken', "ApiAuthController@authUserToken");
 
     Route::get('users/{id?}', function($id = null) {

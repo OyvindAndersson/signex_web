@@ -10896,7 +10896,7 @@ var UncontrolledTooltip = components.UncontrolledTooltip;
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return API_SUCCESS; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return API_REJECTED; });
 /* unused harmony export API_INVALID_REQUEST */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return API_TOKEN_REFRESHED; });
+/* unused harmony export API_TOKEN_REFRESHED */
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return apiRequest; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return apiPostRequest; });
 /**
@@ -11908,8 +11908,9 @@ function authLoginUser(credentials) {
 
         // Send login request with credentials to the API
         return __WEBPACK_IMPORTED_MODULE_1__api__["a" /* default */].requestLoginWith(credentials).then(function (response) {
-            // Login succes.
+            // Store token
             localStorage.setItem("token", response.data.token);
+            // Login succes.
             dispatch({
                 type: __WEBPACK_IMPORTED_MODULE_0__actionTypes__["a" /* default */].AUTH_LOGIN_USER_SUCCESS,
                 payload: response.data
@@ -11924,6 +11925,11 @@ function authLoginUser(credentials) {
     };
 }
 
+/**
+ * 
+ * @todo Verify on server, or simply check localStorage??
+ * @param {*} token 
+ */
 function authUserToken() {
     var token = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : localStorage.getItem('token');
 
@@ -12008,13 +12014,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
  * Initialize auth module 
  * ---------------------------------------------
  * 
- * Called at the beginning of every new request.
- * 
+ * Optional: Called at the beginning of every new request.
+ * All resource request will/should still be validated.
 */
 function initAuth(store) {
   // Always update user auth status at every new request
   store.dispatch(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__actions__["b" /* authUserToken */])());
-  //store.dispatch(usersFetchAll())
 }
 
 /** Components */
@@ -16250,10 +16255,7 @@ var LogoutPage = function (_React$Component) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__actionTypes__ = __webpack_require__(44);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants__ = __webpack_require__(46);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_api__ = __webpack_require__(15);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_jwt_decode__ = __webpack_require__(55);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_jwt_decode___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_jwt_decode__);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
 
 
 
@@ -16265,10 +16267,9 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 var initialAuthState = {
   user: null,
   role: __WEBPACK_IMPORTED_MODULE_1__constants__["a" /* default */].AUTH_ROLE_GUEST,
-  token: localStorage.getItem('token') ? localStorage.getItem('token') : null,
   isFetching: false,
   isAuthenticating: false,
-  isAuthenticated: localStorage.getItem('token') ? true : false,
+  isAuthenticated: false, //localStorage.getItem('token') ? true : false,
   error: null
 
   /**
@@ -16299,7 +16300,6 @@ var initialAuthState = {
           isAuthenticated: false,
           error: action.payload,
           user: null,
-          token: null,
           role: __WEBPACK_IMPORTED_MODULE_1__constants__["a" /* default */].AUTH_ROLE_GUEST
         });
       }
@@ -16312,7 +16312,6 @@ var initialAuthState = {
           isAuthenticating: false,
           isAuthenticated: true,
           user: action.payload.user,
-          token: action.payload.token,
           role: __WEBPACK_IMPORTED_MODULE_1__constants__["a" /* default */].AUTH_ROLE_ADMIN // TODO! Get from payload.
         });
       }
@@ -16320,7 +16319,7 @@ var initialAuthState = {
     case __WEBPACK_IMPORTED_MODULE_0__actionTypes__["a" /* default */].AUTH_TOKEN:
       {
         return _extends({}, state, {
-          isFetching: true
+          isAuthenticating: true
         });
       }
 
@@ -16332,8 +16331,7 @@ var initialAuthState = {
           isAuthenticated: false,
           role: __WEBPACK_IMPORTED_MODULE_1__constants__["a" /* default */].AUTH_ROLE_GUEST,
           error: action.payload,
-          user: null,
-          token: null
+          user: null
         });
       }
 
@@ -16341,18 +16339,10 @@ var initialAuthState = {
       {
         return _extends({}, state, {
           error: null,
-          isFetching: false,
+          isAuthenticating: false,
           isAuthenticated: true,
           user: action.payload.user,
-          token: action.payload.newToken, // Refreshed token. Also handled by API_TOKEN_REFRESHED, but included here since it's an initial token auth action.
           role: __WEBPACK_IMPORTED_MODULE_1__constants__["a" /* default */].AUTH_ROLE_ADMIN // TODO: Get from payload!
-        });
-      }
-
-    case __WEBPACK_IMPORTED_MODULE_2__common_api__["f" /* API_TOKEN_REFRESHED */]:
-      {
-        return _extends({}, state, {
-          token: action.payload.token // refreshed token
         });
       }
 
@@ -16364,7 +16354,6 @@ var initialAuthState = {
           isAuthenticating: false,
           isAuthenticated: false,
           user: null,
-          token: null,
           role: __WEBPACK_IMPORTED_MODULE_1__constants__["a" /* default */].AUTH_ROLE_GUEST
         });
       }
@@ -35320,6 +35309,7 @@ module.exports = function spread(callback) {
  * The API file takes care of all calls to the backend,
  * to avoid cluttering the action creators, as well
  * as to give API access to native js code.
+ * 
  */
 
 
@@ -35360,7 +35350,6 @@ var authFetchUsers = function authFetchUsers(id) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_moment__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__actions__ = __webpack_require__(45);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__actionTypes__ = __webpack_require__(44);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AuthRoute; });
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -35393,13 +35382,13 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @todo validate token on every update (receive props) properly (against server?)
  */
 
-var AuthRouteWrapper = function (_React$Component) {
-  _inherits(AuthRouteWrapper, _React$Component);
+var AuthRoute = function (_React$Component) {
+  _inherits(AuthRoute, _React$Component);
 
-  function AuthRouteWrapper(props) {
-    _classCallCheck(this, AuthRouteWrapper);
+  function AuthRoute(props) {
+    _classCallCheck(this, AuthRoute);
 
-    var _this = _possibleConstructorReturn(this, (AuthRouteWrapper.__proto__ || Object.getPrototypeOf(AuthRouteWrapper)).call(this, props));
+    var _this = _possibleConstructorReturn(this, (AuthRoute.__proto__ || Object.getPrototypeOf(AuthRoute)).call(this, props));
 
     _this.renderAuth = _this.renderAuth.bind(_this);
     _this.renderGuest = _this.renderGuest.bind(_this);
@@ -35411,23 +35400,17 @@ var AuthRouteWrapper = function (_React$Component) {
     return _this;
   }
 
-  _createClass(AuthRouteWrapper, [{
+  _createClass(AuthRoute, [{
     key: 'componentWillMount',
     value: function componentWillMount() {
       console.log("AuthRoute - Component will mount");
-      // At init, we don't have the token from the store yet.
-      // check local storage initially.
-      var localToken = localStorage.getItem('token');
-      this.simpleValidate(localToken);
+      this.simpleValidate();
     }
   }, {
     key: 'componentWillReceiveProps',
     value: function componentWillReceiveProps(nextProps) {
-      // get token from store on subsequent updates
-      //const { token } = nextProps
-
-      var token = localStorage.getItem('token');
-      this.simpleValidate(token);
+      console.log("AuthRoute - Component will update");
+      this.simpleValidate();
     }
 
     /**
@@ -35440,7 +35423,8 @@ var AuthRouteWrapper = function (_React$Component) {
 
   }, {
     key: 'simpleValidate',
-    value: function simpleValidate(token) {
+    value: function simpleValidate() {
+      var token = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : localStorage.getItem('token');
       var dispatch = this.props.dispatch;
 
 
@@ -35457,11 +35441,12 @@ var AuthRouteWrapper = function (_React$Component) {
             return;
           }
 
-          console.log("AuthRoute Update: is authenticated with token");
+          console.log("AuthRoute Update: is authenticated");
           this.setState({ isGuest: false });
         } catch (e) {
+
           console.error(e);
-          console.log("AuthRoute Update: is guest.");
+          console.log("AuthRoute Update: is guest. (See error above)");
           this.setState({ isGuest: true });
         }
       } else {
@@ -35504,14 +35489,10 @@ var AuthRouteWrapper = function (_React$Component) {
     }
   }]);
 
-  return AuthRouteWrapper;
+  return AuthRoute;
 }(__WEBPACK_IMPORTED_MODULE_0_react___default.a.Component);
 
-var AuthRoute = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_react_redux__["connect"])(function (state) {
-  return {
-    token: state.auth.token
-  };
-})(AuthRouteWrapper);
+/* harmony default export */ __webpack_exports__["a"] = (AuthRoute);
 
 /***/ }),
 /* 331 */
@@ -35560,7 +35541,7 @@ var LoginPage = function (_React$Component) {
 
         _this.state = {
             isAuthenticating: false,
-            isAuthenticated: false
+            isAuthenticated: props.isAuthenticated ? props.isAuthenticated : false
         };
         return _this;
     }
@@ -35601,10 +35582,14 @@ var LoginPage = function (_React$Component) {
 
 /* harmony default export */ __webpack_exports__["a"] = (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1_react_redux__["connect"])(function (state) {
     return {
-        isAuthenticated: state.auth.isAuthenticated && state.auth.token && localStorage.getItem('token'),
+        isAuthenticated: state.auth.isAuthenticated && localStorage.getItem('token'),
         isAuthenticating: state.auth.isAuthenticating
     };
 })(LoginPage));
+
+/**
+ * Redirection component when authenticated. No need to view the login page then...
+ */
 
 var AuthSuccess = function (_React$Component2) {
     _inherits(AuthSuccess, _React$Component2);
@@ -35624,21 +35609,6 @@ var AuthSuccess = function (_React$Component2) {
 
     return AuthSuccess;
 }(__WEBPACK_IMPORTED_MODULE_0_react___default.a.Component);
-/*
-export default 
-    connect( state => ({
-        // inverting value because we want to render wrappedcomponent when NOT authenticated in this case
-        // Important to also check for only token missing, in case it is deleted outside of the app,
-        // or else it fails with recursive redirects and an error in the browser, as we can
-        // still be authenticated in state, but missing token.
-        isAuthenticated: !state.auth.isAuthenticated || !localStorage.getItem('token'),
-        isAuthenticating: state.auth.isAuthenticating
-    }))
-    (authWrapper({
-        AuthenticatingComponent: () => (<Authenticating />), // todo: Show loading component
-        FailureComponent: () => (<AuthSuccess />)
-    })
-    (LoginPage))*/
 
 /***/ }),
 /* 332 */
@@ -35932,7 +35902,6 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
  */
 
 var token = document.head.querySelector('meta[name="csrf-token"]');
-
 if (token) {
     window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
 } else {
@@ -35940,19 +35909,12 @@ if (token) {
 }
 
 /**
- * Echo exposes an expressive API for subscribing to channels and listening
- * for events that are broadcast by Laravel. Echo and event broadcasting
- * allows your team to easily build robust real-time web applications.
+ * SIGNEX global
  */
+window.SIGNEX = {
+    humanDateFormat: 'DD.MM.Y H:mm'
+};
 
-// import Echo from 'laravel-echo'
-
-// window.Pusher = require('pusher-js');
-
-// window.Echo = new Echo({
-//     broadcaster: 'pusher',
-//     key: 'your-pusher-key'
-// });
 console.log("Bootstrap complete");
 
 /***/ }),
@@ -37790,7 +37752,6 @@ __webpack_require__(335);
 
 
 console.log("Initializing app...");
-//console.log(SIGNEX)
 
 /** Run initial auth-check and fetch user details */
 

@@ -9,7 +9,7 @@
 import axios from 'axios'
 
   /** This header must be attached to all authed-requests to the API */
-export function apiRequestHeaders(){ return {authorization:`Bearer`+localStorage.getItem('token')} }
+export function apiRequestHeaders(){ return {authorization:`Bearer${localStorage.getItem('token')}`} }
 
 /** Default api response action types for success/error */
 export const API_SUCCESS = '_SUCCESS'
