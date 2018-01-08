@@ -10,7 +10,7 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Alert } from 'react
 import {ordersFetchAll} from '../actions'
 import {clientsFetchAll} from '../../clients/actions'
 import actionTypes from '../actionTypes'
-import {getSelectedOrderUI, getDenormalizedOrders} from '../selectors'
+import {getSelectedOrderUI, getDenormalizedOrders, getIsFetchingOrders} from '../selectors'
 
 import Page from '../../common/components/page'
 import PageSubNavbar from '../../common/components/pageSubNavbar'
@@ -81,7 +81,6 @@ OrdersMasterList.propTypes = {
 }
 
 
-
 /**-------------------------------------------------
  * Orders Master List
  * -------------------------------------------------
@@ -90,12 +89,8 @@ OrdersMasterList.propTypes = {
  * @todo Implement fully
  */
 class OrderDetailPane extends React.Component {
-    componentDidMount(){
-    }
     render() {
         const {order} = this.props
-        console.log(order)
-        console.log(SIGNEX)
 
         const dueAt = moment(order.due_at).format(SIGNEX.humanDateFormat)
         const dueAtWeek = moment(order.due_at).isoWeek()
@@ -168,7 +163,7 @@ function ordersPageHOC(WrappedComponent){
 
         componentDidCatch(error, info) {
             // Display fallback UI
-            console.log(error)
+            console.error(error)
             this.setState({ hasError: true, errorMessage: `${error.message} @ ${error.fileName} | L: ${error.lineNumber}` })
         }
         
@@ -281,6 +276,7 @@ function ordersPageHOC(WrappedComponent){
                 items: this.props.orders,
                 selectedItem: this.props.selectedOrder,
                 selectedItemId: this.props.selectedOrderId,
+                isLoading: this.props.isFetchingOrders,
 
                 updateItems: this.updateOrders,
                 updateSelectedItem: this.updateSelectedItem,
@@ -309,6 +305,7 @@ function ordersPageHOC(WrappedComponent){
                 }
             }
 
+            // Display errorpage
             if(this.state.hasError){
                 return (
                     <div>
@@ -339,10 +336,11 @@ function ordersPageHOC(WrappedComponent){
                 <div>
                     <PageSubNavbar {...pageNavbarProps}>
                     </PageSubNavbar>
-                    
+
                     {/* ORDERS - INDEX */}
                     <Route exact path={`${match.url}`} render={ routeProps => (
                         <WrappedComponent {...this.props} fluid={true}>
+                            
                             <MasterPane {...masterPaneProps}>
                                 <OrdersMasterList />
                             </MasterPane>
@@ -382,4 +380,5 @@ export default withRouter(connect( state => ({
     orders: getDenormalizedOrders(state),
     selectedOrderId: state.ui.orderPage.selectedOrderId,
     selectedOrder: getSelectedOrderUI(state),
+    isFetchingOrders: getIsFetchingOrders(state)
 }))(ordersPageHOC(Page)))

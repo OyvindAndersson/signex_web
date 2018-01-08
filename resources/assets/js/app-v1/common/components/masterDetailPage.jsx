@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 //import { Nav, NavLink, NavItem, Collapse, Button } from 'reactstrap'
 
 import FilterableSelectBox from './filterableSelectBox'
+import LoadingBar from './loadingBar'
 
 /**-------------------------------------------------
  * Master Item List Item
@@ -86,6 +87,7 @@ export class MasterPane extends React.Component {
         const showFilterBox = this.props.filterItems ? true : false
         const filteredItems = showFilterBox ? this.props.filterItems(this.state.filter, this.state.context) : this.props.items
         const selectedItemId = this.props.selectedItemId ? this.props.selectedItemId : 0
+        const {isLoading} = this.props
 
         
         const childrenWithProps = React.Children.map(this.props.children, (child) => 
@@ -102,10 +104,14 @@ export class MasterPane extends React.Component {
                     { showFilterBox ? (
                     <FilterableSelectBox {...this.props.filterBoxProps} handleFilterChanged={this.handleItemFilterChanged} />
                     ) : null }
+                    &nbsp;
+                    { isLoading ? (<LoadingBar height="10px" />) : null }
                     <hr />
                     <div className="list-group" >
                         {childrenWithProps}
                     </div>
+                    
+                    
                 </div>
             </div>
         )

@@ -17,7 +17,7 @@ import types from '../actionTypes'
    * @todo implement role checks
    * @todo validate token on every update (receive props) properly (against server?)
    */
-  export default class AuthRoute extends React.Component {
+class AuthRoute extends React.Component {
     constructor(props){
       super(props)
 
@@ -107,3 +107,5 @@ import types from '../actionTypes'
     }
   }
   
+  /** AuthRoute connected */
+  export default connect((state) => ({}))(AuthRoute)

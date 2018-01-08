@@ -52,17 +52,6 @@ export const apiRequest = (endpoint, baseAction, requestPayload = null, normaliz
         return axios.get(`/api/${endpoint}`, { headers: apiRequestHeaders() })
             .then((response) => {
 
-                // Set refresh token
-                /*
-                const {newToken} = response.data
-                if(newToken){
-                    localStorage.setItem('token', newToken)
-                    dispatch({
-                        type: API_TOKEN_REFRESHED,
-                        payload: {token: newToken}
-                    })
-                }*/
-                
                 if(normalizer && typeof normalizer === 'function'){
                     return dispatch({
                         type: `${baseAction}${API_SUCCESS}`,

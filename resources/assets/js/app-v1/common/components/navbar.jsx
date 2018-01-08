@@ -82,7 +82,7 @@ class Navbar extends React.Component {
             <div>
                 <BSNavbar color="faded" light expand="md">
                     <NavbarToggler onClick={this.toggleOpen} />
-                    <NavbarBrand href="/">SignEx</NavbarBrand>
+                    <NavbarBrand href="/">SignEx <small>{SIGNEX.versionString()}</small></NavbarBrand>
                     <Collapse isOpen={this.state.isOpen} navbar>
                         <Nav className="ml-auto" navbar>
                             {navItems}

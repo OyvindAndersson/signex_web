@@ -3,16 +3,32 @@ import thunkMiddleware from 'redux-thunk'
 import { createLogger } from 'redux-logger'
 import rootReducer from './rootReducer'
 
-const loggerMiddleware = createLogger()
+/**
+ * Apply all middlewares, conditionally
+ * @returns - middlewares to apply
+ */
+function middlewares(){
+  if(SIGNEX.dev.logDispatch){
+    const loggerMiddleware = createLogger()
+    
+    return applyMiddleware(thunkMiddleware, loggerMiddleware)
 
+  } else {
+
+    return applyMiddleware(thunkMiddleware)
+
+  }
+}
+
+/**
+ * Init redux store
+ * @param {object} preloadedState 
+ */
 function configureStore(preloadedState) {
   return createStore(
     rootReducer,
     preloadedState,
-    applyMiddleware(
-      thunkMiddleware,
-      loggerMiddleware
-    )
+    middlewares()
   )
 }
 

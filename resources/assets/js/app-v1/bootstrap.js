@@ -43,12 +43,4 @@ if (token) {
     console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
 }
 
-
-/**
- * SIGNEX global
- */
-window.SIGNEX = {
-    humanDateFormat: 'DD.MM.Y H:mm'
-}
-
 console.log("Bootstrap complete")
