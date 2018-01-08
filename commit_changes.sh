@@ -27,6 +27,8 @@ if(process.argv.length >= 2){
 	commitMessage = process.argv[2] ? process.argv[2] : commitMessage;
 }
 
+console.log(commitMessage);
+
 // To run the git process, we must call in a shell script in bash
 var execProcess = require("./execproc.js");
 
@@ -37,7 +39,7 @@ fs.writeFile(configFile, fileStream, 'utf8', callback = function(e){
 });
 
 // Run the actual add/commit/push
-execProcess.result("sh git_commit_push_all.sh "+commitMessage, function(err, response){
+execProcess.result("sh git_commit_push_all.sh \""+commitMessage+"\"", function(err, response){
     if(!err){
         console.log(response);
     }else {
