@@ -1,21 +1,10 @@
 console.log("Laravel App v1")
 
-export const signex = {
-    humanDateFormat: 'DD.MM.Y H:mm',
-    dev: {
-        logDispatch: false
-    },
-    version: {
-        major: 0,
-        minor: 1,
-        patch: 1,
-        meta: 'pre-alpha'
-    }
-}
+var config = require('./app-v1/config')
 /**
  * SIGNEX APP global
  */
-window.SIGNEX = signex
+window.SIGNEX = config
 
 /**
  * Utility to get Apps' version string

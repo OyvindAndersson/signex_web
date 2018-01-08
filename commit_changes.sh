@@ -1,9 +1,11 @@
 #!/usr/bin/env node
+var configFile = './resources/assets/js/app-v1/config.js';
+
 var fs = require('fs');
-var signex = require('./TEST.js');
+var signex = require(configFile);
 
 // Read in app config file
-var fileStream = fs.readFileSync('./TEST.js', 'utf8');
+var fileStream = fs.readFileSync(configFile, 'utf8');
 
 // Isolate the version.patch variable
 var patchVarValueStartIndex = fileStream.indexOf(' patch:') + ' patch:'.length;
@@ -28,16 +30,18 @@ if(process.argv.length >= 2){
 // To run the git process, we must call in a shell script in bash
 var execProcess = require("./execproc.js");
 
+// Save patch num changes.
+fs.writeFile(configFile, fileStream, 'utf8', callback = function(e){
+	if(e) throw e;
+	console.log("Patch num has been updated!");
+});
+
 // Run the actual add/commit/push
 execProcess.result("sh git_commit_push_all.sh "+commitMessage, function(err, response){
     if(!err){
         console.log(response);
-		// Only save if git commit/push proc went well.
-		fs.writeFile('./TEST.js', fileStream, 'utf8', callback = function(e){
-			if(e) throw e;
-			console.log("Patch num has been updated!");
-		});
     }else {
+		// @todo: Revert patch num change if nothing was pushed
         console.log(err);
     }
 });

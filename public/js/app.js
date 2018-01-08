@@ -34444,37 +34444,25 @@ function valueEqual(a, b) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "signex", function() { return signex; });
 console.log("Laravel App v1");
 
-var signex = {
-    humanDateFormat: 'DD.MM.Y H:mm',
-    dev: {
-        logDispatch: false
-    },
-    version: {
-        major: 0,
-        minor: 1,
-        patch: 1,
-        meta: 'pre-alpha'
-    }
-    /**
-     * SIGNEX APP global
-     */
-};window.SIGNEX = signex;
+var config = __webpack_require__(607);
+/**
+ * SIGNEX APP global
+ */
+window.SIGNEX = config;
 
 /**
  * Utility to get Apps' version string
  */
 window.SIGNEX.versionString = function () {
-    var _SIGNEX$version = SIGNEX.version,
-        major = _SIGNEX$version.major,
-        minor = _SIGNEX$version.minor,
-        patch = _SIGNEX$version.patch,
-        meta = _SIGNEX$version.meta;
+  var _SIGNEX$version = SIGNEX.version,
+      major = _SIGNEX$version.major,
+      minor = _SIGNEX$version.minor,
+      patch = _SIGNEX$version.patch,
+      meta = _SIGNEX$version.meta;
 
-    return 'v' + major + '.' + minor + '.' + patch + '-' + meta;
+  return 'v' + major + '.' + minor + '.' + patch + '-' + meta;
 };
 
 __webpack_require__(353);
@@ -103152,6 +103140,28 @@ function symbolObservablePonyfill(root) {
 __webpack_require__(310);
 module.exports = __webpack_require__(311);
 
+
+/***/ }),
+/* 604 */,
+/* 605 */,
+/* 606 */,
+/* 607 */
+/***/ (function(module, exports) {
+
+var signex = {
+    humanDateFormat: 'DD.MM.Y H:mm',
+    dev: {
+        logDispatch: false
+    },
+    version: {
+        major: 0,
+        minor: 1,
+        patch: 1,
+        meta: 'pre-alpha'
+    }
+};
+
+module.exports = signex;
 
 /***/ })
 /******/ ]);
