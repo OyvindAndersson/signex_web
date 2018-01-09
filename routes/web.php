@@ -14,5 +14,5 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 |
 */
 Route::get('{slug}', function() {
-    return view('home');
+    return view('index');
 })->where('slug', '(?!api)([A-z\d-\/_.]+)?');

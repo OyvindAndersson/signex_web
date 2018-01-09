@@ -163,12 +163,10 @@ function ordersPageHOC(WrappedComponent){
 
         componentDidCatch(error, info) {
             // Display fallback UI
-            console.error(error)
             this.setState({ hasError: true, errorMessage: `${error.message} @ ${error.fileName} | L: ${error.lineNumber}` })
         }
         
         filterOrders(filter, context){
-            console.log("HOC | Filter: ",filter, "Context: ", context ? context.name : "null")
             return this.props.orders.filter( order => {
 
                 // CONTEXT FILTERING: Set the context for which the orders should be filtered.
@@ -212,16 +210,15 @@ function ordersPageHOC(WrappedComponent){
 
                 // TEXT FILTERING
                 if(isNaN(filter)){
+                    // Filtering by order-client name OR registrar name
                     if(order.client.name.toLowerCase().indexOf(filter.toLowerCase()) !== -1 || 
                         order.registrar.name.toLowerCase().indexOf(filter.toLowerCase()) !== -1){
-                        console.log("Filtering by order-client name OR registrar name")
                         return true
                     }
                 } else { // NUMERIC FILTERING
                     
-                    // YYYY
+                    // YYYY - year regex
                     if(/^(\d{4})$/.test(filter)) { 
-                        console.log("Filtering by order created date, IS NUMBER")
                         // Filter by order created date
                         const year = parseInt(filter, 10)
                         if(order.created_at.split('-')[0] == year){
@@ -230,9 +227,8 @@ function ordersPageHOC(WrappedComponent){
                         }
                     } 
 
-                    // Filter by code
+                    // Filter by order code
                     if(order.code.indexOf(filter) !== -1){
-                        console.log("Filtering by order code")
                         return true
                     }
                 }
@@ -240,12 +236,10 @@ function ordersPageHOC(WrappedComponent){
             })
         }
         updateOrders(){
-            //console.log("HOC: Update order")
             this.props.dispatch(clientsFetchAll())
             this.props.dispatch(ordersFetchAll())
         }
         updateSelectedItem(e){
-            console.log("HOC: Update selected item")
             this.props.dispatch({
                 type: actionTypes.ORDERS_PAGE_SELECTED_MASTER_ID,
                 payload: e.currentTarget.dataset.id

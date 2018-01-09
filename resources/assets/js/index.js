@@ -1,6 +1,7 @@
 console.log("Laravel App v1")
 
 var config = require('./app-v1/config')
+
 /**
  * SIGNEX APP global
  */

@@ -1,7 +1,6 @@
 import React from 'react'
 import Select from 'react-select'
 import { Form, Text, FormField } from 'react-form'
-
 /**
  * Select Wrapper
  * 

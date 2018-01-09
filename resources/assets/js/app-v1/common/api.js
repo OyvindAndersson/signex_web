@@ -7,6 +7,7 @@
  * common code shared for all api.js's
  */
 import axios from 'axios'
+import { toast } from 'react-toastify'
 
   /** This header must be attached to all authed-requests to the API */
 export function apiRequestHeaders(){ return {authorization:`Bearer${localStorage.getItem('token')}`} }
@@ -108,16 +109,12 @@ export const apiPostRequest = (endpoint, baseAction, requestPayload, normalizer 
         return axios.post(`/api/${endpoint}`, requestPayload, { headers: apiRequestHeaders() })
             .then((response) => {
 
-                // Set refresh token
-                /*
-                const {newToken} = response.data
-                if(newToken){
-                    localStorage.setItem('token', newToken)
-                    dispatch({
-                        type: API_TOKEN_REFRESHED,
-                        payload: {token: newToken}
-                    })
-                }*/
+                // Check if any data from the server should be notified to the user
+                // Example: A operation success message
+                const {notify} = response.data
+                if(notify){
+                    toast.success(notify.message)
+                }
 
                 if(normalizer && typeof normalizer === 'function'){
                     return dispatch({

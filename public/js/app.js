@@ -10892,6 +10892,8 @@ var UncontrolledTooltip = components.UncontrolledTooltip;
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(43);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_toastify__ = __webpack_require__(42);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_toastify___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react_toastify__);
 /* harmony export (immutable) */ __webpack_exports__["c"] = apiRequestHeaders;
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return API_SUCCESS; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return API_REJECTED; });
@@ -10907,6 +10909,7 @@ var UncontrolledTooltip = components.UncontrolledTooltip;
  * This common api.js is used by other modules to reuse
  * common code shared for all api.js's
  */
+
 
 
 /** This header must be attached to all authed-requests to the API */
@@ -11012,16 +11015,13 @@ var apiPostRequest = function apiPostRequest(endpoint, baseAction, requestPayloa
         // do the async request to API
         return __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post('/api/' + endpoint, requestPayload, { headers: apiRequestHeaders() }).then(function (response) {
 
-            // Set refresh token
-            /*
-            const {newToken} = response.data
-            if(newToken){
-                localStorage.setItem('token', newToken)
-                dispatch({
-                    type: API_TOKEN_REFRESHED,
-                    payload: {token: newToken}
-                })
-            }*/
+            // Check if any data from the server should be notified to the user
+            // Example: A operation success message
+            var notify = response.data.notify;
+
+            if (notify) {
+                __WEBPACK_IMPORTED_MODULE_1_react_toastify__["toast"].success(notify.message);
+            }
 
             if (normalizer && typeof normalizer === 'function') {
                 return dispatch({
@@ -34447,6 +34447,7 @@ function valueEqual(a, b) {
 console.log("Laravel App v1");
 
 var config = __webpack_require__(607);
+
 /**
  * SIGNEX APP global
  */
@@ -38467,13 +38468,11 @@ function ordersPageHOC(WrappedComponent) {
             key: 'componentDidCatch',
             value: function componentDidCatch(error, info) {
                 // Display fallback UI
-                console.error(error);
                 this.setState({ hasError: true, errorMessage: error.message + ' @ ' + error.fileName + ' | L: ' + error.lineNumber });
             }
         }, {
             key: 'filterOrders',
             value: function filterOrders(filter, context) {
-                console.log("HOC | Filter: ", filter, "Context: ", context ? context.name : "null");
                 return this.props.orders.filter(function (order) {
 
                     // CONTEXT FILTERING: Set the context for which the orders should be filtered.
@@ -38517,16 +38516,15 @@ function ordersPageHOC(WrappedComponent) {
 
                     // TEXT FILTERING
                     if (isNaN(filter)) {
+                        // Filtering by order-client name OR registrar name
                         if (order.client.name.toLowerCase().indexOf(filter.toLowerCase()) !== -1 || order.registrar.name.toLowerCase().indexOf(filter.toLowerCase()) !== -1) {
-                            console.log("Filtering by order-client name OR registrar name");
                             return true;
                         }
                     } else {
                         // NUMERIC FILTERING
 
-                        // YYYY
+                        // YYYY - year regex
                         if (/^(\d{4})$/.test(filter)) {
-                            console.log("Filtering by order created date, IS NUMBER");
                             // Filter by order created date
                             var year = parseInt(filter, 10);
                             if (order.created_at.split('-')[0] == year) {
@@ -38535,9 +38533,8 @@ function ordersPageHOC(WrappedComponent) {
                             }
                         }
 
-                        // Filter by code
+                        // Filter by order code
                         if (order.code.indexOf(filter) !== -1) {
-                            console.log("Filtering by order code");
                             return true;
                         }
                     }
@@ -38547,14 +38544,12 @@ function ordersPageHOC(WrappedComponent) {
         }, {
             key: 'updateOrders',
             value: function updateOrders() {
-                //console.log("HOC: Update order")
                 this.props.dispatch(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_9__clients_actions__["a" /* clientsFetchAll */])());
                 this.props.dispatch(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_8__actions__["a" /* ordersFetchAll */])());
             }
         }, {
             key: 'updateSelectedItem',
             value: function updateSelectedItem(e) {
-                console.log("HOC: Update selected item");
                 this.props.dispatch({
                     type: __WEBPACK_IMPORTED_MODULE_10__actionTypes__["a" /* default */].ORDERS_PAGE_SELECTED_MASTER_ID,
                     payload: e.currentTarget.dataset.id
@@ -39188,7 +39183,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
 
 
 
@@ -103156,7 +103150,7 @@ var signex = {
     version: {
         major: 0,
         minor: 1,
-        patch: 5,
+        patch: 6,
         meta: 'pre-alpha'
     }
 };

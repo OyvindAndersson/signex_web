@@ -65,7 +65,13 @@ class OrderProjectController extends Controller
             $newOrder->code = $code;
             $newOrder->save();
 
-            return response()->json(['order' => $newOrder, 'client' => $newOrder->client]);
+            return response()->json(
+                [
+                    'order' => $newOrder, 
+                    'client' => $newOrder->client,
+                    'notify' => ['title' => 'Success!', 'message' => "Order #$newOrder->code added!"]
+                ]
+            );
         }
         else {
             return response()->json(['order' => $newOrder, 'client' => $newOrder->client], 500);
