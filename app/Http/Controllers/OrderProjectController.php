@@ -69,12 +69,15 @@ class OrderProjectController extends Controller
                 [
                     'order' => $newOrder, 
                     'client' => $newOrder->client,
-                    'notify' => ['title' => 'Success!', 'message' => "Order #$newOrder->code added!"]
+                    'notify' => ['title' => 'Success!', 'message' => "Order #$newOrder->code added!", 'status' => 'success']
                 ]
             );
         }
         else {
-            return response()->json(['order' => $newOrder, 'client' => $newOrder->client], 500);
+            return response()->json([
+                'order' => $newOrder,
+                'notify' => ['title' => 'Ooops!', 'message' => "Failed to create order", 'status' => 'error']
+        ], 500);
         }
     }
 

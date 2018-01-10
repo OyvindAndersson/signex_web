@@ -41,9 +41,12 @@ function ordersReducer( state = initialState, action){
 
         case `${types.ORDERS_CREATE}${API_SUCCESS}`: {
             const {payload} = action
-            const {byId} = payload
+            const {byId, notify} = payload
             
-            return state
+            return {
+                ...state,
+                notify
+            }
 
             // FIXME: New state here is not merged properly. Creates undefined subobjects
             // TODO: Check normalizer who supplies the payload here..

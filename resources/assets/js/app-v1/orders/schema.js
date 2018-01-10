@@ -10,8 +10,10 @@ export const orderListSchema = new schema.Array(orderSchema)
 
 /** Normalizer for orders table */
 export const ordersNormalizer = (data) => {
-    const normalizedData = normalize(data.orders, orderListSchema)
-    if(data.orders.length === 0){
+    const {orders, notify} = data
+
+    const normalizedData = normalize(orders, orderListSchema)
+    if(orders.length === 0){
         return {
             byId: {},
             allIds: []
@@ -19,16 +21,17 @@ export const ordersNormalizer = (data) => {
     }
     return {
         byId: normalizedData.entities.orders,
-        allIds: normalizedData.result
+        allIds: normalizedData.result,
+        notify
     }
 }
 
-export const singleOrderNormalizer = (order) => {
-    const normalizedData = normalize(order, orderSchema)
-    console.log("NORMALIZED order DATA")
-    console.log(normalizedData)
+export const singleOrderNormalizer = (data) => {
+    const { notify, ...rest} = data
+    const normalizedData = normalize(rest, orderSchema)
     return {
         byId: normalizedData.entities.orders,
-        allIds: [normalizedData.result]
+        allIds: [normalizedData.result],
+        notify
     }
 }

@@ -10,13 +10,14 @@ import { UncontrolledAlert } from 'reactstrap'
 import {SelectField, DateTimeField} from '../../utils/react-form-hocs'
 import {LabeledFormGroup, FormGroup} from '../../utils/bootstrap'
 import { toast } from 'react-toastify'
+import { toastIt } from "../../common/components/toastIt";
 
 // actions and selectors
 import {clientsFetchAll} from '../../clients/actions'
 import {usersFetchAll} from '../../auth/actions'
 import {getDenormalizedClients} from '../../clients/selectors'
 import {getDenormalizedUsers} from '../../auth/selectors'
-import {getOrderErrors} from '../selectors'
+import {getOrderErrors, getOrderNotify} from '../selectors'
 import { ordersCreate } from "../actions"
 
 
@@ -28,6 +29,12 @@ import { ordersCreate } from "../actions"
  * form is not set to "submitted = true", so that the
  * user can return to the page, and continue filling
  * fields.
+ * 
+ * @todo Change current formApi.resetAll() / this.resetAll()
+ * functionality to rather inc. react-form's form validation
+ * strategies - with that, we have no need for conditionally
+ * resetting, we can just reset when the form is submitted
+ * with valid validation.
  */
 class CreateOrderView extends React.Component {
     constructor(props) {
@@ -35,12 +42,21 @@ class CreateOrderView extends React.Component {
 
         this.handleSelectChange = this.handleSelectChange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
+        this.resetForm = this.resetForm.bind(this)
 
         this.state = {
-            'order[client_id': 0,
-            'order[user_id]': 0,
             user: null,
-            users: []
+            users: [],
+            // Form state
+            clientInput: 1,
+            userInput: props.user ? props.user.id : null,
+            statusInput: 1,
+            descriptionInput: 'Test',
+            createdAtInput: moment(),
+            dueAtInput: moment().add(7, 'days'),
+            typeInput: 1,
+
+            notify: null
         }
     }
     componentDidMount(){
@@ -50,15 +66,23 @@ class CreateOrderView extends React.Component {
     componentWillReceiveProps(next){
         if(next.user !== this.state.user){
             this.setState({ 
-                'order[user_id]': next.user.id, 
+                userInput: next.user.id, 
                 user: next.user,
-                users: next.users
+                users: next.users,
+                
             })
         }
+        if(next.notify){
+            this.setState({
+                notify: next.notify
+            })
+            toastIt(next.notify)
+            this.resetForm()
+        }
     }
-    handleSelectChange(val){
+    handleSelectChange(val, id){
         this.setState({
-            selectedClientId: val
+            id: val.value
         })
     }
     handleInputChange(e){
@@ -70,16 +94,21 @@ class CreateOrderView extends React.Component {
             name: value
         })
     }
-    handleSubmit(e){
-        console.log("FORM SUBMITTED")
-        console.log(e)
-
+    handleSubmit(values, e, formApi){
         // format to MYSQL
-        e.order.due_at = moment(e.order.due_at, "DD.MM.Y H:m").format('YYYY-MM-DD HH:MM:SS')
+        values.order.due_at = moment(values.order.due_at, "DD.MM.Y H:m").format('YYYY-MM-DD HH:MM:SS')
 
         const {dispatch} = this.props
         if(dispatch){
-            dispatch(ordersCreate(e))
+            dispatch(ordersCreate(values))
+            // We need a reference to formApi in resetForm(), 
+            // which will only ever be called after a submit
+            this.formApi = formApi
+        }
+    }
+    resetForm(){
+        if(this.formApi){
+            this.formApi.resetAll()
         }
     }
     render(){
@@ -107,11 +136,6 @@ class CreateOrderView extends React.Component {
             { value: 5, label: "Archived"},
         ]
 
-        // Auto-select the currently authed user as the "our ref" selection.
-        const authUserId = this.props.user ? this.props.user.id : null
-        const dueAt = moment().add(7, 'days')
-        const now = moment()
-
         return(
         <div className="col-md-12">
             <Form onSubmit={this.handleSubmit}>
@@ -123,50 +147,53 @@ class CreateOrderView extends React.Component {
                         <h5 className="mb-4">Order details</h5>
                         <LabeledFormGroup htmlFor="clientInput" label="Client" rowFormat>
                             <SelectField 
+                                required={true}
                                 field="order.client_id" 
                                 id="clientInput" 
-                                options={clientOptions} />
+                                options={clientOptions}
+                                value={this.state.clientInput}
+                                onChange={this.handleSelectChange} />
                         </LabeledFormGroup>
                         <LabeledFormGroup htmlFor="userInput" label="Our ref" rowFormat>
                             <SelectField 
                                 field="order.user_id" 
                                 id="userInput"
                                 options={userOptions}
-                                value={authUserId} />
+                                value={this.state.userInput} />
                         </LabeledFormGroup>
                         <LabeledFormGroup htmlFor="statusInput" label="Status" rowFormat>
                             <SelectField 
                                 field="order.status_id" 
                                 id="statusInput"
                                 options={orderStatuses}
-                                value={1} />
+                                value={this.state.statusInput} />
                         </LabeledFormGroup>
                         
                         <LabeledFormGroup htmlFor="descriptionInput" label="Description">
                             <TextArea 
                                 id="descriptionInput" 
                                 field="order.description"
-                                className="form-control"></TextArea>
+                                className="form-control">{this.state.descriptionInput}</TextArea>
                         </LabeledFormGroup>
 
                         <LabeledFormGroup htmlFor="createdAtInput" label="Taken at:" rowFormat>
                             <DateTimeField 
                                 field="order.registered_at"
                                 id="createdAtInput"
-                                defaultValue={now} />
+                                defaultValue={this.state.createdAtInput} />
                         </LabeledFormGroup>
                         <LabeledFormGroup htmlFor="dueAtInput" label="Due at:" rowFormat>
                             <DateTimeField 
                                 field="order.due_at"
                                 id="dueAtInput"
-                                defaultValue={dueAt} />
+                                defaultValue={this.state.dueAtInput} />
                         </LabeledFormGroup>
                         <LabeledFormGroup htmlFor="typeInput" label="Type" rowFormat>
                             <SelectField 
                                 field="order.type" 
                                 id="typeInput"
                                 options={orderTypes}
-                                value={1} />
+                                value={this.state.typeInput} />
                         </LabeledFormGroup>
                         
                     </div>
@@ -200,5 +227,6 @@ export default withRouter(connect( state => ({
     clients: getDenormalizedClients(state),
     users: getDenormalizedUsers(state),
     user: state.auth.user,
-    errors: getOrderErrors(state)
+    errors: getOrderErrors(state),
+    notify: getOrderNotify(state)
 }))(CreateOrderView))

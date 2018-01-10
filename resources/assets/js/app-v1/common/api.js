@@ -7,7 +7,7 @@
  * common code shared for all api.js's
  */
 import axios from 'axios'
-import { toast } from 'react-toastify'
+import { toastIt } from "./components/toastIt";
 
   /** This header must be attached to all authed-requests to the API */
 export function apiRequestHeaders(){ return {authorization:`Bearer${localStorage.getItem('token')}`} }
@@ -111,12 +111,18 @@ export const apiPostRequest = (endpoint, baseAction, requestPayload, normalizer 
 
                 // Check if any data from the server should be notified to the user
                 // Example: A operation success message
+                /*
+
+                HANDLE INDIVIDUALLY IN RELEVANT COMPONENT / CALLBACK.
+                Reducers must intercept the notify payload and use as they wish
+
                 const {notify} = response.data
                 if(notify){
-                    toast.success(notify.message)
-                }
+                    toastIt(notify)
+                }*/
 
                 if(normalizer && typeof normalizer === 'function'){
+
                     return dispatch({
                         type: `${baseAction}${API_SUCCESS}`,
                         payload: normalizer(response.data)
@@ -130,6 +136,13 @@ export const apiPostRequest = (endpoint, baseAction, requestPayload, normalizer 
                 }
             })
             .catch((err) => {
+                // Generic notify failure
+                // TODO: Intercept error notify in reducers instead
+                toastIt({
+                    status: 'error',
+                    message: err.message
+                })
+
                 return dispatch({
                     type: `${baseAction}${API_REJECTED}`,
                     payload: { message: err.message, reason: err.response ? err.response.data : '' }

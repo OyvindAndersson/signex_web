@@ -34,7 +34,8 @@ class SelectWrapper extends React.Component {
                     onChange={(e) => {
                         setValue(e ? e.value : e)
                         if(onChange){
-                            onChange(e)
+                            const id = this.props.id ? this.props.id : null
+                            onChange(e, id)
                         }
                     }}
                     options={options}
