@@ -7,7 +7,8 @@ const initialState = {
     isFetching: false,
     isDirty: false,
     byId: {},
-    allIds: []
+    allIds: [],
+    notify: null
 }
 
 function ordersReducer( state = initialState, action){
@@ -39,22 +40,28 @@ function ordersReducer( state = initialState, action){
             }
         }
 
+        case `${types.ORDERS_CREATE}`: {
+            return {
+                ...state,
+                isDirty: true
+            }
+        }
         case `${types.ORDERS_CREATE}${API_SUCCESS}`: {
             const {payload} = action
             const {byId, notify} = payload
-            
+            /*
             return {
                 ...state,
                 notify
-            }
+            }*/
 
             // FIXME: New state here is not merged properly. Creates undefined subobjects
             // TODO: Check normalizer who supplies the payload here..
             return {
                 ...state,
-                allIds: state.allIds.concat(payload.allIds), // add the new ID ref.
-                byId: {...state.byId, ...byId}, // add the new client in with the old ones,
-                isDirty: true
+                allIds: state.allIds.concat(payload.allIds),
+                byId: {...state.byId, ...byId},
+                isDirty: false
             }
         }
 

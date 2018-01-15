@@ -27,7 +27,7 @@ console.log("Initializing app...")
 let {initAuth} = require('./auth')
 initAuth(appStore)
 
-const rootRoutes = require( './appRoutes')
+const rootRoutes = require( './routes')
 
 /**
  * Root component

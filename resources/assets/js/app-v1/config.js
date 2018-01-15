@@ -6,7 +6,7 @@ const signex = {
     version: {
         major: 0,
         minor: 1,
-        patch: 8,
+        patch: 9,
         meta: 'pre-alpha'
     }
 }

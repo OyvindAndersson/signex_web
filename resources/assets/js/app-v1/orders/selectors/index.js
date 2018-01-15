@@ -4,6 +4,7 @@ import {orderSchema, orderListSchema} from '../schema'
 
 const getSelectedOrderId = state => state.ui.orderPage.selectedOrderId
 const getOrders = state => state.entities.orders.byId
+
 export const getOrderErrors = state => state.entities.orders.errors
 export const getIsFetchingOrders = state => state.entities.orders.isFetching
 export const getOrderNotify = state => state.entities.orders.notify

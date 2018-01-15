@@ -10,7 +10,7 @@ import {
     NavItem,
     NavLink
 } from 'reactstrap'
-import {links} from '../../appRoutes'
+import {links} from '../../routes'
 
 import { authWrapper } from '../../auth'
 
