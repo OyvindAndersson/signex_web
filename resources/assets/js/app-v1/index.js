@@ -18,22 +18,24 @@ import {Provider} from 'react-redux'
 import {BrowserRouter as Router, Switch} from 'react-router-dom'
 import jwtDecode from 'jwt-decode'
 
-import appStore from './store'
+//import appStore from './store'
+import { store } from './setup'
 import {Main} from './common'
 
 console.log("Initializing app...")
 
 /** Run initial auth-check and fetch user details */
-let {initAuth} = require('./auth')
-initAuth(appStore)
+//let {initAuth} = require('./auth')
+//initAuth(appStore)
 
 const rootRoutes = require( './routes')
 
+console.log(store.getState())
 /**
  * Root component
  */
 const App = (
-	<Provider store={appStore}>
+	<Provider store={store}>
 		<Router>
 			<Main>
 				{rootRoutes.routes}

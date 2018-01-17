@@ -3,6 +3,33 @@ import authApi from './api'
 import {apiRequest} from '../common/api'
 import {usersNormalizer} from './schema'
 
+//--------------------------------------------------------------------------------------
+
+import { BASE_API_URL } from '../constants'
+import { createRequestAction } from "../utils/redux/utils/createRequestAction"
+
+const VERIFY_LOGIN = 'VERIFY_LOGIN'
+function verifyLogin ({ credentials }) {
+    return axios.post(`${BASE_API_URL}/login`, {credentials})
+        .then(response => ({
+            response: {
+                headers: response.headers,
+                body: response.data,
+                status: response.status,
+                request: response.request
+            }
+        })
+        ).catch(error => ({
+            error: {
+                ...error
+            }
+        }))
+}
+export const verifyLoginAction = createRequestAction(VERIFY_LOGIN, verifyLogin)
+
+//--------------------------------------------------------------------------------------
+
+
 /**
  * A simple action to kick off the state of "isFetching"
  * when a login request is sent

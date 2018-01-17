@@ -14,25 +14,6 @@ import {links} from '../../routes'
 
 import { authWrapper } from '../../auth'
 
-// Temp 
-//-------------------------------------------------
-const UserLink = props => (
-    <span className="navbar-text">
-        <small>{props.user ? props.user.email : null}</small>
-    </span>
-)
-const AuthUserLink = connect( state => ({
-    isAuthenticated: state.auth.isAuthenticated,
-    // only show loading if user is authed, but not fetched yet.
-    isAuthenticating: state.auth.user === null && state.auth.isAuthenticated,
-    user: state.auth.user
-}))
-(authWrapper({
-    AuthenticatingComponent: () => (<span><em>Loading user...</em></span>)
-})
-(UserLink))
-//-------------------------------------------------
-
 /**
 * Main navbar
 */
@@ -42,8 +23,7 @@ class Navbar extends React.Component {
 
         this.toggleOpen = this.toggleOpen.bind(this);
         this.state = {
-            isOpen: false,
-            role: this.props.role
+            isOpen: false
         }
     }
     toggleOpen(){
@@ -88,7 +68,6 @@ class Navbar extends React.Component {
                             {navItems}
                         </Nav>
                     </Collapse>
-                   <AuthUserLink />
                 </BSNavbar>
             </div>
         );
@@ -97,6 +76,5 @@ class Navbar extends React.Component {
 
 export default withRouter(connect((state) => ({
     isAuthenticated: state.auth.isAuthenticated,
-    role: state.auth.role,
     user: state.auth.user
 }))(Navbar))

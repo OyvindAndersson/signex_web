@@ -7,6 +7,8 @@ import constants from '../../constants'
 import Login from '../presentation/login'
 import Authenticating from '../presentation/authenticating'
 
+import { verifyLoginAction } from "../../actions"
+
 /**
  * Container component for the login page
  */
@@ -28,7 +30,7 @@ class LoginPage extends React.Component {
         })
     }
     handleAuthLoginUser({email, password}){
-        this.props.dispatch(authLoginUser({email, password}))
+        this.props.dispatch(verifyLoginAction({email, password}))
     }
     render(){
         const {isAuthenticated} = this.state
