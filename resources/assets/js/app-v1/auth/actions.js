@@ -8,24 +8,30 @@ import {usersNormalizer} from './schema'
 import { BASE_API_URL } from '../constants'
 import { createRequestAction } from "../utils/redux/utils/createRequestAction"
 
-const VERIFY_LOGIN = 'VERIFY_LOGIN'
-function verifyLogin ({ credentials }) {
-    return axios.post(`${BASE_API_URL}/login`, {credentials})
-        .then(response => ({
-            response: {
+/**
+ * Verify login attempt
+ */
+function verifyLogin (credentials) {
+
+    return axios.post(`${BASE_API_URL}/login`, credentials)
+        .then( response => {
+            console.log(response)
+            return { response: {
                 headers: response.headers,
-                body: response.data,
+                data: response.data,
                 status: response.status,
                 request: response.request
-            }
+            } }
+        }).catch( error => {
+            return { error: {
+                headers: error.response.headers,
+                data: error.response.data,
+                status: error.response.status,
+                request: error.response.request
+            } }
         })
-        ).catch(error => ({
-            error: {
-                ...error
-            }
-        }))
 }
-export const verifyLoginAction = createRequestAction(VERIFY_LOGIN, verifyLogin)
+export const verifyLoginAction = createRequestAction(types.AUTH_VERIFY_LOGIN, verifyLogin)
 
 //--------------------------------------------------------------------------------------
 

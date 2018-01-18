@@ -1,152 +1,27 @@
 import types from './actionTypes'
 import constants from './constants'
-import {API_SUCCESS, API_REJECTED, API_TOKEN_REFRESHED} from '../common/api'
+import { handleActions } from 'redux-actions'
+import { initialState } from '../utils/redux/requests/reducer';
 
 /**
  * Initial auth state
  */
 const initialAuthState = {
   user: null,
-  role: constants.AUTH_ROLE_GUEST,
-  isFetching: false,
-  isAuthenticating: false,
-  isAuthenticated: false, //localStorage.getItem('token') ? true : false,
-  error: null
+  isAuthenticated: false
 }
 
-/**
- * Auth Reducer - Handles the Auth state object
- * @param {*} state 
- * @param {*} action 
- */
-function authReducer(state = initialAuthState, action) {
-
-    switch (action.type) {   
-      case types.AUTH_LOGIN_USER: {
-        return {
-          ...state, 
-          isFetching: false,
-          isAuthenticating:true, 
-          isAuthenticated:false
-        }
-      }
-
-      case types.AUTH_LOGIN_USER_REJECTED: {
-        return {
-          ...state, 
-          isFetching: false, 
-          isAuthenticating: false,
-          isAuthenticated:false, 
-          error: action.payload,
-          user: null,
-          role: constants.AUTH_ROLE_GUEST
-        }
-      }
-
-      case types.AUTH_LOGIN_USER_SUCCESS: {
-        return {
-          ...state, 
-          error: null,
-          isFetching: false, 
-          isAuthenticating: false,
-          isAuthenticated:true,
-          user: action.payload.user,
-          role: constants.AUTH_ROLE_ADMIN // TODO! Get from payload.
-        }
-      }
-
-      case types.AUTH_TOKEN: {
-        return {
-          ...state, 
-          isAuthenticating: true,
-        }
-      }
-
-      case types.AUTH_TOKEN_REJECTED: {
-        return {
-          ...state, 
-          isFetching: false, 
-          isAuthenticating: false,
-          isAuthenticated:false,
-          role: constants.AUTH_ROLE_GUEST,
-          error: action.payload,
-          user: null
-        }
-      }
-
-      case types.AUTH_TOKEN_SUCCESS: {
-        return {
-          ...state, 
-          error: null,
-          isAuthenticating: false, 
-          isAuthenticated:true,
-          user: action.payload.user,
-          role: constants.AUTH_ROLE_ADMIN // TODO: Get from payload!
-        }
-      }
-
-      case types.AUTH_LOGOUT_USER: {
-        localStorage.removeItem('token')
-        return {
-          ...state, 
-          isFetching: false, 
-          isAuthenticating: false,
-          isAuthenticated:false,
-          user: null,
-          role: constants.AUTH_ROLE_GUEST
-        }
-      }
-          
-      default:
-          return state;
-    }
-}
-
-const initialUsersState = {
-    isFetching: false,
-    isDirty: false,
-    byId: {},
-    allIds: []
-}
-/**
- * 
- * @param {*} state 
- * @param {*} action 
- */
-function usersReducer(state = initialUsersState, action){
-  switch(action.type){
-
-    case `${types.AUTH_FETCH_USERS}`: {
-      return {
-          ...state,
-          isFetching: true
-      }
-    }
-
-    case `${types.AUTH_FETCH_USERS}${API_SUCCESS}`: {
-      return {
-          ...state,
-          isFetching: false,
-          isDirty: false,
-          ...action.payload
-      }
-    }
-
-    case `${types.AUTH_FETCH_USERS}${API_REJECTED}`: {
-      return {
-          ...state,
-          isFetching: false,
-          byId: {},
-          allIds: []
-      }
-    }
-
-    default:
-      return state
+function verifyLoginHandler(state, action){
+  console.error(action)
+  return {
+    ...state,
+    isAuthenticated: true
   }
 }
 
-export default {
-  authReducer,
-  usersReducer
-}
+export default handleActions(
+  {
+    [types.AUTH_VERIFY_LOGIN]: verifyLoginHandler
+  },
+  initialAuthState
+)

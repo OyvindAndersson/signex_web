@@ -16,10 +16,7 @@ export function buildClearQueuedRequestAction(queuedRequest) {
   };
 }
 
-export function buildPendingRequestAction(
-  store,
-  { meta: { requestType, request }, payload },
-) {
+export function buildPendingRequestAction( store, { meta: { requestType, request }, payload } ) {
   return {
     type: ADD_PENDING_REQUEST,
     meta: {
@@ -82,22 +79,19 @@ export function isRequestUnique(request, queuedRequests, pendingRequests) {
 }
 
 export function handleRequestsQueueChange(store) {
-  const currentState = store.getState();
-  const queuedRequests = queuedRequestsSelector(currentState);
+  const currentState = store.getState()
+  const queuedRequests = queuedRequestsSelector(currentState)
+
   if (queuedRequests.length > 0) {
-    const pendingRequests = pendingRequestsSelector(currentState);
+    const pendingRequests = pendingRequestsSelector(currentState)
+
     queuedRequests.forEach(queuedRequest => {
       if (isRequestUnique(queuedRequest, queuedRequests, pendingRequests)) {
-        const pendingRequestAction = buildPendingRequestAction(
-          store,
-          queuedRequest,
-        );
-        store.dispatch(pendingRequestAction);
+        const pendingRequestAction = buildPendingRequestAction(store, queuedRequest)
+        store.dispatch(pendingRequestAction)
       } else {
-        const clearQueuedRequestAction = buildClearQueuedRequestAction(
-          queuedRequest,
-        );
-        store.dispatch(clearQueuedRequestAction);
+        const clearQueuedRequestAction = buildClearQueuedRequestAction(queuedRequest)
+        store.dispatch(clearQueuedRequestAction)
       }
       return true;
     });
