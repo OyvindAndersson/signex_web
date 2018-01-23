@@ -1,3 +1,3 @@
 import configureStore from './store';
 
-export const store = configureStore();
+export const { store, persistor } = configureStore();

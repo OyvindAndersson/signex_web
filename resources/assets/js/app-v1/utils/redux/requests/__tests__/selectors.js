@@ -6,7 +6,7 @@ import {
   ADD_PENDING_REQUEST,
   LOAD_ANSWER,
   QUEUE_REQUEST,
-} from 'redux/constants';
+} from '../../constants';
 
 const requestType = LOAD_ANSWER;
 const payload = { id: 3 };

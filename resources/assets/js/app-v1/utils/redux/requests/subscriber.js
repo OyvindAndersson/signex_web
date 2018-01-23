@@ -21,7 +21,7 @@ export function buildPendingRequestAction( store, { meta: { requestType, request
     type: ADD_PENDING_REQUEST,
     meta: {
       requestType,
-      request: request(payload)
+      request: request(payload) // Request function must return a promise
         .then(({ response, error }) => {
           if (error) {
             store.dispatch({
@@ -82,16 +82,21 @@ export function handleRequestsQueueChange(store) {
   const currentState = store.getState()
   const queuedRequests = queuedRequestsSelector(currentState)
 
+  // Do we have any queued request lined up?
   if (queuedRequests.length > 0) {
     const pendingRequests = pendingRequestsSelector(currentState)
 
     queuedRequests.forEach(queuedRequest => {
       if (isRequestUnique(queuedRequest, queuedRequests, pendingRequests)) {
+        // If this is unique, dispatch it
         const pendingRequestAction = buildPendingRequestAction(store, queuedRequest)
         store.dispatch(pendingRequestAction)
+
       } else {
+        // If this request is not unique, clear it
         const clearQueuedRequestAction = buildClearQueuedRequestAction(queuedRequest)
         store.dispatch(clearQueuedRequestAction)
+
       }
       return true;
     });

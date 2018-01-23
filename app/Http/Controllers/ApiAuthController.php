@@ -2,57 +2,113 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
 use Illuminate\Http\Request;
-use JWTAuth;
-use Tymon\JWTAuth\Exceptions\JWTException;
+use App\Http\Requests\VerifyLoginRequest;
 
 class ApiAuthController extends Controller
 {
-    public function login(Request $request)
+    public function __construct()
     {
+        $this->middleware('auth:api', ['except' => ['login']]);
+    }
+
+    /**
+     * Verifies a login request and sets a Token cookie if credentials
+     * were valid.
+     * @throws JWTException
+     * @return JsonResponse
+     */
+    public function login(VerifyLoginRequest $request)
+    {
+        // Check if already logged in
+        $user = $this->guard()->user();
+        if($user)
+        {
+            return response()->json();
+        }
+        
         // grab credentials from the request
         $credentials = $request->only('email', 'password');
 
-        try {
-            // attempt to verify the credentials and create a token for the user
-            if (! $token = JWTAuth::attempt($credentials)) {
-                return response()->json(['error' => 'invalid_credentials', 'credentials' => $credentials], 401);
-            }
-        } catch (JWTException $e) {
-            // something went wrong whilst attempting to encode the token
-            return response()->json(['error' => 'could_not_create_token'], 500);
+        if($token = $this->guard()->attempt($credentials))
+        {
+            //return $this->respondWithToken($token);
+            return $this->respondWithCookie($token);
         }
-        
-        $user = JWTAuth::toUser($token);
-        // all good so return the token
-        return response()->json([ "token" => $token, "user" => $user ]);
+        return response()->json(['error' => 'Unauthorized'], 401);
     }
 
-    public function authUserToken(Request $request)
+    /**
+     * Get the authenticated User
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function me()
     {
-        try 
-        {     
-            if (! $user = JWTAuth::parseToken()->authenticate()) {
-                return response()->json(['user_not_found'], 404);
-            }
-            // Refresh token
-           // $newToken =  JWTAuth::parseToken()->refresh();
-        } 
-        catch (Tymon\JWTAuth\Exceptions\TokenExpiredException $e) 
-        {
-            return response()->json(['token_expired'], $e->getStatusCode());
-        } 
-        catch (Tymon\JWTAuth\Exceptions\TokenInvalidException $e) 
-        {
-            return response()->json(['token_invalid'], $e->getStatusCode());
-        } 
-        catch (Tymon\JWTAuth\Exceptions\JWTException $e) 
-        {
-            return response()->json(['token_absent'], $e->getStatusCode());
-        }
-    
-        // the token is valid and we have found the user via the sub claim
-        // send the refreshed token back for update
-    return response()->json(compact('user')); //->header('Authorization', 'Bearer'.$newToken);
+        return response()->json($this->guard()->user());
+    }
+
+    public function verifyCookie()
+    {
+        return response()->json();
+    }
+
+    /**
+     * Log the user out (Invalidate the token)
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function logout()
+    {
+        $this->guard()->logout();
+        \Cookie::forget('token');
+
+        return response()->json(['message' => 'Successfully logged out']);
+    }
+
+    /**
+     * Refresh a token.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function refresh()
+    {
+        return $this->respondWithToken($this->guard()->refresh());
+    }
+
+    /**
+     * Get the token array structure.
+     *
+     * @param  string $token
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    protected function respondWithToken($token)
+    {
+        return response()->json([
+            'access_token' => $token,
+            'token_type' => 'bearer',
+            'expires_in' => $this->guard()->factory()->getTTL() * 60
+        ]);
+    }
+
+    protected function respondWithCookie($token)
+    {
+        $expires_in = $this->guard()->factory()->getTTL() * 60;
+        return response()->json(
+            [
+                'user' => $this->guard()->user()
+            ])->cookie('token', $token, $expires_in, 'localhost', true, true);
+    }
+
+    /**
+     * Get the guard to be used during authentication.
+     *
+     * @return \Illuminate\Contracts\Auth\Guard
+     */
+    public function guard()
+    {
+        return Auth::guard();
     }
 }

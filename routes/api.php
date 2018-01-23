@@ -16,54 +16,75 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 |
 */
 
-// JWT Auth API
-Route::post("/login", "ApiAuthController@login");
+Route::group(['middleware' => ['api']/*, 'namespace' => 'App\Http\Controllers', 'prefix' => 'auth'*/ ], function ($router) 
+{
+    Route::post('login', 'ApiAuthController@login');
+    Route::post('logout', 'ApiAuthController@logout');
+    Route::post('refresh', 'ApiAuthController@refresh');
+    Route::post('verifyCookie', 'ApiAuthController@verifyCookie');
+    Route::post('me', 'ApiAuthController@me');
 
-
-Route::group(['middleware' => ['jwt.auth']], function (){
-    Route::get('authUserToken', "ApiAuthController@authUserToken");
-
-    Route::get('users/{id?}', function($id = null) {
-        // Refresh token
-        $newToken =  JWTAuth::getToken();
-
-        $users = User::orderBy('id')->get();
-        return response()->json([ 'users' => $users]);
+    /** Fetch user resource */
+    Route::get('users/{id?}', function($id = null) 
+    {
+        if(!$id)
+        {
+            $users = User::orderBy('id')->get();
+            return response()->json([ 'users' => $users]);
+        }
+        else if(is_numeric($id))
+        {
+            $user = User::find($id)->first();
+            return response()->json([ 'user' => $user]);
+        }
+        else
+        {
+            return response()->json(['error' => 'Invalid request'], 402);
+        }
     });
-    Route::get('clients/{id?}', function($id = null) {
-        $clients = Client::orderBy('name')->get();
-        return response()->json(['clients' => $clients]);
+
+    /** Fetch client resource */
+    Route::get('clients/{id?}', function($id = null) 
+    {
+        if(!$id)
+        {
+            $clients = Client::orderBy('name')->get();
+            return response()->json(['clients' => $clients, 'count' => count($clients)]);
+        }
+        else if(is_numeric($id))
+        {
+            $client = Client::find($id)->first();
+            return response()->json(['client' => $client]);
+        }
+        else
+        {
+            return response()->json(['error' => 'Invalid request'], 402);
+        }
     });
-    Route::get('orders/{id?}', function($id = null) {
+    
+    /** Fetch order resource */
+    Route::get('orders/{id?}', function($id = null) 
+    {
         $orders = Order::orderBy('due_at')->with(['client', 'registrar', 'status'])->get();
         return response()->json(['orders' => $orders]);
+
+        if(!$id)
+        {
+            $orders = Order::orderBy('due_at')->get(); //->with(['client', 'registrar', 'status'])->get();
+            return response()->json(['orders' => $orders, 'count' => count($orders)]);
+        }
+        else if(is_numeric($id))
+        {
+            $order = Order::find($id)->first();
+            return response()->json(['order' => $order]);
+        }
+        else
+        {
+            return response()->json(['error' => 'Invalid request'], 402);
+        }
     });
 
+    /** Persist resources */
     Route::post('clients/create', "ClientController@store");
     Route::post('orders/create', "OrderProjectController@store");
 });
-
-
-
-//--------------------------------------------------
-/*
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
-Route::get('/clients', function (Request $request) {
-    return Client::orderBy('name')->get();
-});
-
-Route::get('/client/{id}', function ($id) {
-    return Client::find($id);
-});
-
-Route::post('/client/store', function(Request $request){
-    return $request;
-});
-
-Route::get('/orders', function () {
-    return App\Order::all();
-});
-*/

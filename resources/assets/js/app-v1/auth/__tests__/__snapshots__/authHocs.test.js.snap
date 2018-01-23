@@ -1,0 +1,85 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`exceptAuth HOC should render ElseComponent when only isAuthenticated is true and isVerifyingLogin and isVerifyingToken are both false 1`] = `
+<div>
+  ElseComponent
+</div>
+`;
+
+exports[`exceptAuth HOC should render LoadingComponent when both isVerifyingLogin and isAuthenticated are true, and only isVerifyingToken is false 1`] = `
+<div>
+  LoadingComponent
+</div>
+`;
+
+exports[`exceptAuth HOC should render LoadingComponent when both isVerifyingToken and isAuthenticated are true, and only isVerifyingLogin is false 1`] = `
+<div>
+  LoadingComponent
+</div>
+`;
+
+exports[`exceptAuth HOC should render LoadingComponent when isVerifyingLogin and isAuthenticated and isVerifyingToken are all true 1`] = `
+<div>
+  LoadingComponent
+</div>
+`;
+
+exports[`exceptAuth HOC should render LoadingComponent when only isVerifyingLogin is true and isAuthenticated and isVerifyingToken are both false 1`] = `
+<div>
+  LoadingComponent
+</div>
+`;
+
+exports[`exceptAuth HOC should render LoadingComponent when only isVerifyingToken is true and isAuthenticated and isVerifyingLogin are both false 1`] = `
+<div>
+  LoadingComponent
+</div>
+`;
+
+exports[`exceptAuth HOC should render MainComponent when isAuthenticated and isVerifyingLogin and isVerifyingToken are all false 1`] = `
+<div>
+  MainComponent
+</div>
+`;
+
+exports[`onlyAuth HOC should render ElseComponent when isAuthenticated and isVerifyingLogin and isVerifyingToken are all false 1`] = `
+<div>
+  ElseComponent
+</div>
+`;
+
+exports[`onlyAuth HOC should render LoadingComponent when both isVerifyingLogin and isAuthenticated are true and only isVerifyingToken is false 1`] = `
+<div>
+  LoadingComponent
+</div>
+`;
+
+exports[`onlyAuth HOC should render LoadingComponent when both isVerifyingToken and isAuthenticated are true and only isVerifyingLogin is false 1`] = `
+<div>
+  LoadingComponent
+</div>
+`;
+
+exports[`onlyAuth HOC should render LoadingComponent when isVerifyingLogin and isAuthenticated and isVerifyingToken are all true 1`] = `
+<div>
+  LoadingComponent
+</div>
+`;
+
+exports[`onlyAuth HOC should render LoadingComponent when only isVerifyingLogin is true and isAuthenticated and isVerifyingToken are both false 1`] = `
+<div>
+  LoadingComponent
+</div>
+`;
+
+exports[`onlyAuth HOC should render LoadingComponent when only isVerifyingToken is true and isAuthenticated and isVerifyingLogin are both false 1`] = `
+<div>
+  LoadingComponent
+</div>
+`;
+
+exports[`onlyAuth HOC should render MainComponent when only isAuthenticated is true and isVerifyingLogin and isVerifyingToken are both false 1`] = `
+<div>
+  MainComponent
+</div>
+`;

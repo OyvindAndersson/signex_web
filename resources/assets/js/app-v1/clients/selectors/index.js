@@ -2,7 +2,7 @@ import {createSelector} from 'reselect'
 import {schema, denormalize} from 'normalizr'
 import {clientSchema, clientListSchema} from '../schema'
 
-const getSelectedClientId = state => state.ui.clientPage.selectedClientId
+const getSelectedClientId = state => state.ui.clients.selectedClientId
 const getClients = state => state.entities.clients.byId
 
 export const getSelectedClientUI = createSelector(

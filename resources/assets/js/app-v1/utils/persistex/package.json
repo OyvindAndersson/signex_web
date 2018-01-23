@@ -1,0 +1,36 @@
+{
+  "name": "persistex",
+  "version": "1.0.0",
+  "description": "Utility for persisting redux store for the app, as well as handle caching",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "redux",
+    "react",
+    "cache",
+    "persist"
+  ],
+  "author": "Øyvind Andersson",
+  "license": "MIT",
+  "devDependencies": {
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.24.1",
+    "babel-plugin-transform-object-rest-spread": "^6.23.0",
+    "babel-polyfill": "^6.23.0",
+    "babel-preset-env": "^1.5.2",
+    "babel-register": "^6.24.1",
+    "cross-env": "^5.0.1",
+    "lodash": "^4.17.4",
+    "react": "^16.1.0",
+    "react-redux": "^5.0.6",
+    "redux": "^3.6.0",
+    "redux-mock-store": "^1.2.3"
+  },
+  "peerDependencies": {
+    "react": ">16.1.0",
+    "redux": ">3.0.0"
+  },
+"dependencies": {}
+}

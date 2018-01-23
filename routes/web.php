@@ -1,8 +1,5 @@
 <?php
 
-use App\User;
-use Tymon\JWTAuth\Facades\JWTAuth;
-//use JavaScript;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,6 +10,8 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+/** Catch-all route */
 Route::get('{slug}', function() {
     return view('index');
 })->where('slug', '(?!api)([A-z\d-\/_.]+)?');

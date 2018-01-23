@@ -10,7 +10,7 @@ import {
   CLEAR_FAILED_REQUEST,
   CLEAR_QUEUED_REQUEST,
   QUEUE_REQUEST,
-} from 'redux/constants';
+} from '../../constants';
 
 const requestType = 'TEST_REQUEST_SUCCESS';
 const payload = { id: 3 };

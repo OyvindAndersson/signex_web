@@ -1,8 +1,7 @@
 /**
  * Expose the modules' API
  */
-import {authUserToken, usersFetchAll} from './actions'
-import jwt_decode from 'jwt-decode'
+import { verifyTokenAction } from './actions'
 
 /**---------------------------------------------
  * Initialize auth module 
@@ -13,15 +12,23 @@ import jwt_decode from 'jwt-decode'
 */
 export function initAuth(store) { 
     // Always update user auth status at every new request
-    store.dispatch(authUserToken())
+    store.dispatch(verifyTokenAction())
 }
 
 /** Components */
-export {default as LoginPage} from './components/container/loginPage'
-export {default as LogoutPage} from './components/container/logoutPage'
+export {default as LoginPage} from './components/LoginPage'
+export {default as LogoutPage} from './components/LogoutPage'
+export { onlyAuth, exceptAuth } from './components/authHocs'
 
 /** Route helper components */
-export {default as AuthRoute} from './components/authRoute'
+export {default as AuthRoute} from './components/AuthRoute'
 
+/** Auth module reducer */
 export {default as reducer} from './reducer'
-export {default as authWrapper} from './components/container/authWrapper'
+
+/** Useful selectors for other modules */
+export { 
+    isClientAuthenticated, 
+    isVerifyLoginActive,
+    isVerifyTokenActive
+} from './selectors'

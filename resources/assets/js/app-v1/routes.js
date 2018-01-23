@@ -1,16 +1,13 @@
 import React from 'react'
 import {Route, Switch, Redirect} from 'react-router-dom'
-import {AuthRoute} from './auth'
 
-import {LoginPage} from './auth'
-import LogoutPage from './auth/components/container/logoutPage'
-import DashboardPage from './common/components/dashboardPage'
-import ClientsPage from './clients/components/clientPage'
-import OrdersPage from './orders/components/ordersPage'
+import {AuthRoute, LoginPage, LogoutPage} from './auth'
+//import LogoutPage from './auth/components/container/LogoutPage'
+import DashboardPage from './common/components/DashboardPage'
+import PageNotFound from './common/components/PageNotFound'
+import ClientsPage from './clients/components/ClientsPage'
+//import OrdersPage from './orders/components/ordersPage'
 
-const NoMatch = ({location}) => (
-    <div>No match for <code>{location.pathname}</code></div>
-)
 /**
  * Main app routes, public and auth
  */
@@ -20,9 +17,9 @@ export const routes = (
         <Route path="/login" component={LoginPage} />
         <AuthRoute path="/dashboard" component={DashboardPage} />
         <AuthRoute path="/clients" component={ClientsPage} />
-        <AuthRoute path="/orders" component={OrdersPage} />
+        {/*<AuthRoute path="/orders" component={OrdersPage} />*/}
         <AuthRoute exact path="/logout" component={LogoutPage} />
-        <Route component={NoMatch} />
+        <Route component={PageNotFound} />
     </Switch>
 )
 
@@ -32,7 +29,7 @@ export const routes = (
  */
 export const links = {
     public: [
-        { to: '/login', title: 'Login' },
+        { to: '/login', title: 'Login' }
     ],
     private: [
         { to: '/dashboard', title: 'Landing page' },

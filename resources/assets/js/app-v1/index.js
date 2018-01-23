@@ -14,33 +14,35 @@ require('./bootstrap')
  */
 import React from 'react'
 import ReactDOM from 'react-dom'
-import {Provider} from 'react-redux'
-import {BrowserRouter as Router, Switch} from 'react-router-dom'
-import jwtDecode from 'jwt-decode'
+import { Provider } from 'react-redux'
+import { PersistGate } from 'redux-persist/lib/integration/react'
+import { BrowserRouter as Router } from 'react-router-dom'
 
-//import appStore from './store'
-import { store } from './setup'
-import {Main} from './common'
+import { store, persistor } from './setup'
+import { Main } from './common'
 
-console.log("Initializing app...")
+console.debug("Initializing app...")
 
 /** Run initial auth-check and fetch user details */
-//let {initAuth} = require('./auth')
-//initAuth(appStore)
+let { initAuth } = require('./auth')
+initAuth(store)
+
+//console.log(store.getState())
 
 const rootRoutes = require( './routes')
 
-console.log(store.getState())
 /**
  * Root component
  */
 const App = (
 	<Provider store={store}>
-		<Router>
-			<Main>
-				{rootRoutes.routes}
-			</Main>
-		</Router>
+		<PersistGate loading={null} persistor={persistor}>
+			<Router>
+				<Main navLinks={rootRoutes.links}>
+					{rootRoutes.routes}
+				</Main>
+			</Router>
+		</PersistGate>
 	</Provider>
 )
 

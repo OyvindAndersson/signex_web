@@ -42,5 +42,5 @@
         }
       }]
     ],
-    "plugins": ["transform-es2015-destructuring", "transform-object-rest-spread", "transform-decorators-legacy"]
+    "plugins": ["transform-runtime","transform-es2015-destructuring", "transform-object-rest-spread", "transform-decorators-legacy"]
   }

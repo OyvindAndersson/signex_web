@@ -1,71 +1,65 @@
 import types from './actionTypes'
 import {normalize, schema} from 'normalizr'
 import merge from 'lodash/merge'
-import {API_SUCCESS, API_REJECTED} from '../common/api'
 
-const initialState = {
+/*
+|--------------------------------------------------------------------------
+| Clients Entity reducers
+|--------------------------------------------------------------------------
+|
+| The entity reducers handles all actions related to the clients entity
+|
+*/
+
+const initialEntityState = {
     isFetching: false,
     isDirty: false,
     byId: {},
     allIds: []
 }
 
-function clientsReducer( state = initialState, action){
+function entityReducer( state = initialEntityState, action){
     switch(action.type){
-        case `${types.CLIENTS_FETCH_ALL}`: {
-            return {
-                ...state,
-                isFetching: true
-            }
-        }
-
-        case `${types.CLIENTS_FETCH_ALL}${API_SUCCESS}`: {
-            return {
-                ...state,
-                isFetching: false,
-                isDirty: false,
-                ...action.payload
-            }
-        }
-
-        case `${types.CLIENTS_FETCH_ALL}${API_REJECTED}`: {
-            return {
-                ...state,
-                isFetching: false,
-                byId: {},
-                allIds: []
-            }
-        }
-
-        case `${types.CLIENTS_CREATE}${API_SUCCESS}`: {
-            const {payload} = action
-            const {byId} = payload
-            
-            return {
-                ...state,
-                allIds: state.allIds.concat(payload.allIds), // add the new ID ref.
-                byId: {...state.byId, ...byId}, // add the new client in with the old ones,
-                isDirty: true
-            }
-        }
+        case types.CLIENTS_LOAD_NORMALIZED:return loadNormalizedResourceHandler(state, action)
         default:
-        return state
+            return state
     }
 }
 
-function clientsUiReducer( state = {
+function loadNormalizedResourceHandler(state, action){
+    ///console.log("CLIENTS REDUCER:")
+    //console.log(action)
+    return {
+        ...state,
+        ...action.payload
+    }
+}
+
+/*
+|--------------------------------------------------------------------------
+| Clients UI reducers
+|--------------------------------------------------------------------------
+|
+| The UI reducers handles all actions related to the UI of '/clients'
+| pages
+|
+*/
+
+const initialUiState = {
     selectedClientId: 0
-}, action ){
+}
+
+function uiReducer( state = initialUiState, action ){
     switch(action.type){
-        case types.CLIENTS_PAGE_SELECTED_MASTER_ID:{
+        case types.CLIENTS_UI_SELECTED_MASTER_ID:{
             return { ...state, selectedClientId: action.payload}
         }
         default:
-        return state
+            return state
     }
 }
 
 export default {
-    clientsUiReducer,
-    clientsReducer
+    entityReducer,
+    uiReducer
 }

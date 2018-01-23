@@ -1,22 +1,20 @@
 /**
- * The API file takes care of all calls to the backend,
- * to avoid cluttering the action creators, as well
- * as to give API access to native js code.
- * 
+ * Define all valid API routes for this module
+ * Capitalized constants are non-argument routes
+ * Camelcase functions are argumented routes
  */
-import axios from 'axios'
-import {apiRequestHeaders} from '../common/api'
 
- /** Posts login request to backend */
-const requestLoginWith = credentials => { return axios.post("api/login", credentials) }
+ const API_LOGIN = 'login'
+ const API_LOGOUT = 'logout'
+ const API_VERIFY_TOKEN = 'verifyCookie'
 
-/** Basic get request to authenticate the current (if any) JWT */
-const authToken = token => { return axios.get(`/api/authUserToken`,{ headers:apiRequestHeaders() })}
+ /** Example lowercase function */
+ const apiUsers = ({ ids, max }) => {
+     return `users?max=${max}`
+ }
 
-const authFetchUsers = id => {return axios.get(`/api/users/${id}`, {headers:apiRequestHeaders()})}
-
-export default {
-    requestLoginWith,
-    authToken,
-    authFetchUsers
-}
+ export default {
+     API_LOGIN,
+     API_LOGOUT,
+     API_VERIFY_TOKEN
+ }
