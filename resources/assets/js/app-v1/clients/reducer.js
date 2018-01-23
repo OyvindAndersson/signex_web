@@ -13,14 +13,14 @@ import merge from 'lodash/merge'
 
 const initialEntityState = {
     isFetching: false,
-    isDirty: false,
+    isDirty: true,
     byId: {},
     allIds: []
 }
 
 function entityReducer( state = initialEntityState, action){
     switch(action.type){
-        case types.CLIENTS_LOAD_NORMALIZED:return loadNormalizedResourceHandler(state, action)
+        case types.CLIENTS_LOAD_NORMALIZED: return loadNormalizedResourceHandler(state, action)
         default:
             return state
     }
@@ -31,7 +31,8 @@ function loadNormalizedResourceHandler(state, action){
     //console.log(action)
     return {
         ...state,
-        ...action.payload
+        ...action.payload,
+        isDirty: false
     }
 }
 
@@ -46,16 +47,23 @@ function loadNormalizedResourceHandler(state, action){
 */
 
 const initialUiState = {
-    selectedClientId: 0
+    selectedClientId: 0,
+    clientCreatedSuccess: false
 }
 
 function uiReducer( state = initialUiState, action ){
     switch(action.type){
-        case types.CLIENTS_UI_SELECTED_MASTER_ID:{
-            return { ...state, selectedClientId: action.payload}
-        }
+        case types.CLIENTS_UI_SELECTED_MASTER_ID: return { ...state, selectedClientId: action.payload}
+        case types.CLIENTS_CREATE: return clientCreatedHandler(state, action)
         default:
             return state
+    }
+}
+
+function clientCreatedHandler(state,action){
+    return {
+        ...state,
+        clientCreatedSuccess: true
     }
 }
 

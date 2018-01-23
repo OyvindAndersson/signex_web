@@ -1,4 +1,4 @@
-import addRequestsSubscriber from '../utils/redux/requests/subscriber'
+import addRequestsSubscriber from 'AppUtils/redux/requests/subscriber'
 
 const storeSubscribers = [addRequestsSubscriber]
 

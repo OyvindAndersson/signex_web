@@ -1,8 +1,13 @@
-/**
- * Define all valid API routes for this module
- * Capitalized constants are non-argument routes
- * Camelcase functions are argumented routes
- */
+/*
+|--------------------------------------------------------------------------
+| Auth module api
+|--------------------------------------------------------------------------
+|
+| Define all valid API endpoints for this module
+| x Capitalized constants are non-argument routes
+| x Camelcase functions are argumented routes
+|
+*/
 
  const API_LOGIN = 'login'
  const API_LOGOUT = 'logout'

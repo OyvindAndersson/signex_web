@@ -9,13 +9,13 @@ import { loadClientsAction, updateClientsMasterListItemIdAction } from '../actio
 import actionTypes from '../actionTypes'
 import {getSelectedClientUI, getDenormalizedClients} from '../selectors'
 
-import MasterItemList from '../../common/components/masterItemList'
-import FilterableSelectBox from './filterableSelectBox'
-import {ClientCreateInlineForm} from './clientCreateForms'
+import MasterItemList from 'Common/components/masterItemList'
+import FilterableSelectBox from './FilterableSelectBox'
+import {ClientCreateInlineForm} from './ClientCreateForms'
 
-import ClientList from './clientList'
-import ClientListLink from './clientListLink'
-import ClientDetailPane from './clientDetailPane'
+import ClientList from './ClientList'
+import ClientListLink from './ClientListLink'
+import ClientDetailPane from './ClientDetailPane'
 
 /**-------------------------------------------------
  * Clients page root

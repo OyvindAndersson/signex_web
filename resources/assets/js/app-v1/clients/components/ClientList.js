@@ -1,5 +1,5 @@
 import React from 'react'
-import ClientListLink from './clientListLink'
+import ClientListLink from './ClientListLink'
 
 /**-------------------------------------------------
  * Clients Item List

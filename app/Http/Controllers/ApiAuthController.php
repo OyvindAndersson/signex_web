@@ -22,11 +22,12 @@ class ApiAuthController extends Controller
     public function login(VerifyLoginRequest $request)
     {
         // Check if already logged in
+        /*
         $user = $this->guard()->user();
         if($user)
         {
             return response()->json();
-        }
+        }*/
         
         // grab credentials from the request
         $credentials = $request->only('email', 'password');

@@ -15,6 +15,7 @@ import clientsSaga from '../clients/sagas'
  * hydrate the store with a isAuthenticated value at init.
  * This improves the responsivenes of the UI (not load/waiting)
  * @param {*} store 
+ * @todo remove this shit and use redux-persist
  */
 const updateAuthentication = store => next => action => {
     if(action.type == 'AUTH_VERIFY_LOGIN'){
@@ -35,7 +36,7 @@ const updateAuthentication = store => next => action => {
  */
 const initialStateHydration = {
     auth: {
-        isAuthenticated: localStorage ? localStorage.getItem('isAuthenticated') === true : false
+        isAuthenticated: localStorage ? localStorage.getItem('isAuthenticated') === 'true' : false
     }
 }
 
