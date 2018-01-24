@@ -61,9 +61,6 @@ export class MasterPane extends React.Component {
             context: null
         }
     }
-    componentWillMount(){
-        this.props.updateItems()
-    }
     handleInputChanged(e){
         const target = e.target
         const value = target.type === 'checkbox' ? target.checked : target.value
@@ -105,7 +102,7 @@ export class MasterPane extends React.Component {
                     <FilterableSelectBox {...this.props.filterBoxProps} handleFilterChanged={this.handleItemFilterChanged} />
                     ) : null }
                     &nbsp;
-                    { isLoading ? (<LoadingBar height="10px" />) : null }
+                    { isLoading ? (<LoadingBar style={{height: '10px'}} />) : null }
                     <hr />
                     <div className="list-group" >
                         {childrenWithProps}
@@ -125,7 +122,6 @@ MasterPane.propTypes = {
         PropTypes.number
     ]),
 
-    updateItems: PropTypes.func.isRequired,
     updateSelectedItem: PropTypes.func.isRequired,
     filterItems: PropTypes.func,
 

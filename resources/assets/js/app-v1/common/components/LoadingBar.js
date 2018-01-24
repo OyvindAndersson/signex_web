@@ -2,8 +2,7 @@ import React from 'react'
 
 export default class LoadingBar extends React.Component {
     render(){
-        const {height} = this.props
-        const style = { height }
+        const { style } = this.props
         return(
             <div className="progress" style={style ? style : null}>
                 <div className="progress-bar progress-bar-striped progress-bar-animated" 

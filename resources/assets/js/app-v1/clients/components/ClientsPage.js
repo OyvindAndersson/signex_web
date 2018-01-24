@@ -1,128 +1,131 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom'
-import {denormalize, schema} from 'normalizr'
-import {Nav, NavLink, NavItem, Collapse, Button } from 'reactstrap'
+import { Route, Link, Redirect, Switch, withRouter } from 'react-router-dom'
+import { denormalize, schema } from 'normalizr'
+
+import actionTypes from 'Clients/actionTypes'
+import { loadClientsAction, updateClientsMasterListItemIdAction } from 'Clients/actions'
+import { getSelectedClientUI, getDenormalizedClients, createdClientSuccess, isLoadingClients } from 'Clients/selectors'
+import { ClientCreateInlineForm } from './ClientCreateForms'
+import ClientDetailPane from './ClientDetailPane'
+import ClientsMasterList from './ClientsMasterList'
+
+import Page from 'Common/components/Page'
+import PageSubNavbar from 'Common/components/pageSubNavbar'
+import { DetailPane, MasterPane, EmptyDetailPane } from 'Common/components/masterDetailPage'
 import { toast } from 'react-toastify'
 
-import { loadClientsAction, updateClientsMasterListItemIdAction } from '../actions'
-import actionTypes from '../actionTypes'
-import {getSelectedClientUI, getDenormalizedClients} from '../selectors'
-
-import MasterItemList from 'Common/components/masterItemList'
-import FilterableSelectBox from './FilterableSelectBox'
-import {ClientCreateInlineForm} from './ClientCreateForms'
-
-import ClientList from './ClientList'
-import ClientListLink from './ClientListLink'
-import ClientDetailPane from './ClientDetailPane'
-
-/**-------------------------------------------------
- * Clients page root
- * -------------------------------------------------
+/**
  * 
- * @todo Implement master/detail generic components from 'Common' module; 
- *       which is based on this impl.
  */
-class ClientsPage extends React.Component {
-    constructor(props){
-        super(props)
+function clientsPageHOC(WrappedComponent) {
+    return class ClientsMasterDetailPage extends React.Component {
+        constructor(props){
+            super(props)
 
-        this.handleInputChanged = this.handleInputChanged.bind(this)
-        this.handleClientsFilterChanged = this.handleClientsFilterChanged.bind(this)
-        this.handleClientSelectionChanged = this.handleClientSelectionChanged.bind(this)
-        this.filterClients = this.filterClients.bind(this)
-
-        this.state = {
-            clientName: "",
-            clientOrgNr: "",
-            filter: ""
+            this.getMasterPaneProps = this.getMasterPaneProps.bind(this)
+            this.getPageNavProps = this.getPageNavProps.bind(this)
+            this.filterClients = this.filterClients.bind(this)
         }
-    }
-    componentWillMount(){
-        const {loadClients} = this.props
-        loadClients()
-    }
-    componentDidCatch(error, info) {
-        console.log(error)
-    }
 
-    handleInputChanged(e){
-        const target = e.target
-        const value = target.type === 'checkbox' ? target.checked : target.value
-        const name = target.name
+        componentWillMount(){
+            // Either loads from db, or it exists in cache already.
+            this.props.loadClients()
+        }
 
-        this.setState({
-            [name]: value
-        })
-    }
-    handleClientsFilterChanged(filter){
-        this.setState({
-            filter
-        })
-    }
-    handleClientSelectionChanged(e){
-        const clientId = e.currentTarget.dataset.targetId
-        // Update the UI state with the newly selected client (id)
-        this.props.updateSelectedClient(clientId)
-    }
-
-    filterClients(){
-        const clientsArray = Object.keys(this.props.clients).map( key => {
-            return this.props.clients[key]
-        })
-
-        const {filter} = this.state
-        return clientsArray.filter( (client) => {
+        filterClients(filter, context){
             if(filter.length == 0){
-                return true
+                return this.props.clients
             }
-            else {
-                if(!isNaN(filter)){
-                    return client.org_nr.indexOf(filter) !== -1
+            return this.props.clients.filter( client => {
+                // Only filter clients where org_nr starts with filter
+                if(context && _.startsWith(context.name, 'org_nr')){
+                    return false
                 }
-                return client.name.toLowerCase().indexOf(filter.toLowerCase()) !== -1
+                // TEXT FILTERING
+                if(isNaN(filter)){
+                    // Filtering by order-client name OR registrar name
+                    if(client.name.toLowerCase().indexOf(filter.toLowerCase()) !== -1){
+                        return true
+                    }
+                } else {
+                    if(_.startsWith(client.org_nr, filter)){
+                        return true
+                    }
+                }
+
+                return false
+            })
+        }
+
+        /**
+         * @todo Do we need to pass both items: and possibly return the list also with filterClients?
+         * Seems bloated...
+         */
+        getMasterPaneProps(){
+            return {
+                items: this.props.clients,
+                selectedItem: this.props.selectedClient,
+                selectedItemId: this.props.selectedClientId,
+                isLoading: this.props.isLoadingClients,
+
+                //updateItems: this.updateOrders,
+                updateSelectedItem: this.props.updateSelectedClient,
+                updateItems: () => { console.log("Update client items...") },
+
+                filterItems: this.filterClients,
+                filterBoxProps: {
+                    placeholderText: "Search...",
+                    contextOptions: [
+                        { name: 'propertiesHeader', display: 'Properties', header:true },
+                        { name: 'org_nr', display: 'Org. nr' },
+                    ]   
+                }
             }
-        })
-    }
+        }
 
-    render(){
-        const filteredClients = this.filterClients()
-        return (
-            <div>
-                <Nav className="justify-content-between">
-                    <NavItem>
-                        <NavLink><strong>Clients</strong></NavLink>
-                    </NavItem>
-                    <ClientCreateInlineForm />
-                </Nav>
-                <hr />
-                <div className="container-fluid">
-                    {/* Master detail */}
-                    <div className="row">
-                        {/* Master */}
-                        <div className="col-sm-5 col-md-4 col-lg-3">
-                            <div id="master-pane">
-                                <FilterableSelectBox handleFilterChanged={this.handleClientsFilterChanged} 
-                                    placeholderText="Filter name, org. nr etc.." />
-                                <hr />
-                                <MasterItemList items={filteredClients}>
-                                    <ClientList handleSelectionChanged={this.handleClientSelectionChanged} 
-                                        selectedItemId={this.props.selectedClientId} />
-                                </MasterItemList>
-                            </div>
-                        </div>
+        getPageNavProps(){
+            const { match } = this.props
+            return {
+                pageLinks: [ 
+                    { title: "My clients page", props: { to: `${match.url}`, tag: Link }, strong: true },
+                ]
+            }
+        }
 
-                        {/* Detail */}
-                        <div className="col">
-                            <div id="detail-pane">
-                                <ClientDetailPane client={this.props.selectedClient} />
-                            </div>
-                        </div>
-                    </div>
+        render(){
+            const pageNavbarProps = this.getPageNavProps()
+            const masterPaneProps = this.getMasterPaneProps()
+            const { selectedClient, match } = this.props
+
+            return (
+                <div>
+                    <PageSubNavbar {...pageNavbarProps}>
+                        <ClientCreateInlineForm onSuccess={ this.props.loadClients } />
+                    </PageSubNavbar>
+
+                    {/* CLIENTS - INDEX */}
+                    <Route exact path={`${match.url}`} render={ routeProps => (
+                        <WrappedComponent {...this.props} fluid={true}>
+                            <MasterPane {...masterPaneProps}>
+                                <ClientsMasterList />
+                            </MasterPane>
+                            <DetailPane>
+                            { selectedClient ? (
+                                <ClientDetailPane client={selectedClient} />
+                            ) : (
+                                <EmptyDetailPane>
+                                </EmptyDetailPane>
+                            ) }
+                            </DetailPane>
+                        </WrappedComponent>
+                    )} />
+
+                    
                 </div>
-            </div>
-        )
+            )
+        }
     }
 }
 
@@ -131,16 +134,19 @@ function mapStateToProps(state){
         clients: getDenormalizedClients(state),
         selectedClientId: state.ui.clients.selectedClientId,
         selectedClient: getSelectedClientUI(state),
+        isLoadingClients: isLoadingClients(state)
     }
 }
 
 function mapDispatchToProps(dispatch){
     return {
         loadClients: clientId => dispatch(loadClientsAction({ clientId })),
-        updateSelectedClient: clientId => dispatch(updateClientsMasterListItemIdAction(clientId))
+        updateSelectedClient: e => dispatch(updateClientsMasterListItemIdAction(e.currentTarget.dataset.id))
     }
 }
 
 export default withRouter(
-    connect(mapStateToProps, mapDispatchToProps)(ClientsPage)
+    connect(mapStateToProps, mapDispatchToProps)(
+        clientsPageHOC(Page)
+    )
 )

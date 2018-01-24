@@ -68,6 +68,7 @@ class ClientCreateInlineFormView extends React.Component {
         this.handleBrregCallback = this.handleBrregCallback.bind(this)
         this.handleSelectBoxItemSelected = this.handleSelectBoxItemSelected.bind(this)
         this.handleClientCreateForm = this.handleClientCreateForm.bind(this)
+        this.onSuccess = this.onSuccess.bind(this)
 
         // handleBrregCallback called when Brreg has got a response from server
         this.brreg = new Brreg(this.handleBrregCallback)
@@ -76,20 +77,31 @@ class ClientCreateInlineFormView extends React.Component {
             clientOrgNr: '',
             brregResults: [],
             isSavingClient: false,
-            saveClientFailed: false
+            saveClientFailed: false,
+            saveSuccess: false
         }
     }
 
     componentWillReceiveProps(props){
-        if(props.saveClientFailed){
+        if(this.state.isSavingClient){
             this.setState({
-                //isSavingClient: props.isSavingClient,
-                saveClientFailed: props.saveClientFailed
-            }, function() {
-                toast.info(`Client saved!`)
+                isSavingClient: false,
+                saveSuccess: props.saveSuccess
             })
+
+            if(props.saveSuccess){
+                this.onSuccess()
+            } else {
+                toast.error(`Client failed to save!`)
+            }
+            
         }
-        
+    }
+
+    onSuccess(){
+        if(this.props.onSuccess){
+            this.props.onSuccess()
+        }
     }
 
     handleInputChanged(e){
@@ -138,19 +150,20 @@ class ClientCreateInlineFormView extends React.Component {
         this.setState({
             clientName: '',
             clientOrgNr: '',
-            isSavingClient: true
+            isSavingClient: true,
+            saveSuccess: false  // So we can respond in willReceiveProps to this actually happening
         })
 
-        toast.info(`Saving ${this.state.clientName}...`)
+        toast.info(`Saving...`)
     }
 
     render(){
         const brregData = this.state.brregResults.map((item) => {
             return (
-            <ClientDataSelectItem key={item.organisasjonsnummer} 
-            itemData={item} 
-            handleDataItemSelected={this.handleSelectBoxItemSelected} />
-        )
+                <ClientDataSelectItem key={item.organisasjonsnummer} 
+                itemData={item} 
+                handleDataItemSelected={this.handleSelectBoxItemSelected} />
+            )
         })
 
         return(

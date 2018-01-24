@@ -58,7 +58,6 @@ export default class FilterableSelectBox extends React.Component {
     }
 
     contextChanged(item){
-        console.log(item)
         this.setState({
             selectedContext: item
         }, () => {
@@ -69,9 +68,11 @@ export default class FilterableSelectBox extends React.Component {
     }
 
     render(){
-        const {placeholderText, contextOptions} = this.props
+        const {placeholderText, contextOptions, showContextButton} = this.props
 
-        if(contextOptions && contextOptions.length > 0){
+        // Show context button as default (undefined) or if explicitly set to true. 
+        // Only an explicit false value will ignore to render it.
+        if(showContextButton === undefined || showContextButton === true){
 
             // This item is always availalbe, to reset the context to all items
             const defaultItem = [

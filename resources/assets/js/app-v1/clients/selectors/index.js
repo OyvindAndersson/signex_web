@@ -9,10 +9,14 @@ import { createHasActiveRequestSelectorFor, createFailedRequestSelectorFor } fro
 export const isCreateClientActive = createHasActiveRequestSelectorFor(actionTypes.CLIENTS_CREATE)
 /** Selector to check if last client-create action failed */
 export const didCreateClientFail = createFailedRequestSelectorFor(actionTypes.CLIENTS_CREATE)
+/** Selector to check if the client entities are loading */
+export const isLoadingClients = createHasActiveRequestSelectorFor(actionTypes.CLIENTS_LOAD)
 
+export const createdClientSuccess = state => state.ui.clients.clientCreatedSuccess
 
-const getSelectedClientId = state => state.ui.clients.selectedClientId
 const getClients = state => state.entities.clients.byId
+const getAllClientIds = state => state.entities.clients.allIds
+const getSelectedClientId = state => state.ui.clients.selectedClientId
 
 export const getSelectedClientUI = createSelector(
     [getSelectedClientId, getClients],
@@ -24,9 +28,6 @@ export const getSelectedClientUI = createSelector(
         return clients[clientId]
     }
 )
-
-const getAllClientIds = state => state.entities.clients.allIds
-
 export const getDenormalizedClients = createSelector(
     [getAllClientIds, getClients],
     (clientIds, clients) => {

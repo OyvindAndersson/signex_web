@@ -1,8 +1,6 @@
-
 /**
  * First we will load all of this project's JavaScript dependencies which
- * includes React and other helpers. It's a great starting point while
- * building robust, powerful web applications using React + Laravel.
+ * includes Lodash, axios and other helpers.
  */
 
 require('./bootstrap')
@@ -23,20 +21,14 @@ import { Main } from './common'
 
 console.debug("Initializing app...")
 
-/** Run initial auth-check and fetch user details */
-let { initAuth } = require('./auth')
-initAuth(store)
-
-//console.log(store.getState())
-
-const rootRoutes = require( './routes')
+const rootRoutes = require( './setup/routes')
 
 /**
  * Root component
  */
 const App = (
 	<Provider store={store}>
-		<PersistGate loading={null} persistor={persistor}>
+		<PersistGate loading={(<h1>Loading app...</h1>)} persistor={persistor}>
 			<Router>
 				<Main navLinks={rootRoutes.links}>
 					{rootRoutes.routes}

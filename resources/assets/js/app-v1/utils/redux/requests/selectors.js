@@ -1,7 +1,7 @@
-import { find, curry } from 'lodash';
-import { createSelector } from 'reselect';
+import { find, curry } from 'lodash'
+import { createSelector } from 'reselect'
 
-const requestsStoreSelector = state => state.requests;
+const requestsStoreSelector = state => state.requests
 
 export const queuedRequestsSelector = createSelector(
   requestsStoreSelector,
@@ -17,7 +17,7 @@ export const pendingRequestsSelector = createSelector(
  * A factory function that creates a selector for the pending request of a given type
  */
 export const createHasActiveRequestSelectorFor = curry(
-  (queuedRequestsSel, pendingRequestsSel, REQUEST_TYPE) =>
+(queuedRequestsSel, pendingRequestsSel, REQUEST_TYPE) =>
     createSelector(
       queuedRequestsSel,
       pendingRequestsSel,
@@ -35,6 +35,28 @@ export const createHasActiveRequestSelectorFor = curry(
     ),
 )(queuedRequestsSelector, pendingRequestsSelector);
 
+/** 
+ * Selector for ANY active resource loader 
+*/
+export const hasActiveRequestSelectorForAnyResource = curry(
+  (queuedRequestsSel, pendingRequestsSel) =>
+      createSelector(
+        queuedRequestsSel,
+        pendingRequestsSel,
+        (queuedRequests, pendingRequests) =>
+          !!(
+            find(
+              queuedRequests,
+              request => _.endsWith(request.meta.requestType, '_LOAD'),
+            ) ||
+            find(
+              pendingRequests,
+              request => _.endsWith(request.meta.requestType, '_LOAD'),
+            )
+          ),
+      ),
+  )(queuedRequestsSelector, pendingRequestsSelector)
+
 const failedRequestsSelector = createSelector(
   requestsStoreSelector,
   requestsStore => requestsStore.failed,
@@ -50,3 +72,27 @@ export const createFailedRequestSelectorFor = curry(
       failedRequests => failedRequests[REQUEST_TYPE],
     ),
 )(failedRequestsSelector);
+
+
+/**
+ * Selector to check if the modules' entity cache should be considered dirty 
+*/
+export const isEntityCacheDirty = (state, module) => {
+  if(state.entities.hasOwnProperty(module)){
+      return state.entities[module].isDirty
+  } else {
+      throw 'No such entity in store'
+  }
+}
+
+
+/** 
+ * Selector to check if a module is loading its data 
+ **/
+export const isLoadingModuleData = (state, module) => {
+  if(state.entities.hasOwnProperty(module)){
+      return createHasActiveRequestSelectorFor(`${_.toUpper(module)}_LOAD`)
+  } else {
+      throw 'No such module has entities in store'
+  }
+}

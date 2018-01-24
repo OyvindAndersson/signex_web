@@ -1,18 +1,17 @@
 import React from 'react'
 import {Route, Switch, Redirect} from 'react-router-dom'
 
-import {AuthRoute, LoginPage, LogoutPage} from './auth'
-//import LogoutPage from './auth/components/container/LogoutPage'
-import DashboardPage from './common/components/DashboardPage'
-import PageNotFound from './common/components/PageNotFound'
-import ClientsPage from './clients/components/ClientsPage'
+import {AuthRoute, LoginPage, LogoutPage} from 'Auth'
+import DashboardPage from 'Common/components/DashboardPage'
+import PageNotFound from 'Common/components/PageNotFound'
+import ClientsPage from 'Clients/components/ClientsPage'
 //import OrdersPage from './orders/components/ordersPage'
 
 /**
  * Main app routes, public and auth
  */
 export const routes = (
-    <Switch>
+    <Switch onChange={ handleRouteChange }>
         <Route exact path="/" render={() => (<Redirect to="/login" />)} />
         <Route path="/login" component={LoginPage} />
         <AuthRoute path="/dashboard" component={DashboardPage} />
@@ -22,6 +21,10 @@ export const routes = (
         <Route component={PageNotFound} />
     </Switch>
 )
+
+function handleRouteChange(prev, next){
+    console.log(prev, next)
+}
 
 /**
  * Main app links - used by navbars

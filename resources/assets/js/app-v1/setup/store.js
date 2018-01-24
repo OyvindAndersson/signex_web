@@ -6,8 +6,9 @@ import storage from 'redux-persist/lib/storage'
 import rootReducer from './reducer'
 import setupSubscriptions from './subscribers'
 
-// Import sagas from active modules
-import clientsSaga from '../clients/sagas'
+// Import sagas and init-actions from active modules
+import { verifyTokenAction } from 'Auth'
+import { watchClientsLoad } from 'Clients/sagas'
 
 /**
  * Update Authentication middleware
@@ -44,7 +45,7 @@ const initialStateHydration = {
  * Config for 1st level reducer. Only persist entities
  */
 const persistConfig = {
-    key: 'root',
+    key: 'entities',
     storage: storage,
     whitelist: ['entities']
 }
@@ -62,9 +63,10 @@ export default function configureStore(initialState = initialStateHydration, his
 
     // create the saga middleware
     const sagaMiddleware = createSagaMiddleware()
-
+    // Configure all reducers, some are persisted (see whitelister reducers in persistConfig)
     const persistedReducer = persistReducer(persistConfig, rootReducer)
 
+    // Create the actual store
     let store = createStore(
         persistedReducer,
         initialState,
@@ -73,11 +75,15 @@ export default function configureStore(initialState = initialStateHydration, his
             applyMiddleware(updateAuthentication)
         )
     )
-
+    // Verify token at every request (refreshes) aside from API requests.
+    store.dispatch(verifyTokenAction())
     let persistor = persistStore(store)
 
+    // Setup subs
     setupSubscriptions(store)
-    sagaMiddleware.run(clientsSaga)
+
+    // Run sagas
+    sagaMiddleware.run(watchClientsLoad)
 
     return { store, persistor }
 }

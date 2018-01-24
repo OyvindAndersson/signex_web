@@ -1,5 +1,4 @@
 import { call, put, takeEvery, takeLatest } from 'redux-saga/effects'
-import requestTypes from 'AppUtils/redux/constants'
 import types from './actionTypes'
 import { clientsNormalizer } from './schema'
 
@@ -25,13 +24,19 @@ function* handleClientsLoad(action){
     }
 }
 
-function* clientsSaga() {
+export function* watchClientsLoad() {
     yield takeLatest(types.CLIENTS_LOAD, handleClientsLoad)
 }
 
-/*
-function* checkClientsCache() {
-    yield takeLatest(requestTypes.ADD_PENDING_REQUEST, checkCacheFirst)
-}*/
+/**
+ * CLIENTS_CREATE action means a client was SUCCESSFULLY created, and
+ * the cache is now dirty..
+ * @param {*} action 
+ */
+function handleClientsCreated(action) {
 
-export default clientsSaga
+}
+
+export function* watchClientsCreated() {
+    yield takeLatest(types.CLIENTS_CREATE, handleClientsCreated)
+}

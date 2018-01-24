@@ -21,6 +21,7 @@ const initialEntityState = {
 function entityReducer( state = initialEntityState, action){
     switch(action.type){
         case types.CLIENTS_LOAD_NORMALIZED: return loadNormalizedResourceHandler(state, action)
+        case types.CLIENTS_CREATE: return clientCreatedHandler(state, action)
         default:
             return state
     }
@@ -33,6 +34,13 @@ function loadNormalizedResourceHandler(state, action){
         ...state,
         ...action.payload,
         isDirty: false
+    }
+}
+
+function clientCreatedHandler(state, action) {
+    return {
+        ...state,
+        isDirty: true
     }
 }
 
@@ -53,14 +61,14 @@ const initialUiState = {
 
 function uiReducer( state = initialUiState, action ){
     switch(action.type){
-        case types.CLIENTS_UI_SELECTED_MASTER_ID: return { ...state, selectedClientId: action.payload}
-        case types.CLIENTS_CREATE: return clientCreatedHandler(state, action)
+        case types.CLIENTS_UI_SELECTED_MASTER_ID: return { ...state, selectedClientId: action.payload }
+        case types.CLIENTS_CREATE: return clientCreatedUIHandler(state, action)
         default:
             return state
     }
 }
 
-function clientCreatedHandler(state,action){
+function clientCreatedUIHandler(state,action){
     return {
         ...state,
         clientCreatedSuccess: true
