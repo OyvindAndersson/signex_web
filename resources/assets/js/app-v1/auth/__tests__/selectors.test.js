@@ -1,4 +1,4 @@
-import * as selectors from 'Auth/selectors'
+import * as selectors from '../selectors'
 
 describe('selector isClientAuthenticated', () => {
 

@@ -19,6 +19,7 @@ mix.webpackConfig({
             //path.resolve(__dirname, 'resources/assets/js/app-v1/auth')
         ],
         alias: {
+            // We must also add these to 'test' env in .babelrc
             AppUtils: path.resolve(__dirname, 'resources/assets/js/app-v1/utils/'),
             Auth: path.resolve(__dirname, 'resources/assets/js/app-v1/auth/'),
             Common: path.resolve(__dirname, 'resources/assets/js/app-v1/common/'),

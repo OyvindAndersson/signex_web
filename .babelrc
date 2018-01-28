@@ -7,6 +7,17 @@
             "node": "current"
           }
         }]
+      ],
+      "plugins": [
+        ["module-resolver", {
+          "alias": {
+            "Auth": "./resources/assets/js/app-v1/auth/",
+            "AppUtils": "./resources/assets/js/app-v1/utils/",
+            "Common": "./resources/assets/js/app-v1/common/",
+            "Clients": "./resources/assets/js/app-v1/clients/",
+            "Orders": "./resources/assets/js/app-v1/orders/"
+          }
+        }]
       ]
     },
     "development": {
@@ -32,15 +43,15 @@
       ]
     }
   },
-    "presets": [
-      "react",
-      ["env", {
-        "modules": false,
-        "targets": {
-          "browsers": "> 2%",
-          "uglify": true
-        }
-      }]
-    ],
-    "plugins": ["transform-runtime","transform-es2015-destructuring", "transform-object-rest-spread", "transform-decorators-legacy"]
+  "presets": [
+    "react",
+    ["env", {
+      "modules": false,
+      "targets": {
+        "browsers": "> 2%",
+        "uglify": true
+      }
+    }]
+  ],
+  "plugins": ["transform-runtime","transform-es2015-destructuring", "transform-object-rest-spread", "transform-decorators-legacy"]
   }

@@ -1,8 +1,8 @@
 import {createSelector} from 'reselect'
 import {schema, denormalize} from 'normalizr'
 
-import types from 'Auth/actionTypes'
-import { userSchema, userListSchema } from 'Auth/schema'
+import types from '../actionTypes'
+import { userSchema, userListSchema } from '../schema'
 import { createHasActiveRequestSelectorFor, createFailedRequestSelectorFor } from 'AppUtils/redux/requests/selectors'
 
 /** Selector to check if a login action is active */

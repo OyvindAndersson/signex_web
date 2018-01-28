@@ -107,7 +107,7 @@ function clientsPageHOC(WrappedComponent) {
 
                     {/* CLIENTS - INDEX */}
                     <Route exact path={`${match.url}`} render={ routeProps => (
-                        <WrappedComponent {...this.props} fluid={true}>
+                        <WrappedComponent fluid={true}>
                             <MasterPane {...masterPaneProps}>
                                 <ClientsMasterList />
                             </MasterPane>

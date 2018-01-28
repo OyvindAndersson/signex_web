@@ -4,7 +4,7 @@ import configureMockStore from 'redux-mock-store'
 import { Provider } from 'react-redux'
 import renderer from 'react-test-renderer'
 
-import { onlyAuth, exceptAuth } from 'Auth/components/authHocs'
+import { onlyAuth, exceptAuth } from '../components/authHocs'
 
 describe('onlyAuth HOC', () => {
     let MainComponent

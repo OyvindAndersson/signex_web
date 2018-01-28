@@ -50,9 +50,3 @@
         } }
     })
  }
-
- export const apiGetCachable = (apiRoute, payload, cacheKey) => {
-     // Check the local cache store
-     
-     // Return promise with either cached data, or server data
- }

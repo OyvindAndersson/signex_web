@@ -1,6 +1,6 @@
 import { call, put, takeEvery, takeLatest } from 'redux-saga/effects'
 import types from './actionTypes'
-import { clientsNormalizer } from './schema'
+import { clientsNormalizer, singleClientNormalizer } from './schema'
 
 /**
  * Normalize client entities data from server
@@ -20,7 +20,7 @@ function* handleClientsLoad(action){
         const normalizedData = yield call(normalizeData, action.payload.data)
         yield put({ type: types.CLIENTS_LOAD_NORMALIZED, payload: normalizedData })
     } catch(e){
-        yield call(console.log, e)
+        yield call(console.warn, e)
     }
 }
 
@@ -28,13 +28,23 @@ export function* watchClientsLoad() {
     yield takeLatest(types.CLIENTS_LOAD, handleClientsLoad)
 }
 
+
+function normalizeDataSingle(data){
+    return singleClientNormalizer(data)
+}
+
 /**
  * CLIENTS_CREATE action means a client was SUCCESSFULLY created, and
  * the cache is now dirty..
  * @param {*} action 
  */
-function handleClientsCreated(action) {
-
+function* handleClientsCreated(action) {
+    try {
+        const normalizedData = yield call(normalizeDataSingle, action.payload.data)
+        yield put({ type: types.CLIENTS_CREATE_NORMALIZED, payload: normalizedData })
+    } catch(e) {
+        yield call(console.warn, e)
+    }
 }
 
 export function* watchClientsCreated() {

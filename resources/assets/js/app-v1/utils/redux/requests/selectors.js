@@ -1,5 +1,6 @@
 import { find, curry } from 'lodash'
 import { createSelector } from 'reselect'
+import moment from 'moment'
 
 const requestsStoreSelector = state => state.requests
 
@@ -79,7 +80,7 @@ export const createFailedRequestSelectorFor = curry(
 */
 export const isEntityCacheDirty = (state, module) => {
   if(state.entities.hasOwnProperty(module)){
-      return state.entities[module].isDirty
+      return state.entities[module].cache.isDirty
   } else {
       throw 'No such entity in store'
   }

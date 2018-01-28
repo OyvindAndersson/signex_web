@@ -20,6 +20,8 @@ export const clientsNormalizer = (data) => {
 
 export const singleClientNormalizer = (client) => {
     const normalizedData = normalize(client, clientSchema)
+    console.log('%c Normalized single client', 'color: blue')
+    console.log(normalizedData)
     return {
         byId: normalizedData.entities.clients,
         allIds: [normalizedData.result]

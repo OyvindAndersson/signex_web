@@ -2,13 +2,14 @@ import { compose, createStore, applyMiddleware } from 'redux'
 import createSagaMiddleware from 'redux-saga'
 import { persistStore, persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
+import createPersistExTransform from 'AppUtils/persistex'
 
 import rootReducer from './reducer'
 import setupSubscriptions from './subscribers'
 
 // Import sagas and init-actions from active modules
 import { verifyTokenAction } from 'Auth'
-import { watchClientsLoad } from 'Clients/sagas'
+import { watchClientsLoad, watchClientsCreated } from 'Clients/sagas'
 
 /**
  * Update Authentication middleware
@@ -41,13 +42,15 @@ const initialStateHydration = {
     }
 }
 
+const persistExpire = createPersistExTransform()
 /**
  * Config for 1st level reducer. Only persist entities
  */
 const persistConfig = {
     key: 'entities',
     storage: storage,
-    whitelist: ['entities']
+    whitelist: ['entities'],
+    transforms: [persistExpire]
 }
 
 /**
@@ -84,6 +87,7 @@ export default function configureStore(initialState = initialStateHydration, his
 
     // Run sagas
     sagaMiddleware.run(watchClientsLoad)
+    sagaMiddleware.run(watchClientsCreated)
 
     return { store, persistor }
 }
