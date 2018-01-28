@@ -9,10 +9,11 @@
 | this modules' sagas.js
 |
 */
-import { createRequestAction } from 'AppUtils/redux/utils/createRequestAction'
+import { createRequestAction, createRequestActionForCacheable } from 'AppUtils/redux/utils/createRequestAction'
 import { apiGet, apiPost } from '../api'
 import clientsApiRoutes from './api'
 import actionTypes from './actionTypes'
+import { isCacheDirtySelector } from './selectors'
 
 /**
  * Load Clients Action
@@ -21,7 +22,11 @@ import actionTypes from './actionTypes'
  * the modules' sagas.
  */
 const loadClients = () => { return apiGet(clientsApiRoutes.API_LOAD) }
-export const loadClientsAction = createRequestAction(actionTypes.CLIENTS_LOAD, loadClients)
+export const loadClientsAction = createRequestActionForCacheable(
+    actionTypes.CLIENTS_LOAD, 
+    loadClients, 
+    isCacheDirtySelector
+)
 
 const createClient = (payload) => { return apiPost(clientsApiRoutes.API_CREATE, payload )}
 export const createClientAction = createRequestAction(actionTypes.CLIENTS_CREATE, createClient)

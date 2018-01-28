@@ -92,5 +92,7 @@ export default function configureStore(initialState = initialStateHydration, his
     sagaMiddleware.run(watchClientsLoad)
     sagaMiddleware.run(watchClientsCreated)
 
+    console.debug('%c 2/3 [Store configured]', 'color: #DD3388')
+
     return { store, persistor }
 }

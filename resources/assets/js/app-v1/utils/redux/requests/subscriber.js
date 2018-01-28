@@ -1,5 +1,6 @@
-import { curry, throttle } from 'lodash'
-import { queuedRequestsSelector, pendingRequestsSelector, isEntityCacheDirty } from './selectors'
+import { curry, throttle, isFunction } from 'lodash'
+import invariant from 'invariant'
+import { queuedRequestsSelector, pendingRequestsSelector } from './selectors'
 
 import {
   ADD_PENDING_REQUEST,
@@ -78,42 +79,34 @@ export function isRequestUnique(request, queuedRequests, pendingRequests) {
 }
 
 /**
- * Intercept any queued requests for resource-loads that should be stopped
- * if the resource is already cached (not dirty). The store/state is checked for
- * a cached resource for the given module (i.e: state.entities.clients.isDirty).
- * If 'isDirty' is true, the resource SHOULD however reload, so let the request
- * be queued as normal.
- * 
- * @todo Check for load action-types in a more failsafe way
- * @todo Store module's name as meta? Perhaps by create meta func for createRequestAction.js
- * @todo Dispatch a request if the queued request is ignored?
+ * Works as a gate to check requests if they are requests to cached
+ * resources. If the request has nothing to do with caching, it is
+ * let through the gate.
+ * If it has cache meta-data, it is checked to see if the request
+ * should be let through or not.
  * 
  * @param {*} currentState 
  * @param {*} request 
+ * @returns true if it should be let through, false if not
  */
-export function shouldStopRequestForCachedResource(currentState, request) {
+export function cachedResourceRequestGate(currentState, request) {
 
-  if(request.meta.requestType.indexOf('_LOAD') !== -1) {
+  // Does this request have any metadata pertaining cache info?
+  if(request.meta.checkCache && request.meta.checkCache === true) {
 
-    // Extract the modules' name - which, by rule, should be the first string before the first '_'
-    const module = _.head(_.split(_.toLower(request.meta.requestType), '_'))
-    if(module.length > 0){
-      // Select the appropriate section of the entity state
-      let isDirty = isEntityCacheDirty(currentState, module)
-
-      console.debug(`%c Cache for [${request.meta.requestType}] is marked ${isDirty ? '' : 'not'} dirty.`, 
-        `color: ${isDirty ? '#CC77AA' : '#55FFAA'}`)
-
-      // False: we should - not - stop the resource-load if the cache is dirty!
-      // True: The cache is not dirty; stop the request!
-      return isDirty ? false : true
+    if( request.meta.cacheSelector(currentState) ){
+      console.debug(`%cCache for [${request.meta.requestType}] is marked dirty.`, 'color: #CC77AA')
+      return true
 
     } else {
-      console.debug(`%c A module resource load request-type was expected. Got ${request.meta}`, 'color: #CC77AA')
+      console.debug(`%cCache for [${request.meta.requestType}] is marked clean.`, 'color: #55FFAA')
+      return false
     }
 
   } else {
-    return false
+    // This is a normal request, or the cache should not be checked. Let it through.
+    console.debug(`%cNo cache meta for [${request.meta.requestType}].`, 'color: #555')
+    return true
   }
 }
 
@@ -128,12 +121,12 @@ export function handleRequestsQueueChange(store) {
 
     queuedRequests.forEach(queuedRequest => {
 
-      // If it's cached, dont even add to pending.
-      if(shouldStopRequestForCachedResource(currentState, queuedRequest)){
+      // If it's clean-cached, dont even add to pending.
+      if(!cachedResourceRequestGate(currentState, queuedRequest)){
         const clearQueuedRequestAction = buildClearQueuedRequestAction(queuedRequest)
         store.dispatch(clearQueuedRequestAction)
 
-        console.debug(`%c The request [${queuedRequest.meta.requestType}] was cleared.`, 'color: #55FFAA')
+        console.debug(`%cThe request [${queuedRequest.meta.requestType}] was cleared.`, 'color: #55FFAA')
         return true
       }
 

@@ -43,4 +43,4 @@ if (token) {
     console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
 }
 
-console.log("Bootstrap complete")
+console.debug('%c 1/2 [Bootstrap complete]', 'color: #DD3388')

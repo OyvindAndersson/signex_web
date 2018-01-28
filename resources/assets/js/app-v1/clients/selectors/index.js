@@ -5,6 +5,9 @@ import {clientSchema, clientListSchema} from '../schema'
 import actionTypes from 'Clients/actionTypes'
 import { createHasActiveRequestSelectorFor, createFailedRequestSelectorFor } from 'AppUtils/redux/requests/selectors'
 
+/** A selector to check if this modules' cache is dirty or not */
+export const isCacheDirtySelector = state => state.entities.clients.cache.isDirty
+
 /** Selector to check if a client-create action is active */
 export const isCreateClientActive = createHasActiveRequestSelectorFor(actionTypes.CLIENTS_CREATE)
 /** Selector to check if last client-create action failed */

@@ -1,6 +1,6 @@
 import { createTransform } from 'redux-persist'
 import moment from 'moment'
-import { hasIn, pick, set, take, split, compact } from 'lodash'
+import { hasIn, get, set, take, split, compact } from 'lodash'
 import { isArray } from 'util'
 
 /**
@@ -35,11 +35,11 @@ const createPersistExTransform = (config) => {
             if( hasIn(state, [property].concat(config.expireKeySelector))){
 
                 // Extract the expiration property value
-                const expires = pick(state, [property].concat(config.expireKeySelector))
+                const expires = get(state, [property].concat(config.expireKeySelector))
 
                 // Is 'now' after the expiration date?
                 if( moment().isAfter(expires) ) {
-                    console.debug(`%c persistex transformer: The [${property}] cache has expired!`, 'color: #FF99AA')
+                    console.debug(`%cPersistex: The [${property}] cache has expired!`, 'color: #FF99AA')
 
                     const paths = [property].concat(config.expireKeySelector)
                     // get the second-last property name so we can set the object that the expireKey variable belongs to

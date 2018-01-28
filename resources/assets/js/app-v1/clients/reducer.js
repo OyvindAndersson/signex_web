@@ -65,7 +65,12 @@ function addSingleClientId(state, action){
  */
 function clientsCache( state = { isDirty: true }, action){
     switch(action.type){
-        case types.CLIENTS_LOAD_NORMALIZED: return { isDirty: false, expiresAt: moment().add(1, 'm') }
+        case types.CLIENTS_LOAD_NORMALIZED:
+            return { 
+                ...state,
+                isDirty: false, 
+                expiresAt: moment().add(1, 'm') 
+            }
         //case types.CLIENTS_CREATE: return { isDirty: true }
         default: return state
     }

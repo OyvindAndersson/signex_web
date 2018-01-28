@@ -75,18 +75,6 @@ export const createFailedRequestSelectorFor = curry(
 )(failedRequestsSelector);
 
 
-/**
- * Selector to check if the modules' entity cache should be considered dirty 
-*/
-export const isEntityCacheDirty = (state, module) => {
-  if(state.entities.hasOwnProperty(module)){
-      return state.entities[module].cache.isDirty
-  } else {
-      throw 'No such entity in store'
-  }
-}
-
-
 /** 
  * Selector to check if a module is loading its data 
  **/

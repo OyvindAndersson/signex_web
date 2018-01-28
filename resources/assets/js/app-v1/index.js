@@ -15,12 +15,16 @@ import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/lib/integration/react'
 import { BrowserRouter as Router } from 'react-router-dom'
-
-import { store, persistor } from './setup'
 import { Main } from './common'
 
-console.debug("Initializing app...")
+/**
+ * Bring in the store and the persistor object
+ */
+const { store, persistor } = require('./setup')
 
+/**
+ * Bring in the routes for the app
+ */
 const rootRoutes = require( './setup/routes')
 
 /**
@@ -43,6 +47,8 @@ const App = (
  */
 if(document.getElementById('app')){ 
 	ReactDOM.render(App, document.getElementById('app'));
+	console.debug('%c 3/3 [App initialized]', 'color: #DD3388')
+	console.debug('==')
 }
 
 

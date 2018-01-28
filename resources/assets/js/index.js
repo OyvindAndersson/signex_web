@@ -1,5 +1,3 @@
-console.log("Laravel App v1")
-
 var config = require('./app-v1/config')
 
 /**
@@ -15,4 +13,6 @@ window.SIGNEX.versionString = () => {
     return `v${major}.${minor}.${patch}-${meta}` 
 }
 
+
+console.debug(`== SignEx ${window.SIGNEX.versionString()} ==`)
 require('./app-v1')
