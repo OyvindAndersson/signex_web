@@ -1,27 +1,14 @@
 
+## Required modules
+For this app to work, the following modules are required/dependent on eachother:
+- auth : Handles all authentication routines and supplies helpers and components
+- common : Defines components used in general to form the web-design. Provides layout components for any other module to use.
+- setup : Initial setup of Redux, cache, routes and store related functionality
+- utils : Any utility required of the app, most importantly the cache and api-request baseline
 
-## Folder structure
-- js
-    - bootstrap.js              // Bootstrap app; requires/plugins etc.
-    - index.js                  // App wrapper, root component, store provider, app-routes - initialize!
-    - routes.js                 // All routes associated with the app (general routes; not subroutes)
-    - common/       
-        - components/
-        - api.js                // Common api routines
-        - constants.js          // Common constants
-        - index.js              // Expose common module
-    - utils/
-    - App/
-        - MODULE_NAME
-            - api.js            // API calls
-            - constants.js
-            - routes.js         // Routes specific to the module
-            - actions.js
-            - actionTypes.js
-            - reducer.js
-            - schema.js
-            - selectors/
-                - index.js
-            - componenets/
-                - view/
-                - control/
+Everything is tied together in ./index.js.
+
+## Cache
+
+The cache is setup
+

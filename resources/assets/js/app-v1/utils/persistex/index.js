@@ -31,13 +31,13 @@ const createPersistExTransform = (config) => {
         let newState = state
         
         for(let property in state){
-            // Check if any has the property-path to the expireKeySelector we're looking for
+            // Check if any first-level property of state has the property-path to the expireKeySelector we're looking for
             if( hasIn(state, [property].concat(config.expireKeySelector))){
 
                 // Extract the expiration property value
                 const expires = pick(state, [property].concat(config.expireKeySelector))
 
-                // Is now after the expiration date?
+                // Is 'now' after the expiration date?
                 if( moment().isAfter(expires) ) {
                     console.debug(`%c persistex transformer: The [${property}] cache has expired!`, 'color: #FF99AA')
 

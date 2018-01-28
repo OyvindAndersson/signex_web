@@ -42,6 +42,9 @@ const initialStateHydration = {
     }
 }
 
+/**
+ * Controls the expiration-check of cached items
+ */
 const persistExpire = createPersistExTransform()
 /**
  * Config for 1st level reducer. Only persist entities
