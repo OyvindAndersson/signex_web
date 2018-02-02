@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Auth;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Cookie;
 use App\Http\Requests\VerifyLoginRequest;
 
 class ApiAuthController extends Controller
@@ -96,6 +97,7 @@ class ApiAuthController extends Controller
 
     protected function respondWithCookie($token)
     {
+        $config = config('session');
         $expires_in = $this->guard()->factory()->getTTL() * 60;
         /*
         return response()->json(
@@ -103,13 +105,14 @@ class ApiAuthController extends Controller
                 'user' => $this->guard()->user()
             ])->cookie('token', $token, $expires_in, 'localhost', true, true);
                 */
-        return response()->json(['user' => $this->guard()->user()])->setCookie(
-            new Cookie(
-                'token', $token, $expires_in,
+        return response()->json(['user' => $this->guard()->user()])->cookie(
+                'token', 
+                $token, 
+                $expires_in,
                 $config['path'], 
                 $config['domain'], 
-                $config['secure'], false, false, $config['same_site'] ?? null
-            ));
+                $config['secure']
+            );
     }
 
     /**
