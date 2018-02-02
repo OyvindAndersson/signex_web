@@ -97,10 +97,19 @@ class ApiAuthController extends Controller
     protected function respondWithCookie($token)
     {
         $expires_in = $this->guard()->factory()->getTTL() * 60;
+        /*
         return response()->json(
             [
                 'user' => $this->guard()->user()
             ])->cookie('token', $token, $expires_in, 'localhost', true, true);
+                */
+        return response()->json(['user' => $this->guard()->user()])->setCookie(
+            new Cookie(
+                'token', $token, $expires_in,
+                $config['path'], 
+                $config['domain'], 
+                $config['secure'], false, false, $config['same_site'] ?? null
+            ));
     }
 
     /**
