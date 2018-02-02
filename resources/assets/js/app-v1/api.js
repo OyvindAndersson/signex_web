@@ -10,7 +10,7 @@
   * @param {object|mixed} payload POST payload
   */
  export const apiPost = (apiRoute, payload) => {
-    //console.debug(`API POST: [${apiRoute}] with [${payload}]`)
+    console.debug(`API POST: [${apiRoute}] with [${payload}]`)
 
     return axios.post(`${BASE_API_URL}/${apiRoute}`, payload)
     .then( response => {
