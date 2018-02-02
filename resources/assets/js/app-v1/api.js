@@ -31,7 +31,7 @@
  }
 
  export const apiGet = (apiRoute, payload) => {
-    //console.debug(`API GET: [${apiRoute}] with [${payload}]`)
+    console.debug(`API GET: [${apiRoute}] with [${payload}]`)
 
     return axios.get(`${BASE_API_URL}/${apiRoute}`, payload)
     .then( response => {
