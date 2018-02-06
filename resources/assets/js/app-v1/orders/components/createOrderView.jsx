@@ -13,10 +13,8 @@ import { toast } from 'react-toastify'
 import { toastIt } from "../../common/components/toastIt";
 
 // actions and selectors
-import {clientsFetchAll} from '../../clients/actions'
-import {usersFetchAll} from '../../auth/actions'
-import {getDenormalizedClients} from '../../clients/selectors'
-import {getDenormalizedUsers} from '../../auth/selectors'
+import {getDenormalizedClients} from 'Clients/selectors'
+import {getDenormalizedUsers} from 'Auth/selectors'
 import {getOrderErrors, getOrderNotify} from '../selectors'
 import { ordersCreate } from "../actions"
 

@@ -4,18 +4,16 @@ import {Route, Link, Redirect, Switch, withRouter} from 'react-router-dom'
 import PropTypes from 'prop-types'
 import {denormalize, schema} from 'normalizr'
 import moment from 'moment'
-import { toast } from 'react-toastify';
+import { toast } from 'react-toastify'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Alert } from 'reactstrap'
 
-import {ordersFetchAll} from '../actions'
-import {clientsFetchAll} from '../../clients/actions'
+import { loadOrdersAction } from '../actions'
 import actionTypes from '../actionTypes'
-import {getSelectedOrderUI, getDenormalizedOrders, getIsFetchingOrders} from '../selectors'
+import {getSelectedOrderUI, getDenormalizedOrders, isLoadingOrders} from '../selectors'
 
-import Page from '../../common/components/page'
-import PageSubNavbar from '../../common/components/pageSubNavbar'
-import { DetailPane, MasterPane, MasterItemListItem, EmptyDetailPane } from '../../common/components/masterDetailPage'
-import CreateOrderView from './createOrderView'
+import Page from 'Common/components/Page'
+import PageSubNavbar from 'Common/components/pageSubNavbar'
+import { DetailPane, MasterPane, EmptyDetailPane } from 'Common/components/masterDetailPage'
 
 /**-------------------------------------------------
  * Orders Master List
@@ -134,6 +132,7 @@ class OrderDetailPane extends React.Component {
     }
 }
 
+
 /**-------------------------------------------------
  * Orders Page Higher Order Component (/orders/)
  * -------------------------------------------------
@@ -152,8 +151,9 @@ function ordersPageHOC(WrappedComponent){
             super(props)
 
             this.filterOrders = this.filterOrders.bind(this)
-            this.updateOrders = this.updateOrders.bind(this)
             this.updateSelectedItem = this.updateSelectedItem.bind(this)
+            this.getMasterPaneProps = this.getMasterPaneProps.bind(this)
+            this.getPageNavProps = this.getPageNavProps.bind(this)
 
             this.state = {
                 hasError: false,
@@ -164,6 +164,10 @@ function ordersPageHOC(WrappedComponent){
         componentDidCatch(error, info) {
             // Display fallback UI
             this.setState({ hasError: true, errorMessage: `${error.message} @ ${error.fileName} | L: ${error.lineNumber}` })
+        }
+
+        componentWillMount(){
+            this.props.loadOrders()
         }
         
         filterOrders(filter, context){
@@ -235,45 +239,17 @@ function ordersPageHOC(WrappedComponent){
                 return false
             })
         }
-        updateOrders(){
-            this.props.dispatch(clientsFetchAll())
-            this.props.dispatch(ordersFetchAll())
-        }
-        updateSelectedItem(e){
-            this.props.dispatch({
-                type: actionTypes.ORDERS_PAGE_SELECTED_MASTER_ID,
-                payload: e.currentTarget.dataset.id
-            })
-        }
 
-        render(){
-            const {selectedOrder, computedMatch, match, dispatch} = this.props 
-
-            /**
-             * Props specific to the Order page sub-navbar
-             */
-            const pageNavbarProps = {
-                pageLinks: [ 
-                    { title: "My orders page", props: { to: `${match.url}`, tag: Link }, strong: true },
-                    { title: "Create new", props: { to: `${match.url}/create`, tag: Link }} 
-                ]
-            }
-
-            /** 
-             * Most logic is tied together by master pane 
-             * 
-             * contextOptions: 
-             * @todo: Get display strings and values from the store (statuses, users, types)
-             * 
-            */
-            const masterPaneProps = {
+        getMasterPaneProps(){
+            return {
                 items: this.props.orders,
                 selectedItem: this.props.selectedOrder,
                 selectedItemId: this.props.selectedOrderId,
-                isLoading: this.props.isFetchingOrders,
+                isLoading: this.props.isLoadingOrders,
 
-                updateItems: this.updateOrders,
-                updateSelectedItem: this.updateSelectedItem,
+                //updateItems: this.updateOrders,
+                updateSelectedItem: this.props.updateSelectedClient,
+                updateItems: () => { console.log("Update order items...") },
 
                 filterItems: this.filterOrders,
                 filterBoxProps: {
@@ -298,6 +274,34 @@ function ordersPageHOC(WrappedComponent){
                     ]   
                 }
             }
+        }
+
+        getPageNavProps(){
+            const { match } = this.props
+            return {
+                pageLinks: [ 
+                    { title: "My orders page", props: { to: `${match.url}`, tag: Link }, strong: true },
+                    { title: "Create new", props: { to: `${match.url}/create`, tag: Link }} 
+                ]
+            }
+        }
+
+        render(){
+            const {selectedOrder, computedMatch, match, dispatch} = this.props 
+
+            /**
+             * Props specific to the Order page sub-navbar
+             */
+            const pageNavbarProps = this.getPageNavProps()
+
+            /** 
+             * Most logic is tied together by master pane 
+             * 
+             * contextOptions: 
+             * @todo: Get display strings and values from the store (statuses, users, types)
+             * 
+            */
+            const masterPaneProps = this.getMasterPaneProps()
 
             // Display errorpage
             if(this.state.hasError){
@@ -369,10 +373,23 @@ ordersPageHOC.propTypes = {
     selectedOrderId: PropTypes.number.isRequired
 }
 
+function mapStateToProps(state) {
+    return {
+        orders: getDenormalizedOrders(state),
+        selectedOrderId: state.ui.orderPage.selectedOrderId,
+        selectedOrder: getSelectedOrderUI(state),
+        isLoadingOrders: isLoadingOrders(state)
+    }
+}
 
-export default withRouter(connect( state => ({
-    orders: getDenormalizedOrders(state),
-    selectedOrderId: state.ui.orderPage.selectedOrderId,
-    selectedOrder: getSelectedOrderUI(state),
-    isFetchingOrders: getIsFetchingOrders(state)
-}))(ordersPageHOC(Page)))
+function mapDispatchToProps(dispatch){
+    return {
+        loadOrders: () => dispatch(loadOrdersAction())
+    }
+}
+
+export default withRouter(
+    connect(mapStateToProps, mapDispatchToProps)(
+        ordersPageHOC(Page)
+    )
+)

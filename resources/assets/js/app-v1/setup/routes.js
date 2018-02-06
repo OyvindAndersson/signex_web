@@ -5,7 +5,7 @@ import {AuthRoute, LoginPage, LogoutPage} from 'Auth'
 import DashboardPage from 'Common/components/DashboardPage'
 import PageNotFound from 'Common/components/PageNotFound'
 import ClientsPage from 'Clients/components/ClientsPage'
-//import OrdersPage from './orders/components/ordersPage'
+import OrdersPage from 'Orders/components/OrdersPage'
 
 /**
  * Main app routes, public and auth
@@ -16,7 +16,7 @@ export const routes = (
         <Route path="/login" component={LoginPage} />
         <AuthRoute path="/dashboard" component={DashboardPage} />
         <AuthRoute path="/clients" component={ClientsPage} />
-        {/*<AuthRoute path="/orders" component={OrdersPage} />*/}
+        <AuthRoute path="/orders" component={OrdersPage} />
         <AuthRoute exact path="/logout" component={LogoutPage} />
         <Route component={PageNotFound} />
     </Switch>

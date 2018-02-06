@@ -1,10 +1,24 @@
-import actionTypes from './actionTypes'
-import {apiRequest, apiPostRequest} from '../common/api'
-import {ordersNormalizer, singleOrderNormalizer} from './schema'
+/*
+|--------------------------------------------------------------------------
+| Orders module actions
+|--------------------------------------------------------------------------
+|
+| Define actions specifically for the module -> api endpoints.
+| Simple API endpoint actions are defined here. Other more 
+| advanced post-processing is done with sagas, defined in
+| this modules' sagas.js
+|
+*/
+import { createRequestAction, createRequestActionForCacheable } from 'AppUtils/redux/utils/createRequestAction'
+import { apiGet, apiPost } from '../api'
+import api from './api'
+import types from './actionTypes'
+import { isCacheDirtySelector } from './selectors'
 
 
-/** Fetches all orders from the API */
-export function ordersFetchAll() { return apiRequest('orders', actionTypes.ORDERS_FETCH_ALL, null, ordersNormalizer) }
-
-/** Creates a new order and persists in database */
-export function ordersCreate(newOrder) { return apiPostRequest('orders/create', actionTypes.ORDERS_CREATE, newOrder, singleOrderNormalizer) }
+const loadOrders = () => apiGet(api.API_ORDERS_LOAD_ROUTE)
+export const loadOrdersAction = createRequestActionForCacheable(
+    types.ORDERS_LOAD, 
+    loadOrders, 
+    isCacheDirtySelector
+)

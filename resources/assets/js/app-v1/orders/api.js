@@ -1,15 +1,18 @@
-/**
- * The API file takes care of all calls to the backend,
- * to avoid cluttering the action creators, as well
- * as to give API access to native js code.
- * 
- * @todo Since we use common/api@apiRequest we skip including the "orders" api file, as it is redundant
- */
-import {apiRequest} from '../common/api'
+/*
+|--------------------------------------------------------------------------
+| Orders module api
+|--------------------------------------------------------------------------
+|
+| Define all valid API endpoints for this module
+| x Capitalized constants are non-argument routes
+| x Camelcase functions are argumented routes
+|
+*/
 
-/** Fetch all orders */
-const ordersFetchAll = (baseAction) => { return apiRequest('orders', baseAction) }
+const API_ORDERS_LOAD_ROUTE = 'orders'
+const API_ORDERS_CREATE_ROUTE = 'orders/create'
 
 export default {
-    ordersFetchAll
+    API_ORDERS_LOAD_ROUTE,
+    API_ORDERS_CREATE_ROUTE
 }

@@ -99,12 +99,6 @@ class ApiAuthController extends Controller
     {
         $config = config('session');
         $expires_in = $this->guard()->factory()->getTTL() * 60;
-        /*
-        return response()->json(
-            [
-                'user' => $this->guard()->user()
-            ])->cookie('token', $token, $expires_in, 'localhost', true, true);
-                */
         return response()->json(['user' => $this->guard()->user()])->cookie(
                 'token', 
                 $token, 

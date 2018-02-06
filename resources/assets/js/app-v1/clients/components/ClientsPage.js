@@ -1,12 +1,12 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { Route, Link, Redirect, Switch, withRouter } from 'react-router-dom'
-import { denormalize, schema } from 'normalizr'
+import { toast } from 'react-toastify'
 
 import actionTypes from 'Clients/actionTypes'
 import { loadClientsAction, updateClientsMasterListItemIdAction } from 'Clients/actions'
 import { getSelectedClientUI, getDenormalizedClients, createdClientSuccess, isLoadingClients } from 'Clients/selectors'
+
 import { ClientCreateInlineForm } from './ClientCreateForms'
 import ClientDetailPane from './ClientDetailPane'
 import ClientsMasterList from './ClientsMasterList'
@@ -14,7 +14,7 @@ import ClientsMasterList from './ClientsMasterList'
 import Page from 'Common/components/Page'
 import PageSubNavbar from 'Common/components/pageSubNavbar'
 import { DetailPane, MasterPane, EmptyDetailPane } from 'Common/components/masterDetailPage'
-import { toast } from 'react-toastify'
+
 
 /**
  * 

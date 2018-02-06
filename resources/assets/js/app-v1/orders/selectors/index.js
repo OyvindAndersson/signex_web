@@ -2,11 +2,19 @@ import {createSelector} from 'reselect'
 import {schema, denormalize} from 'normalizr'
 import {orderSchema, orderListSchema} from '../schema'
 
+import actionTypes from '../actionTypes'
+import { createHasActiveRequestSelectorFor, createFailedRequestSelectorFor } from 'AppUtils/redux/requests/selectors'
+
+/** A selector to check if this modules' cache is dirty or not */
+export const isCacheDirtySelector = state => state.entities.orders.cache.isDirty
+/**  */
+export const isLoadingOrders = createHasActiveRequestSelectorFor(actionTypes.CLIENTS_LOAD)
+
+
 const getSelectedOrderId = state => state.ui.orderPage.selectedOrderId
 const getOrders = state => state.entities.orders.byId
 
 export const getOrderErrors = state => state.entities.orders.errors
-export const getIsFetchingOrders = state => state.entities.orders.isFetching
 export const getOrderNotify = state => state.entities.orders.notify
 
 export const getSelectedOrderUI = createSelector(

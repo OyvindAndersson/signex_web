@@ -1,6 +1,6 @@
 /*
 |--------------------------------------------------------------------------
-| Auth module api
+| Clients module api
 |--------------------------------------------------------------------------
 |
 | Define all valid API endpoints for this module
@@ -9,10 +9,10 @@
 |
 */
 
-const API_LOAD = 'clients'
-const API_CREATE = 'clients/create'
+const API_CLIENTS_LOAD_ROUTE = 'clients'
+const API_CLIENTS_CREATE_ROUTE = 'clients/create'
 
 export default {
-    API_LOAD,
-    API_CREATE
+    API_CLIENTS_LOAD_ROUTE,
+    API_CLIENTS_CREATE_ROUTE
 }
