@@ -9,20 +9,22 @@
 | this modules' sagas.js
 |
 */
-import { createRequestAction, createRequestActionForCacheable } from 'AppUtils/redux/utils/createRequestAction'
-import { apiGet, apiPost } from '../api'
-import api from './api'
-import types from './actionTypes'
+import { restActionTypes } from 'AppUtils/redux/constants'
+import { createApiRequestAction } from '../api'
+
+import { MODULE_ID } from './constants'
 import { isCacheDirtySelector } from './selectors'
+import types from './actionTypes'
 
 /**
  * Load all client entities. Normalization handled in sagas.js
  * @see sagas.js
  */
-const loadClients = () => apiGet(api.API_CLIENTS_LOAD_ROUTE)
-export const loadClientsAction = createRequestActionForCacheable(
-    types.CLIENTS_LOAD, 
-    loadClients, 
+export const loadClientsAction = createApiRequestAction(
+    'GET',
+    MODULE_ID, 
+    restActionTypes.LOAD,
+    true,
     isCacheDirtySelector
 )
 
@@ -30,8 +32,12 @@ export const loadClientsAction = createRequestActionForCacheable(
  * Sends create request to the server for creating a new Client
  * @param {object|array} payload Single or multiple client form data
  */
-const createClient = (payload) => apiPost(api.API_CLIENTS_CREATE_ROUTE, payload)
-export const createClientAction = createRequestAction(types.CLIENTS_CREATE, createClient)
+export const createClientAction = createApiRequestAction(
+    'POST',
+    MODULE_ID, 
+    restActionTypes.CREATE
+)
+
 
 /**
  * Update selected client action (UI)

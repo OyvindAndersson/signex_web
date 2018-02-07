@@ -7,10 +7,11 @@ import moment from 'moment'
 import { toast } from 'react-toastify'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Alert } from 'reactstrap'
 
-import { loadOrdersAction } from '../actions'
+import { loadOrdersAction, updateOrdersMasterListItemIdAction } from '../actions'
 import actionTypes from '../actionTypes'
-import {getSelectedOrderUI, getDenormalizedOrders, isLoadingOrders} from '../selectors'
+import {getSelectedOrderUI, getSelectedOrderId, getDenormalizedOrders, isLoadingOrders} from '../selectors'
 
+import CreateOrderView from './CreateOrderView'
 import Page from 'Common/components/Page'
 import PageSubNavbar from 'Common/components/pageSubNavbar'
 import { DetailPane, MasterPane, EmptyDetailPane } from 'Common/components/masterDetailPage'
@@ -151,7 +152,6 @@ function ordersPageHOC(WrappedComponent){
             super(props)
 
             this.filterOrders = this.filterOrders.bind(this)
-            this.updateSelectedItem = this.updateSelectedItem.bind(this)
             this.getMasterPaneProps = this.getMasterPaneProps.bind(this)
             this.getPageNavProps = this.getPageNavProps.bind(this)
 
@@ -248,7 +248,7 @@ function ordersPageHOC(WrappedComponent){
                 isLoading: this.props.isLoadingOrders,
 
                 //updateItems: this.updateOrders,
-                updateSelectedItem: this.props.updateSelectedClient,
+                updateSelectedItem: this.props.updateSelectedOrder,
                 updateItems: () => { console.log("Update order items...") },
 
                 filterItems: this.filterOrders,
@@ -376,7 +376,7 @@ ordersPageHOC.propTypes = {
 function mapStateToProps(state) {
     return {
         orders: getDenormalizedOrders(state),
-        selectedOrderId: state.ui.orderPage.selectedOrderId,
+        selectedOrderId: getSelectedOrderId(state),
         selectedOrder: getSelectedOrderUI(state),
         isLoadingOrders: isLoadingOrders(state)
     }
@@ -384,7 +384,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch){
     return {
-        loadOrders: () => dispatch(loadOrdersAction())
+        loadOrders: () => dispatch(loadOrdersAction()),
+        updateSelectedOrder: e => dispatch(updateOrdersMasterListItemIdAction(e.currentTarget.dataset.id))
     }
 }
 

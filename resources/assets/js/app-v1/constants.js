@@ -12,4 +12,6 @@ export const CREATE_NORMALIZED = '_CREATE_NORMALIZED'
 export const EDIT = '_EDIT'
 export const EDIT_NORMALIZED = '_EDIT_NORMALIZED'
 
+export const INVALIDATE_CACHE = '_INVALIDATE_CACHE'
+
 export const modActionType = (moduleName = '', suffix = '') => `${moduleName}${suffix}`

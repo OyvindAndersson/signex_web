@@ -18,7 +18,7 @@ export default function authReducer(state = initialAuthState, action){
   switch(action.type){
     case types.AUTH_VERIFY_LOGIN: return verifyLoginHandler(state, action)
     case types.AUTH_VERIFY_TOKEN: return verifyTokenHandler(state, action)
-    case types.AUTH_LOGOUT: return { ...state, isAuthenticated: false }
+    case types.AUTH_LOGOUT: return { ...state, isAuthenticated: false, user: null }
     default:
       return {
         ...state,
@@ -47,8 +47,10 @@ function verifyLoginHandler(state, action){
  * @param {*} action 
  */
 function verifyTokenHandler(state, action){
+  const { payload: { data: { user }}} = action
   return {
     ...state,
-    isAuthenticated: true
+    isAuthenticated: true,
+    user
   }
 }

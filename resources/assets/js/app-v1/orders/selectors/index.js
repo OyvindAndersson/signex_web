@@ -11,11 +11,8 @@ export const isCacheDirtySelector = state => state.entities.orders.cache.isDirty
 export const isLoadingOrders = createHasActiveRequestSelectorFor(actionTypes.CLIENTS_LOAD)
 
 
-const getSelectedOrderId = state => state.ui.orderPage.selectedOrderId
+export const getSelectedOrderId = state => state.ui.orders.selectedOrderId
 const getOrders = state => state.entities.orders.byId
-
-export const getOrderErrors = state => state.entities.orders.errors
-export const getOrderNotify = state => state.entities.orders.notify
 
 export const getSelectedOrderUI = createSelector(
     [getSelectedOrderId, getOrders],

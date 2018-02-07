@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Cookie;
+use JWTAuth;
 use Auth;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Cookie;
 use App\Http\Requests\VerifyLoginRequest;
 
 class ApiAuthController extends Controller
@@ -22,18 +23,10 @@ class ApiAuthController extends Controller
      */
     public function login(VerifyLoginRequest $request)
     {
-        // Check if already logged in
-        /*
-        $user = $this->guard()->user();
-        if($user)
-        {
-            return response()->json();
-        }*/
-        
         // grab credentials from the request
         $credentials = $request->only('email', 'password');
 
-        if($token = $this->guard()->attempt($credentials))
+        if($token = auth()->attempt($credentials))
         {
             //return $this->respondWithToken($token);
             return $this->respondWithCookie($token);
@@ -48,7 +41,8 @@ class ApiAuthController extends Controller
      */
     public function me()
     {
-        return response()->json($this->guard()->user());
+        return $this->respondWithCookie(auth()->refresh());
+        //return response()->json([ 'user' => auth()->user() ]);
     }
 
     public function verifyCookie()
@@ -61,12 +55,13 @@ class ApiAuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function logout()
+    public function logout(Request $request)
     {
-        $this->guard()->logout();
-        \Cookie::forget('token');
+        $res = auth()->logout(true);
 
-        return response()->json(['message' => 'Successfully logged out']);
+        return response()->json([
+            'message' => 'Successfully logged out'
+        ]);
     }
 
     /**
@@ -76,7 +71,7 @@ class ApiAuthController extends Controller
      */
     public function refresh()
     {
-        return $this->respondWithToken($this->guard()->refresh());
+        return $this->respondWithToken(auth()->refresh());
     }
 
     /**
@@ -91,15 +86,17 @@ class ApiAuthController extends Controller
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => $this->guard()->factory()->getTTL() * 60
+            'expires_in' => auth()->factory()->getTTL() * 60
         ]);
     }
 
     protected function respondWithCookie($token)
     {
+        $user = auth()->userOrFail();
+
         $config = config('session');
-        $expires_in = $this->guard()->factory()->getTTL() * 60;
-        return response()->json(['user' => $this->guard()->user()])->cookie(
+        $expires_in = auth()->factory()->getTTL() * 60;
+        return response()->json( compact('user') )->cookie(
                 'token', 
                 $token, 
                 $expires_in,

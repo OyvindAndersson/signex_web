@@ -1,6 +1,6 @@
 /*
 |--------------------------------------------------------------------------
-| Orders module actions
+| Users module actions
 |--------------------------------------------------------------------------
 |
 | Define actions specifically for the module -> api endpoints.
@@ -16,15 +16,4 @@ import { MODULE_ID } from './constants'
 import { isCacheDirtySelector } from './selectors'
 import types from './actionTypes'
 
-export const loadOrdersAction = createApiRequestAction('GET', MODULE_ID, restActionTypes.LOAD, true, isCacheDirtySelector)
-
-export const createOrderAction = createApiRequestAction('POST', MODULE_ID, restActionTypes.CREATE)
-
-/**
- * Update selected client action (UI)
- * Used primarily in master/detail view. Master list item id
- */
-export const updateOrdersMasterListItemIdAction = (clientId) => ({
-    type: types.ORDERS_UI_SELECTED_MASTER_ID, 
-    payload: clientId
-})
+export const loadUsersAction = createApiRequestAction('GET', MODULE_ID, restActionTypes.LOAD, true, isCacheDirtySelector)

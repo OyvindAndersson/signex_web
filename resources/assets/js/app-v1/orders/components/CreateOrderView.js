@@ -16,7 +16,7 @@ import { toastIt } from "../../common/components/toastIt";
 import {getDenormalizedClients} from 'Clients/selectors'
 import {getDenormalizedUsers} from 'Auth/selectors'
 import {getOrderErrors, getOrderNotify} from '../selectors'
-import { ordersCreate } from "../actions"
+import { createOrderAction } from "../actions"
 
 
 /**-------------------------------------------------
@@ -57,10 +57,6 @@ class CreateOrderView extends React.Component {
             notify: null
         }
     }
-    componentDidMount(){
-        this.props.dispatch(clientsFetchAll())
-        this.props.dispatch(usersFetchAll())
-    }
     componentWillReceiveProps(next){
         if(next.user !== this.state.user){
             this.setState({ 
@@ -98,7 +94,7 @@ class CreateOrderView extends React.Component {
 
         const {dispatch} = this.props
         if(dispatch){
-            dispatch(ordersCreate(values))
+            dispatch(createOrderAction(values))
             // We need a reference to formApi in resetForm(), 
             // which will only ever be called after a submit
             this.formApi = formApi
@@ -224,7 +220,5 @@ class CreateOrderView extends React.Component {
 export default withRouter(connect( state => ({
     clients: getDenormalizedClients(state),
     users: getDenormalizedUsers(state),
-    user: state.auth.user,
-    errors: getOrderErrors(state),
-    notify: getOrderNotify(state)
+    user: state.auth.user
 }))(CreateOrderView))

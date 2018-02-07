@@ -1,5 +1,4 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import {Route, Link, Redirect, Switch, withRouter} from 'react-router-dom'
 import {
     Nav, NavItem, NavLink, Container, Row, Col,

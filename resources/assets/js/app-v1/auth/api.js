@@ -11,7 +11,7 @@
 
  const API_LOGIN = 'login'
  const API_LOGOUT = 'logout'
- const API_VERIFY_TOKEN = 'verifyCookie'
+ const API_VERIFY_TOKEN = 'me'
 
  /** Example lowercase function */
  const apiUsers = ({ ids, max }) => {

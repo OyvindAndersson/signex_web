@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { InputGroup, InputGroupButton, Input, Button, ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap'
+import { InputGroup, InputGroupAddon, Input, Button, ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap'
 
 
 /**-------------------------------------------------
@@ -106,14 +106,14 @@ export default class FilterableSelectBox extends React.Component {
                         placeholder={placeholderText} 
                         aria-label={placeholderText} />
     
-                    <InputGroupButton>
+                    <InputGroupAddon addonType="append">
                         <ButtonDropdown isOpen={this.state.dropdownOpen} toggle={this.toggleDropdown}>
                             <DropdownToggle caret color="primary">{this.state.selectedContext.display}</DropdownToggle>
                             <DropdownMenu>
                                 {contextItems}
                             </DropdownMenu>
                         </ButtonDropdown>
-                    </InputGroupButton>
+                    </InputGroupAddon>
                 </InputGroup>
             )
         } else {

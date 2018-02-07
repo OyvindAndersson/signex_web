@@ -1,7 +1,7 @@
 import invariant  from "invariant"
 import { identity, isFunction, isNull } from 'lodash'
 
-import { QUEUE_REQUEST } from '../constants'
+import { QUEUE_REQUEST, restActionTypes } from '../constants'
 
 export function createRequestAction(type, request, payloadCreator = identity, metaCreator) {
   invariant(isFunction(request), 'Expected request to be a function');
@@ -42,6 +42,40 @@ export function createRequestAction(type, request, payloadCreator = identity, me
   };
 
   return actionCreator;
+}
+
+/**
+ * 
+ * @param {string} moduleId 
+ * @param {string} restAction Either of: LOAD | CREATE | UPDATE | DELETE. 
+ * You can also import restActionTypes object from here.
+ * @param {function} request ACtual request function
+ * @param {boolean} isCacheable If the action is returning a cacheable resource, that should enter the
+ * cache system.
+ * @param {function} selector A selector for the cache-state for the resource
+ */
+export function createRestRequestAction(moduleId, restAction = restActionTypes.LOAD, request, isCacheable = false, selector = null) {
+  invariant(_.has(restActionTypes, restAction.toUpperCase()), 
+    'Expected restactionTypes to be either of: load, create, update, delete.')
+
+  invariant(_.isString(moduleId), 'Expected moduleId to be a string')
+
+  if(isCacheable){
+    // Check if the selector is a valid function
+    invariant( isFunction(selector), 'Expected cacheSelector to be a function')
+
+    var metaCreator = () => { return { checkCache: true, cacheSelector: selector }}
+  }
+
+  // Prepend the module ID (i.e: USERS_LOAD)
+  const type = `${moduleId}_${restAction}`.toUpperCase()
+
+  return createRequestAction(
+    type, 
+    request, 
+    null, 
+    isCacheable ? metaCreator : null
+  )
 }
 
 /**

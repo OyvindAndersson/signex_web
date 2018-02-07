@@ -7,7 +7,6 @@ import { userSchema } from '../auth/schema'
 export const orderSchema = new schema.Entity('orders')
 export const orderListSchema = new schema.Array(orderSchema)
 
-
 /** Normalizer for orders table */
 export const ordersNormalizer = (data) => {
     const {orders, notify} = data
@@ -21,8 +20,7 @@ export const ordersNormalizer = (data) => {
     }
     return {
         byId: normalizedData.entities.orders,
-        allIds: normalizedData.result,
-        notify
+        allIds: normalizedData.result
     }
 }
 
@@ -31,7 +29,6 @@ export const singleOrderNormalizer = (data) => {
     const normalizedData = normalize(rest, orderSchema)
     return {
         byId: normalizedData.entities.orders,
-        allIds: [normalizedData.result],
-        notify
+        allIds: [normalizedData.result]
     }
 }

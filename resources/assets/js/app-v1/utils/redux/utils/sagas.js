@@ -1,6 +1,7 @@
 import { call, put, takeEvery, takeLatest } from 'redux-saga/effects'
 import invariant from 'invariant'
 import * as defaultActionTypes from '../../../constants'
+import { restActionTypes, restActionModifiers } from '../constants'
 
 /**
  * Takes an action with a payload and runs it through a handler function, which
@@ -16,11 +17,18 @@ export function createCauseAndEffectSaga(causeAction, effectAction, actionPayloa
 
     function* callback(action) {
         try {
-            const data = yield call(actionPayloadHandler, action.payload.data)
-            yield put({
-                type: effectAction,
-                payload: data
-            })
+            const { payload: { data }} = action || { payload: { data: {}}}
+
+            if(!data || data.length == 0){
+                return
+            } else {
+                const payloadData = yield call(actionPayloadHandler, action.payload.data)
+                yield put({
+                    type: effectAction,
+                    payload: payloadData
+                })
+            }
+            
         } catch(e){
 
         }
@@ -29,4 +37,13 @@ export function createCauseAndEffectSaga(causeAction, effectAction, actionPayloa
     return function* watcherSaga() {
         yield takeLatest(causeAction, callback)
     }
+}
+
+export function createActionNormalizerSaga(moduleId, restActionType = restActionTypes.LOAD, normalizer) {
+    invariant(_.isFunction(normalizer), 'Expected normalizer to be a function')
+
+    const causeAction = `${moduleId}_${restActionType}`.toUpperCase()
+    const effectAction = `${causeAction}_${restActionModifiers.NORMALIZED}`
+
+    return createCauseAndEffectSaga(causeAction, effectAction, normalizer)
 }
