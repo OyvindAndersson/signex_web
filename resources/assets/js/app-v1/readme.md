@@ -9,29 +9,63 @@ The minimum required modules for this app to work are:
 
 Everything is tied together in ./index.js.
 
+## Modules
+
+A module consists of either components and associated resources, or both.
+
+- A presentational module will generally only consist of react components.
+- A resource module will generally only consist of REST-actions, reducers and sagas
+- A mixed module will naturally consist of both, along with UI reducers/actions.
+
+See the 'template' module for an example of the bare minimum of a working mixed module, with a master/detail presentation.
+
 ## Requests and the API
 
 The API request system is a modified version of this: https://github.com/andrewtpoe/request-answers
 See the docs for it to get a base understanding of the general system.
 
-### Creating request for the system
+### Creating requests for the system
 
-A request is made for this system by using the createRequestAction helper in Utils/redux/utils.
-Every request-action made with this function will dispatch (along with a couple of cleanup actions):
+A request can be made for this system at the most basic level by using the `createRequestAction` helper in Utils/redux/utils.
+Every request-action made with this function will use the request management the exact same way as the base-api https://github.com/andrewtpoe/request-answers.
 
-- `QUEUE_REQUEST -> ADD_PENDING_REQUEST -> MY_ACTION -> FINALIZE_REQUEST`
+The main difference of the custom implementation is the cache-functionality. All queued requests are checked for a `checkCache` meta property.
+If this is true, a meta property (which is a standard redux selector) `cacheSelector` should check the redux-state for a property that defines if the relevant cache is clean or dirty. If the cache is clean, the queued request is removed immediatly from the queue without further processing.
 
-or
+However, using `createRequestAction` (the core function) without extending it will not cause a cache-check since no meta-property of chechCache is set there.
+Use the `createRequestActionForCacheable` or `createRestRequestAction`, which simply extends the core-function with a meta creator function:
 
-- `QUEUE_REQUEST -> ADD_PENDING_REQUEST -> ADD_FAILED_REQUEST -> FINALIZE_REQUEST`
+```javascript
+export function createRequestActionForCacheable(type, request, selector) {
+  // Check if the selector is a valid function
+  invariant( isFunction(selector), 'Expected cacheSelector to be a function')
 
-The original action (i.e: `MY_ACTION`) is always stored as a meta-property of the QUEUE/PENDING/FAILED/FINALIZED actions.
-The `MY_ACTION` will only be executed if the response/request was successful - so the reducer should check for that action to respond to success.
+  const metaCreator = () => { return { checkCache: true, cacheSelector: selector }}
+
+  return createRequestAction(type, request, null, metaCreator)
+}
+```
+
+`createRestRequestAction` is directly tied to the REST API and should be used by modules that are resources.
+
+### Creating REST request actions
+
+As mentioned in the previous section; the `createRestRequestAction` function creates a specific request adhering to the REST api rules of the application.
+It takes the following args: 
+```javascript 
+moduleId, restAction = restActionTypes.LOAD, request, isCacheable = false, selector = null
+```
+- moduleId: The name of the resource associated with the API. As an example: "users", "clients", "comments" etc.
+- restAction: A string denoting the type of rest operation ("create", "edit", "load", "delete", etc.). Valid types are defined in the `restActionTypes` object.
+- request: The request/API call function returning a promise.
+- isCacheable: If the action handles a resource response that should be cached/checked for previous cache.
+- selector: The cache-selector, as explained in section "Creating requests for the system".
+
+The importance of naming conventions and proper setup is further explained in a previous section.
 
 ## Cache
 
-The cache-system is tied to the request workflow. Most work is done with Redux-Persist and in utils/redux/requests/subsriber, but how the actions for any module is created is important for it
-to work with the cache.
+The cache-system is tied to the request workflow. Most work is done with Redux-Persist and in utils/redux/requests/subsriber, but how the actions for any module is created is important for it to work with the cache.
 
 ### How to mark a request/action as cachable
 
