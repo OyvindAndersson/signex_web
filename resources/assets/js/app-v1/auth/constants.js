@@ -1,3 +1,5 @@
+const MODULE_ID = 'auth'
+
 const LOGIN_PATH = "/login"
 const AUTH_ROOT_PATH = "/dashboard"
 

@@ -14,7 +14,7 @@ import {getSelectedOrderUI, getSelectedOrderId, getDenormalizedOrders, isLoading
 import CreateOrderView from './CreateOrderView'
 import Page from 'Common/components/Page'
 import PageSubNavbar from 'Common/components/pageSubNavbar'
-import { DetailPane, MasterPane, EmptyDetailPane } from 'Common/components/masterDetailPage'
+import { DetailPane, MasterPane, EmptyDetailPane, MasterItemListItem } from 'Common/components/masterDetailPage'
 
 /**-------------------------------------------------
  * Orders Master List
@@ -56,8 +56,8 @@ class OrdersMasterList extends React.Component {
                         <h5 className="mb-1" style={{ fontSize: 14 +'px'}}><strong>#{item.code}</strong></h5>
                         <span className={`badge badge-info ${severityClass}`}>{`Due ${humanDueIn}`}</span>
                     </div>
-                    <p className="orders-master-list-item-client mb-1 font-weight-bold">{item.client.name}</p>
-                    <small>Reg. by: {item.registrar.name}</small>
+                    <p className="orders-master-list-item-client mb-1 font-weight-bold">{item.client_id.name}</p>
+                    <small>Reg. by: {item.user_id.name}</small>
 
                 </MasterItemListItem>
             )
@@ -98,7 +98,7 @@ class OrderDetailPane extends React.Component {
         return(
             <div className="row align-items-center">
                 <div className="col">
-                    <h2 className="text-primary">{order.client.name} 
+                    <h2 className="text-primary">{order.client_id.name} 
                         <small className="text-dark"> #{order.code}</small>
                     </h2>
                     <hr />
@@ -110,11 +110,11 @@ class OrderDetailPane extends React.Component {
                             <ul className="list-group">
                                 <li className="list-group-item">
                                     <small>Status: </small>
-                                    <a href="#" title={order.status.description}>{order.status.name}</a>
+                                    <a href="#" title={order.status_id.description}>{order.status_id.name}</a>
                                 </li>
                                 <li className="list-group-item">
                                     <small>Manager: </small>
-                                    <a href="#">{order.registrar.name}</a>
+                                    <a href="#">{order.user_id.name}</a>
                                 </li>
                                 <li className="list-group-item">
                                     <small>Registered: </small>

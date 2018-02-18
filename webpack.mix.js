@@ -20,10 +20,11 @@ mix.webpackConfig({
         ],
         alias: {
             // We must also add these to 'test' env in .babelrc
+            App: path.resolve(__dirname, 'resources/assets/js/app-v1/'),
             AppUtils: path.resolve(__dirname, 'resources/assets/js/app-v1/utils/'),
             Auth: path.resolve(__dirname, 'resources/assets/js/app-v1/auth/'),
             Common: path.resolve(__dirname, 'resources/assets/js/app-v1/common/'),
-
+            Users: path.resolve(__dirname, 'resources/assets/js/app-v1/users/'),
             Clients: path.resolve(__dirname, 'resources/assets/js/app-v1/clients/'),
             Orders: path.resolve(__dirname, 'resources/assets/js/app-v1/orders/'),
         }

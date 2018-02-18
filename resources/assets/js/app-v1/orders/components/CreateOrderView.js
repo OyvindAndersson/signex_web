@@ -62,8 +62,7 @@ class CreateOrderView extends React.Component {
             this.setState({ 
                 userInput: next.user.id, 
                 user: next.user,
-                users: next.users,
-                
+                users: next.users
             })
         }
         if(next.notify){
@@ -92,13 +91,12 @@ class CreateOrderView extends React.Component {
         // format to MYSQL
         values.order.due_at = moment(values.order.due_at, "DD.MM.Y H:m").format('YYYY-MM-DD HH:MM:SS')
 
-        const {dispatch} = this.props
-        if(dispatch){
-            dispatch(createOrderAction(values))
-            // We need a reference to formApi in resetForm(), 
-            // which will only ever be called after a submit
-            this.formApi = formApi
-        }
+        const { createOrder } = this.props
+        createOrder(values)
+
+        // We need a reference to formApi in resetForm(), 
+        // which will only ever be called after a submit
+        this.formApi = formApi
     }
     resetForm(){
         if(this.formApi){
@@ -217,8 +215,20 @@ class CreateOrderView extends React.Component {
     }
 }
 
-export default withRouter(connect( state => ({
-    clients: getDenormalizedClients(state),
-    users: getDenormalizedUsers(state),
-    user: state.auth.user
-}))(CreateOrderView))
+const mapStateToProps = state => {
+    return {
+        clients: getDenormalizedClients(state),
+        users: getDenormalizedUsers(state),
+        user: state.auth.user
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        createOrder: data => dispatch(createOrderAction(data))
+    }
+}
+
+export default withRouter(
+    connect(mapStateToProps, mapDispatchToProps)(CreateOrderView)
+)

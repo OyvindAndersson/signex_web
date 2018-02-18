@@ -11,11 +11,13 @@
       "plugins": [
         ["module-resolver", {
           "alias": {
+            "App": "./resources/assets/js/app-v1/",
             "Auth": "./resources/assets/js/app-v1/auth/",
             "AppUtils": "./resources/assets/js/app-v1/utils/",
             "Common": "./resources/assets/js/app-v1/common/",
             "Clients": "./resources/assets/js/app-v1/clients/",
-            "Orders": "./resources/assets/js/app-v1/orders/"
+            "Orders": "./resources/assets/js/app-v1/orders/",
+            "Users": "./resources/assets/js/app-v1/users/"
           }
         }]
       ]

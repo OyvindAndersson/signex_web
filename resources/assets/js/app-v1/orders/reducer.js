@@ -26,7 +26,7 @@ const entityReducer = combineReducers({
 
 function uiReducer( state = {selectedOrderId: 0 }, action ){
     switch(action.type){
-        case types.ORDERS_PAGE_SELECTED_MASTER_ID:{
+        case types.ORDERS_UI_SELECTED_MASTER_ID:{
             return { ...state, selectedOrderId: action.payload}
         }
         

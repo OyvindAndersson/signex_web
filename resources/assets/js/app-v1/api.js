@@ -52,8 +52,6 @@ export const createApiRequestAction = (
  *  @param {object|mixed} payload POST payload
  */
  export const apiPost = (apiRoute, payload) => {
-    console.log(`API POST: [${apiRoute}] with [${payload}]`)
-
     return axios.post(`${BASE_API_URL}/${apiRoute}`, payload)
     .then( response => {
         return { response: {
@@ -79,8 +77,6 @@ export const createApiRequestAction = (
  * @param {object|mixed} payload Data to send with the request
  */
  export const apiGet = (apiRoute, payload) => {
-    console.debug(`API GET: [${apiRoute}] with [${payload}]`)
-
     return axios.get(`${BASE_API_URL}/${apiRoute}`, payload)
     .then( response => {
         return { response: {

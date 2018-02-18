@@ -7,13 +7,8 @@ import createPersistExTransform from 'AppUtils/persistex'
 import rootPersistReducer from './reducer'
 import setupSubscriptions from './subscribers'
 
-// Import sagas and init-actions from active modules
-import { verifyTokenAction } from 'Auth'
-import { watchClientsLoad, watchClientsCreated } from 'Clients/sagas'
-import { watchOrdersLoad } from '../orders/sagas'
-import { watchUsersLoad } from '../users/sagas'
-
-import {preloadResources} from './preloadResources'
+// Intialize all active modules
+import { runPreDispatch, runSagas } from './modulesInit'
 
 /**
  * Configure and create the store
@@ -39,23 +34,15 @@ export default function configureStore(initialState = {}, history) {
     )
 
     let persistor = persistStore(store, null, () => {
-        preloadResources(store)
-
-        // Verify token at every request (refreshes) aside from API requests.
-        // This also sets the current user in state
-        store.dispatch(verifyTokenAction())
+        runPreDispatch(store)
     })
 
     // Setup subs
     setupSubscriptions(store)
 
-    // Run sagas
-    sagaMiddleware.run(watchClientsLoad)
-    sagaMiddleware.run(watchClientsCreated)
-    sagaMiddleware.run(watchOrdersLoad)
-    sagaMiddleware.run(watchUsersLoad)
+    // Run all module sagas
+    runSagas(sagaMiddleware)
 
     console.debug('%c 2/3 [Store configured]', 'color: #DD3388')
-
     return { store, persistor }
 }
