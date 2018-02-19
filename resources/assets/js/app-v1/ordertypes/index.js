@@ -22,3 +22,5 @@ export { default as reducer } from './reducer'
  * Expose sagas
  */
 export { watchOrdertypesLoad } from './sagas'
+
+export { getDenormalizedOrdertypes } from './selectors'

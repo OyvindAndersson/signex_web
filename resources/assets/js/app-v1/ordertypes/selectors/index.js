@@ -1,18 +1,18 @@
 import {createSelector} from 'reselect'
 import {schema, denormalize} from 'normalizr'
-import {entitySchema, entityCollectionSchema} from '../schema'
+import {ordertypeSchema, ordertypesListSchema} from '../schema'
 
 import actionTypes from '../actionTypes'
 
 /** A selector to check if this modules' cache is dirty or not */
-export const isCacheDirtySelector = state => state.entities.ordertypes/selectors.cache.isDirty
+export const isCacheDirtySelector = state => state.entities.ordertypes.cache.isDirty
 
-const getOrdertypes/selectors = state => state.entities.ordertypes/selectors.byId
-const getAllOrdertypes/selectorsIds = state => state.entities.ordertypes/selectors.allIds
+const getOrdertypes = state => state.entities.ordertypes.byId
+const getAllOrdertypeIds = state => state.entities.ordertypes.allIds
 
-export const getDenormalizedOrdertypes/selectors = createSelector(
-    [getAllOrdertypes/selectorsIds, getOrdertypes/selectors],
-    (ordertypes/selectorsIds, ordertypes/selectors) => {
-        return denormalize(ordertypes/selectorsIds, entityCollectionSchema, {ordertypes/selectors})
+export const getDenormalizedOrdertypes = createSelector(
+    [getAllOrdertypeIds, getOrdertypes],
+    (ordertypeIds, ordertypes) => {
+        return denormalize(ordertypeIds, ordertypesListSchema, {ordertypes})
     }
 )

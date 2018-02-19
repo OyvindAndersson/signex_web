@@ -9,10 +9,10 @@ import storage from 'redux-persist/lib/storage'
  * 
  */
 import { preload as authPreload, reducer as authReducer } from 'Auth'
+import { watchUsersLoad, preload as usersPreload, reducer as usersReducers } from 'Users'
 import { watchClientsLoad, watchClientsCreated, reducer as clientsReducers, preload as clientsPreload } from 'Clients'
 import { watchOrdersLoad, watchOrdersCreated, reducer as ordersReducers } from 'Orders'
-import { watchUsersLoad, preload as usersPreload, reducer as usersReducers } from 'Users'
-
+import { watchOrdertypesLoad, reducer as ordertypeReducers, preload as ordertypesPreload } from '../ordertypes'
 /**-------------------------------------------------------------------------
  * Module reducers - entities and ui are system specific.
  *--------------------------------------------------------------------------*/
@@ -21,9 +21,10 @@ import { watchUsersLoad, preload as usersPreload, reducer as usersReducers } fro
  * Add all module entity reducers here
  */
 const entitiesReducer = combineReducers({
+	users: usersReducers.entityReducer,
     clients: clientsReducers.entityReducer,
     orders: ordersReducers.entityReducer,
-    users: usersReducers.entityReducer
+	ordertypes: ordertypeReducers.entityReducer,
 })
 
 /**
@@ -32,7 +33,7 @@ const entitiesReducer = combineReducers({
 const uiReducer = combineReducers({
     clients: clientsReducers.uiReducer,
     orders: ordersReducers.uiReducer,
-    users: usersReducers.uiReducer
+    users: usersReducers.uiReducer,
 })
 
 /** Special redux-persist config for auth module */
@@ -59,13 +60,12 @@ const preloads = [
     authPreload,
     usersPreload,
     clientsPreload,
+	ordertypesPreload
 ]
 export function runPreDispatch(store) {
     const { dispatch } = store
 
-    preloads.map( function(action) {
-        action(dispatch)
-    })
+	preloads.forEach( (action) => { action(dispatch) })
 }
 
 /**-------------------------------------------------------------------------
@@ -76,13 +76,15 @@ export function runPreDispatch(store) {
  * Add module sagas to run, here
  */
 const sagas = [
+	watchUsersLoad,
+
     watchClientsLoad,
     watchClientsCreated,
 
     watchOrdersLoad,
     watchOrdersCreated,
-
-    watchUsersLoad
+	watchOrdertypesLoad,
+	
 ]
 export function runSagas(sagaMiddleware) {
     sagas.map( function(moduleSaga){

@@ -61,6 +61,7 @@ export const createApiRequestAction = (
             request: response.request
         } }
     }).catch( error => {
+		
         return { error: {
             headers: error.response.headers,
             data: error.response.data,
@@ -86,6 +87,7 @@ export const createApiRequestAction = (
             request: response.request
         } }
     }).catch( error => {
+		console.debug(error)
         return { error: {
             headers: error.response.headers,
             data: error.response.data,

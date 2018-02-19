@@ -10,7 +10,8 @@
 |
 */
 import { restActionTypes } from 'AppUtils/redux/constants'
-import { createApiRequestAction } from '../api'
+import { createRequestActionForCacheable } from 'AppUtils/redux/utils/createRequestAction'
+import { createApiRequestAction, apiGet } from '../api'
 
 import { MODULE_ID } from './constants'
 import { isCacheDirtySelector } from './selectors'
@@ -19,6 +20,8 @@ import types from './actionTypes'
 export const loadOrdersAction = createApiRequestAction('GET', MODULE_ID, restActionTypes.LOAD, true, isCacheDirtySelector)
 
 export const createOrderAction = createApiRequestAction('POST', MODULE_ID, restActionTypes.CREATE)
+
+const loadOrderTypesAction = apiGet('ordertypes')
 
 /**
  * Update selected client action (UI)

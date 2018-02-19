@@ -2,6 +2,7 @@
 use App\Client;
 use App\User;
 use App\Order;
+use App\OrderType;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -65,6 +66,7 @@ Route::group(['middleware' => ['api']/*, 'namespace' => 'App\Http\Controllers', 
     /** Fetch order resource */
     Route::get('orders/{id?}', function($id = null) 
     {
+		
         $orders = Order::orderBy('due_at')->get();//->with(['client', 'registrar', 'status'])->get();
         return response()->json(['orders' => $orders]);
 
@@ -82,6 +84,13 @@ Route::group(['middleware' => ['api']/*, 'namespace' => 'App\Http\Controllers', 
         {
             return response()->json(['error' => 'Invalid request'], 402);
         }
+    });
+	
+	/** Fetch ordertype resource */
+    Route::get('ordertypes/{id?}', function($id = null) 
+    {
+        $ordertypes = OrderType::orderBy('name')->get();
+        return response()->json(['ordertypes' => $ordertypes]);
     });
 
     /** Persist resources */

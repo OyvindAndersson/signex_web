@@ -29,7 +29,7 @@ const entityReducer = combineReducers({
 | Ordertypes UI reducers
 |--------------------------------------------------------------------------
 |
-| The UI reducers handles all actions related to the UI of '/ordertypes'
+| The UI reducers handles all actions related to the UI of '/clients'
 | pages
 |
 */

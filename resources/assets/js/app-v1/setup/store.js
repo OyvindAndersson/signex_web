@@ -34,6 +34,7 @@ export default function configureStore(initialState = {}, history) {
     )
 
     let persistor = persistStore(store, null, () => {
+		console.debug('%c Cache Loaded [Preloading resources]', 'color: #DD3388')
         runPreDispatch(store)
     })
 

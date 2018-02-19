@@ -17,6 +17,7 @@ import {getDenormalizedClients} from 'Clients/selectors'
 import {getDenormalizedUsers} from 'Auth/selectors'
 import {getOrderErrors, getOrderNotify} from '../selectors'
 import { createOrderAction } from "../actions"
+import {getDenormalizedOrdertypes} from '../../ordertypes'
 
 
 /**-------------------------------------------------
@@ -113,11 +114,15 @@ class CreateOrderView extends React.Component {
         })
 
         // FIXME: Fetch api
+		/*
         const orderTypes = [
             { value: 1, label: "Misc"},
             { value: 2, label: "Other"},
             { value: 3, label: "Production"}
-        ]
+        ]*/
+		const orderTypes = this.props.ordertypes.map( (type, index) => {
+			return { value: index+1, label: type.name }
+		} )
 
         // FIXME: Fetch api
         const orderStatuses = [
@@ -219,7 +224,8 @@ const mapStateToProps = state => {
     return {
         clients: getDenormalizedClients(state),
         users: getDenormalizedUsers(state),
-        user: state.auth.user
+        user: state.auth.user,
+		ordertypes: getDenormalizedOrdertypes(state)
     }
 }
 

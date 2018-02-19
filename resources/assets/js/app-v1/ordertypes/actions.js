@@ -10,7 +10,7 @@
 |
 */
 import { restActionTypes } from 'AppUtils/redux/constants'
-import { createApiRequestAction } from 'App/api'
+import { createApiRequestAction } from '../api'
 
 import { MODULE_ID } from './constants'
 import { isCacheDirtySelector } from './selectors'
