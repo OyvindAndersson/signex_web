@@ -7,10 +7,12 @@ import {withRouter} from 'react-router-dom'
 import Select from 'react-select'
 import { Form, Text, TextArea } from 'react-form'
 import { UncontrolledAlert } from 'reactstrap'
-import {SelectField, DateTimeField} from '../../utils/react-form-hocs'
-import {LabeledFormGroup, FormGroup} from '../../utils/bootstrap'
+import { SelectField, DateTimeField } from '../../utils/react-form-hocs'
+import { LabeledFormGroup, FormGroup } from '../../utils/bootstrap'
 import { toast } from 'react-toastify'
-import { toastIt } from "../../common/components/toastIt";
+import { toastIt } from "../../common/components/toastIt"
+
+import { ProductLineRow } from './ProductLineRow'
 
 // actions and selectors
 import {getDenormalizedClients} from 'Clients/selectors'
@@ -113,13 +115,6 @@ class CreateOrderView extends React.Component {
             return { value: user.id, label: user.name }
         })
 
-        // FIXME: Fetch api
-		/*
-        const orderTypes = [
-            { value: 1, label: "Misc"},
-            { value: 2, label: "Other"},
-            { value: 3, label: "Production"}
-        ]*/
 		const orderTypes = this.props.ordertypes.map( (type, index) => {
 			return { value: index+1, label: type.name }
 		} )
@@ -196,13 +191,15 @@ class CreateOrderView extends React.Component {
                     </div>
 
                     {/* Products */}
-                    <div className="col-md-4">
+                    <div className="col-md-6">
                         <h5 className="mb-4">Order lines</h5>
+                        <ProductLineRow formApi={formApi} />
                     </div>
 
                     {/* Tasks */}
-                    <div className="col-md-4">
+                    <div className="col-md-2">
                         <h5 className="mb-4">Order tasks</h5>
+                        
                     </div>
                 </div>
                 <div className="row">
