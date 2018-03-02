@@ -94,6 +94,9 @@ class CreateOrderView extends React.Component {
         // format to MYSQL
         values.order.due_at = moment(values.order.due_at, "DD.MM.Y H:m").format('YYYY-MM-DD HH:MM:SS')
 
+        console.debug(values)
+        return
+        
         const { createOrder } = this.props
         createOrder(values)
 

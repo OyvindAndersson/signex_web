@@ -24,35 +24,26 @@ export class ProductLineRow extends React.Component {
 
         return(
             <div className="row">
-                <div className="col">
-                <LabeledFormGroup htmlFor="descriptionInput" label="Freetext">
-                    <Text 
-                        id="descriptionInput" 
-                        field={[`${fieldKeyName}.description`, lineIndex]}
-                        className="form-control" />
-                </LabeledFormGroup>
-                </div>
-                <div className="col">
-                <LabeledFormGroup htmlFor="descriptionInput" label="Price">
-                    <Text 
-                        id="descriptionInput" 
-                        field={[`${fieldKeyName}.price`, lineIndex]}
-                        className="form-control" />
-                </LabeledFormGroup>
-                </div>
-                <div className="col">
-                <LabeledFormGroup htmlFor="descriptionInput" label="Units">
-                    <Text 
-                        id="descriptionInput" 
-                        field={[`${fieldKeyName}.units`, lineIndex]}
-                        className="form-control" />
-                </LabeledFormGroup>
-                </div>
-                <div className="col">
-                <LabeledFormGroup htmlFor="descriptionInput" label="Total">
-                    <input className="form-control" value="0" />
-                </LabeledFormGroup>
-                </div>
+                <table className="table table-sm">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Description</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Units</th>
+                            <th scope="col">Sum</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row"></th>
+                            <td><input name={`${fieldKeyName}`} /></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         )
     }
