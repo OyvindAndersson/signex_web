@@ -5,14 +5,16 @@ import {withRouter} from 'react-router-dom'
 
 // presentation
 import Select from 'react-select'
-import { Form, Text, TextArea } from 'react-form'
+import { NestedField, Form, Text, TextArea } from 'react-form'
 import { UncontrolledAlert } from 'reactstrap'
-import { SelectField, DateTimeField } from '../../utils/react-form-hocs'
+//import { SelectField, DateTimeField } from 'AppUtils/react-form-hocs/components/SelectField'
+import SelectField from 'AppUtils/react-form-hocs/components/SelectField'
+import DateTimeField from 'AppUtils/react-form-hocs/components/DateTimeField'
 import { LabeledFormGroup, FormGroup } from '../../utils/bootstrap'
 import { toast } from 'react-toastify'
 import { toastIt } from "../../common/components/toastIt"
 
-import { ProductLineRow } from './ProductLineRow'
+import ProductLineRow from './ProductLineRow'
 
 // actions and selectors
 import {getDenormalizedClients} from 'Clients/selectors'
@@ -196,7 +198,10 @@ class CreateOrderView extends React.Component {
                     {/* Products */}
                     <div className="col-md-6">
                         <h5 className="mb-4">Order lines</h5>
-                        <ProductLineRow formApi={formApi} />
+                        {/*
+                        <NestedField field="products">
+                            <ProductLineRow />
+                        </NestedField>*/}
                     </div>
 
                     {/* Tasks */}

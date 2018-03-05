@@ -1,0 +1,8 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SelecField component alright 1`] = `
+<form
+  id="form5"
+  onSubmit={[Function]}
+/>
+`;

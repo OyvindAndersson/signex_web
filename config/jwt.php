@@ -100,7 +100,7 @@ return [
     |
     */
 
-    'ttl' => env('JWT_TTL', 60),
+    'ttl' => env('JWT_TTL', 180),
 
     /*
     |--------------------------------------------------------------------------
@@ -243,7 +243,7 @@ return [
     | Set it to true if you want to decrypt cookies.
     |
     */
-    'decrypt_cookies' => true,
+    'decrypt_cookies' => false,
 
     /*
     |--------------------------------------------------------------------------

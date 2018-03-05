@@ -1,5 +1,5 @@
 import React from 'react'
-import {FormField} from 'react-form'
+import {Field} from 'react-form'
 import moment from 'moment'
 import DateTime from 'react-datetime'
 
@@ -19,7 +19,7 @@ const defaultProps = {
  * @todo DefaultValue is not set for react-form. Need to setValue() somewhere...
  * @see react-datetime API for props and options https://github.com/YouCanBookMe/react-datetime
  */
-class DateTimeWrapper extends React.Component {
+export default class DateTimeField extends React.Component {
     constructor(props){
         super(props)
 
@@ -41,30 +41,39 @@ class DateTimeWrapper extends React.Component {
     }
 
     render(){
-        const { fieldApi, onChange, onBlur, value, ...rest } = this.props
-        const { getValue, setValue, setTouched } = fieldApi
-        
+
         // We need to format for every setValue, or else it (weirdly) clears
         // the initial formatting when changing another instance of DateTime
         // on the same page.
         const fullFormat = `${this.props.dateFormat}${this.props.timeFormat}`
 
+        const { field } = this.props || 'dateTimeField'
+
         return(
-            <DateTime {...rest} 
-                value={getValue()}
-                onChange={ e => {
-                    setValue(e.format(fullFormat))
-                    if(onChange){
-                        onchange(e, fullFormat)
-                    }
+            <Field validate={this.validate} field={field}>
+                { fieldApi => {
+                    const { onChange, onBlur, field, value, ...rest } = props
+                    const {  error, warning, success, getValue, setValue, setTouched } = fieldApi
+
+                    return(
+                        <DateTime {...rest} 
+                        value={getValue()}
+                        onChange={ e => {
+                            setValue(e.format(fullFormat))
+                            if(onChange){
+                                onchange(e, fullFormat)
+                            }
+                        }}
+                        onBlur={ e => {
+                            setTouched()
+                            if(onBlur){
+                                onBlur(e)
+                            }
+                        }}
+                        renderInput={this.renderInput} />
+                    )
                 }}
-                onBlur={ e => {
-                    setTouched()
-                    if(onBlur){
-                        onBlur(e)
-                    }
-                }}
-                renderInput={this.renderInput} />
+            </Field>
         )
     }
     renderInput(props, openCalendar) {
@@ -87,7 +96,4 @@ class DateTimeWrapper extends React.Component {
         console.log("ÆRROR",error, info);
       }
 }
-DateTimeWrapper.defaultProps = defaultProps
-
-const DateTimeField = FormField(DateTimeWrapper)
-export default DateTimeField
+DateTimeField.defaultProps = defaultProps

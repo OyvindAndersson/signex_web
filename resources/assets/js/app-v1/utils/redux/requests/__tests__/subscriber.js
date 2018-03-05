@@ -1,5 +1,6 @@
 import { noop } from 'lodash';
-
+// Mockery!!
+global.console = { debug: jest.fn(), log: console.log, warn: jest.fn() }
 import {
   buildClearQueuedRequestAction,
   buildPendingRequestAction,

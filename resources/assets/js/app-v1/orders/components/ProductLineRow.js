@@ -1,12 +1,19 @@
 import React from 'react'
 
 import Select from 'react-select'
-import { Form, Text, TextArea } from 'react-form'
+import { Text, TextArea } from 'react-form'
 import { UncontrolledAlert } from 'reactstrap'
 import { SelectField, DateTimeField } from '../../utils/react-form-hocs'
 import { LabeledFormGroup, FormGroup } from '../../utils/bootstrap'
 
-export class ProductLineRow extends React.Component {
+const ProductLineRow = () => (
+    <div>
+        <Text field="cunt" placeholder="Fucker" />
+    </div>
+)
+export default ProductLineRow
+
+ class ProductLineRow2 extends React.Component {
     constructor(props){
         super(props)
 
@@ -17,10 +24,14 @@ export class ProductLineRow extends React.Component {
         }
     }
     render(){
-
-        const {formApi} = this.props
         const {lineIndex} = this.props || 0
         const {fieldKeyName} = this.props || 'products'
+
+        return (
+            <div>
+                <Text className="form-control" field={`${fieldKeyName}`} id={`${fieldKeyName}`} />
+            </div>
+        )
 
         return(
             <div className="row">
@@ -37,7 +48,7 @@ export class ProductLineRow extends React.Component {
                     <tbody>
                         <tr>
                             <th scope="row"></th>
-                            <td><input name={`${fieldKeyName}`} /></td>
+                            <td><Text className="form-control" field={`${fieldKeyName}`} id={`${fieldKeyName}`} /></td>
                             <td></td>
                             <td></td>
                             <td></td>

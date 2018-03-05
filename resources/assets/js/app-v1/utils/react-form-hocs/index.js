@@ -1,2 +1,2 @@
-export {default as SelectField} from './components/reactSelectField'
-export {default as DateTimeField} from './components/dateTimeField'
+export {default as SelectField} from './components/SelectField'
+export {default as DateTimeField} from './components/DateTimeField'
