@@ -355,7 +355,7 @@ function ordersPageHOC(WrappedComponent){
                     
                     {/* ORDERS/CREATE */}
                     <Route path={`${match.url}/create`} render={ routeProps => (
-                        <WrappedComponent {...this.props} fluid={false}>
+                        <WrappedComponent {...this.props} fluid={true}>
                             <CreateOrderView {...routeProps} /> 
                         </WrappedComponent>
                     )} />

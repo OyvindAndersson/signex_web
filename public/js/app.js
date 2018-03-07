@@ -72842,7 +72842,7 @@ if (document.getElementById('app')) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_15_react_toastify__ = __webpack_require__(43);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_15_react_toastify___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_15_react_toastify__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__common_components_toastIt__ = __webpack_require__(391);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__ProductTable__ = __webpack_require__(658);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__ProductTable__ = __webpack_require__(397);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_18_Clients_selectors__ = __webpack_require__(69);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_19_Auth_selectors__ = __webpack_require__(51);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__selectors__ = __webpack_require__(95);
@@ -72997,11 +72997,9 @@ var CreateOrderView = function (_React$Component) {
             var userOptions = this.props.users.map(function (user) {
                 return { value: user.id, label: user.name };
             });
-
             var orderTypes = this.props.ordertypes.map(function (type, index) {
                 return { value: index + 1, label: type.name };
             });
-
             // FIXME: Fetch api
             var orderStatuses = [{ value: 1, label: "Quote" }, { value: 2, label: "Registered" }, { value: 3, label: "In progress" }, { value: 4, label: "Finished / Sent" }, { value: 5, label: "Archived" }];
 
@@ -73020,10 +73018,10 @@ var CreateOrderView = function (_React$Component) {
                                 { className: 'row' },
                                 __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
                                     'div',
-                                    { className: 'col-md-4' },
+                                    { className: 'col-md-3', style: { backgroundColor: '#efefef' } },
                                     __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
                                         'h5',
-                                        { className: 'mb-4' },
+                                        { className: 'mt-4 mb-4' },
                                         'Order details'
                                     ),
                                     __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
@@ -73098,14 +73096,14 @@ var CreateOrderView = function (_React$Component) {
                                     { className: 'col-md-6' },
                                     __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
                                         'h5',
-                                        { className: 'mb-4' },
+                                        { className: 'mt-4 mb-4' },
                                         'Order lines'
                                     ),
                                     __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_17__ProductTable__["a" /* default */], null)
                                 ),
                                 __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
                                     'div',
-                                    { className: 'col-md-2' },
+                                    { className: 'col-md-3' },
                                     __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
                                         'h5',
                                         { className: 'mb-4' },
@@ -73688,7 +73686,7 @@ function ordersPageHOC(WrappedComponent) {
                     __WEBPACK_IMPORTED_MODULE_6_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_8_react_router_dom__["c" /* Route */], { path: match.url + '/create', render: function render(routeProps) {
                             return __WEBPACK_IMPORTED_MODULE_6_react___default.a.createElement(
                                 WrappedComponent,
-                                __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends___default()({}, _this4.props, { fluid: false }),
+                                __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends___default()({}, _this4.props, { fluid: true }),
                                 __WEBPACK_IMPORTED_MODULE_6_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_17__CreateOrderView__["a" /* default */], routeProps)
                             );
                         } })
@@ -73728,7 +73726,282 @@ function mapDispatchToProps(dispatch) {
 /* harmony default export */ __webpack_exports__["a"] = (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_8_react_router_dom__["b" /* withRouter */])(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_7_react_redux__["connect"])(mapStateToProps, mapDispatchToProps)(ordersPageHOC(__WEBPACK_IMPORTED_MODULE_18_Common_components_Page__["a" /* default */]))));
 
 /***/ }),
-/* 397 */,
+/* 397 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_object_get_prototype_of__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_object_get_prototype_of___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_object_get_prototype_of__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_classCallCheck__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_classCallCheck___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_classCallCheck__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_createClass__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_createClass___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_createClass__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_react_select__ = __webpack_require__(133);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_react_form__ = __webpack_require__(82);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_react_form___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_react_form__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_reactstrap__ = __webpack_require__(32);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__utils_react_form_hocs__ = __webpack_require__(417);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__utils_bootstrap__ = __webpack_require__(98);
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+ * Product Line Row
+ * Represents a single product line in a ProductTableForm
+ */
+
+var ProductLineRow = function (_React$Component) {
+    __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits___default()(ProductLineRow, _React$Component);
+
+    function ProductLineRow(props) {
+        __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_classCallCheck___default()(this, ProductLineRow);
+
+        var _this = __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn___default()(this, (ProductLineRow.__proto__ || __WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_object_get_prototype_of___default()(ProductLineRow)).call(this, props));
+
+        _this.defaultOnRemove = _this.defaultOnRemove.bind(_this);
+        _this.validateInput = _this.validateInput.bind(_this);
+        return _this;
+    }
+
+    __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_createClass___default()(ProductLineRow, [{
+        key: 'defaultOnRemove',
+        value: function defaultOnRemove(e) {
+            console.debug('No remove handler');
+        }
+    }, {
+        key: 'validateInput',
+        value: function validateInput(e) {
+            var description = e.description,
+                discount = e.discount,
+                price = e.price,
+                units = e.units;
+
+
+            return {
+                error: !description ? "Produktlinje må ha en beskrivelse" : null
+            };
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var _props = this.props,
+                lineIndex = _props.lineIndex,
+                field = _props.field,
+                onRemove = _props.onRemove,
+                state = _props.state;
+
+            var lineNum = lineIndex + 1; // Not using zero based index for product line nums
+            var sum = 0;
+            try {
+                sum = state.price * (1 - state.discount / 100) * state.units;
+            } catch (e) {
+                sum = "Error";
+            }
+
+            return __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
+                __WEBPACK_IMPORTED_MODULE_7_react_form__["NestedField"],
+                { field: field, validate: this.validateInput },
+                __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
+                    'tr',
+                    null,
+                    __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
+                        'th',
+                        { scope: 'row' },
+                        '' + (lineIndex + 1)
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
+                        'td',
+                        null,
+                        __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_9__utils_react_form_hocs__["a" /* TextValidation */], { className: 'form-control form-control-sm',
+                            field: 'description',
+                            id: 'description-' + this.props.lineIndex,
+                            defaultValue: this.props.description,
+                            validate: function validate(value) {
+                                return { error: !value || value !== 'Cunt' ? "Bitch" : null };
+                            } })
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
+                        'td',
+                        null,
+                        __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7_react_form__["Text"], { className: 'form-control form-control-sm',
+                            field: 'units',
+                            id: 'units-' + this.props.lineIndex,
+                            defaultValue: this.props.units,
+                            type: 'number',
+                            min: '0' })
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
+                        'td',
+                        null,
+                        __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7_react_form__["Text"], { className: 'form-control form-control-sm',
+                            field: 'price',
+                            id: 'price-' + this.props.lineIndex,
+                            defaultValue: this.props.price })
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
+                        'td',
+                        null,
+                        __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7_react_form__["Text"], { className: 'form-control form-control-sm',
+                            field: 'discount',
+                            id: 'discount-' + this.props.lineIndex,
+                            defaultValue: this.props.discount })
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
+                        'td',
+                        null,
+                        __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement('input', { className: 'form-control form-control-sm', value: sum || 0, max: '100', min: '0', readOnly: true })
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
+                        'td',
+                        null,
+                        __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
+                            'button',
+                            { className: 'btn btn-danger btn-sm btn-block', type: 'button', onClick: onRemove },
+                            '-'
+                        )
+                    )
+                )
+            );
+        }
+    }]);
+
+    return ProductLineRow;
+}(__WEBPACK_IMPORTED_MODULE_5_react___default.a.Component);
+
+ProductLineRow.defaultProps = {
+    description: '',
+    price: 0.0,
+    units: 1,
+    discount: 0
+
+    /**
+     * Product Table Form
+     * React-Form based. Dynamic form for products in an order.
+     */
+};
+var ProductTableForm = function (_React$Component2) {
+    __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits___default()(ProductTableForm, _React$Component2);
+
+    function ProductTableForm(props) {
+        __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_classCallCheck___default()(this, ProductTableForm);
+
+        var _this2 = __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn___default()(this, (ProductTableForm.__proto__ || __WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_object_get_prototype_of___default()(ProductTableForm)).call(this, props));
+
+        _this2.addLine = _this2.addLine.bind(_this2);
+        return _this2;
+    }
+
+    __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_createClass___default()(ProductTableForm, [{
+        key: 'addLine',
+        value: function addLine() {
+            var formApi = this.props.formApi;
+
+            if (formApi) {
+                formApi.addValue('products', '');
+            }
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var _ref = this.props || null,
+                formApi = _ref.formApi;
+
+            return __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
+                'div',
+                { className: 'row' },
+                __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
+                    'div',
+                    { className: 'col' },
+                    __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
+                        'table',
+                        { className: 'table table-sm products-table' },
+                        __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
+                            'thead',
+                            null,
+                            __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
+                                'tr',
+                                null,
+                                __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
+                                    'th',
+                                    { scope: 'col' },
+                                    '#'
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
+                                    'th',
+                                    { scope: 'col', style: { width: '40%' } },
+                                    'Beskrivelse'
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
+                                    'th',
+                                    { scope: 'col' },
+                                    'Antall'
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
+                                    'th',
+                                    { scope: 'col' },
+                                    'Pris'
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
+                                    'th',
+                                    { scope: 'col' },
+                                    'Rabatt'
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
+                                    'th',
+                                    { scope: 'col' },
+                                    'Sum'
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement('th', { scope: 'col' })
+                            )
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
+                            'tbody',
+                            null,
+                            formApi.values.products && formApi.values.products.map(function (product, i) {
+                                return __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(ProductLineRow, {
+                                    state: product,
+                                    key: 'product' + i,
+                                    field: ['products', i],
+                                    lineIndex: i,
+                                    onRemove: function onRemove() {
+                                        return formApi.removeValue('products', i);
+                                    } });
+                            })
+                        )
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement('hr', null),
+                    __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
+                        'button',
+                        { className: 'btn btn-primary', type: 'button', onClick: this.addLine },
+                        'Add +'
+                    )
+                )
+            );
+        }
+    }]);
+
+    return ProductTableForm;
+}(__WEBPACK_IMPORTED_MODULE_5_react___default.a.Component);
+
+/* harmony default export */ __webpack_exports__["a"] = (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_7_react_form__["withFormApi"])(ProductTableForm));
+
+/***/ }),
 /* 398 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -74536,6 +74809,9 @@ var Brreg = function () {
 /* unused harmony reexport SelectField */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_DateTimeField__ = __webpack_require__(157);
 /* unused harmony reexport DateTimeField */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_TextValidation__ = __webpack_require__(658);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_2__components_TextValidation__["a"]; });
+
 
 
 
@@ -114307,156 +114583,95 @@ module.exports = __webpack_require__(352);
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_object_get_prototype_of__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_object_get_prototype_of___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_object_get_prototype_of__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_classCallCheck__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_classCallCheck___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_classCallCheck__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_createClass__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_createClass___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_createClass__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_react_select__ = __webpack_require__(133);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_react_form__ = __webpack_require__(82);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_react_form___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_react_form__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_reactstrap__ = __webpack_require__(32);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__utils_react_form_hocs__ = __webpack_require__(417);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__utils_bootstrap__ = __webpack_require__(98);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_objectWithoutProperties__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_objectWithoutProperties___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_objectWithoutProperties__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_react_select__ = __webpack_require__(133);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_react_form__ = __webpack_require__(82);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_react_form___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_react_form__);
 
 
 
 
 
 
+var ValidationMessage = function ValidationMessage(props) {
+    var type = props.type,
+        message = props.message;
 
+    var typeClass = '';
 
-
-
-
-
-
-var ProductLineRow = function (_React$Component) {
-    __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits___default()(ProductLineRow, _React$Component);
-
-    function ProductLineRow(props) {
-        __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_classCallCheck___default()(this, ProductLineRow);
-
-        var _this = __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn___default()(this, (ProductLineRow.__proto__ || __WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_object_get_prototype_of___default()(ProductLineRow)).call(this, props));
-
-        _this.state = {
-            description: '',
-            price: 0.0,
-            units: 1
-        };
-        return _this;
+    switch (type) {
+        case 'error':
+            typeClass = 'invalid-feedback';
+            break;
+        case 'warning':
+            typeClass = 'invalid-feedback';
+            break;
+        case 'success':
+            typeClass = 'valid-feedback';
+            break;
     }
 
-    __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_createClass___default()(ProductLineRow, [{
-        key: 'render',
-        value: function render() {
-            var _ref = this.props || 0,
-                lineIndex = _ref.lineIndex;
+    return __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
+        'div',
+        { className: typeClass },
+        message || ''
+    );
+};
 
-            return __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
-                'tr',
-                null,
-                __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement('th', { scope: 'row' }),
-                __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
-                    'td',
-                    null,
-                    __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7_react_form__["Text"], { className: 'form-control', field: 'price', id: 'price-' + this.props.lineIndex, value: this.state.price })
-                ),
-                __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement('td', null),
-                __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement('td', null),
-                __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
-                    'td',
-                    null,
-                    __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
-                        'button',
-                        { className: 'btn btn-sm btn-danger', type: 'button' },
-                        'x'
-                    )
-                )
-            );
-        }
-    }]);
+// Generic validator. Custom validator should be passed by props
+var validate = function validate(value) {
+    return {};
+};
 
-    return ProductLineRow;
-}(__WEBPACK_IMPORTED_MODULE_5_react___default.a.Component);
+var TextValidation = function TextValidation(props) {
+    return __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
+        __WEBPACK_IMPORTED_MODULE_4_react_form__["Field"],
+        { validate: props.validate || validate, field: props.field },
+        function (fieldApi) {
+            var _onChange = props.onChange,
+                _onBlur = props.onBlur,
+                field = props.field,
+                validate = props.validate,
+                rest = __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_objectWithoutProperties___default()(props, ['onChange', 'onBlur', 'field', 'validate']);
 
-var ProductTableForm = function (_React$Component2) {
-    __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits___default()(ProductTableForm, _React$Component2);
+            var value = fieldApi.value,
+                error = fieldApi.error,
+                warning = fieldApi.warning,
+                success = fieldApi.success,
+                setValue = fieldApi.setValue,
+                setTouched = fieldApi.setTouched;
 
-    function ProductTableForm(props) {
-        __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_classCallCheck___default()(this, ProductTableForm);
 
-        return __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn___default()(this, (ProductTableForm.__proto__ || __WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_object_get_prototype_of___default()(ProductTableForm)).call(this, props));
-    }
-
-    __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_createClass___default()(ProductTableForm, [{
-        key: 'render',
-        value: function render() {
-            return __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
+            return __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
                 'div',
-                { className: 'row' },
-                __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
-                    'div',
-                    { className: 'col' },
-                    __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
-                        'button',
-                        { className: 'btn btn-primary', type: 'button', onClick: this.addLine },
-                        'Add + '
-                    ),
-                    __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
-                        'table',
-                        { className: 'table table-sm' },
-                        __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
-                            'thead',
-                            null,
-                            __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
-                                'tr',
-                                null,
-                                __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
-                                    'th',
-                                    { scope: 'col' },
-                                    '#'
-                                ),
-                                __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
-                                    'th',
-                                    { scope: 'col' },
-                                    'Description'
-                                ),
-                                __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
-                                    'th',
-                                    { scope: 'col' },
-                                    'Price'
-                                ),
-                                __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
-                                    'th',
-                                    { scope: 'col' },
-                                    'Units'
-                                ),
-                                __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
-                                    'th',
-                                    { scope: 'col' },
-                                    'Sum'
-                                )
-                            )
-                        ),
-                        __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement('tbody', null)
-                    )
-                )
+                null,
+                __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement('input', __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends___default()({}, rest, {
+                    value: value || '',
+                    onChange: function onChange(e) {
+                        setValue(e.target.value);
+                        if (_onChange) {
+                            _onChange(e.target.value, e);
+                        }
+                    },
+                    onBlur: function onBlur(e) {
+                        setTouched();
+                        if (_onBlur) {
+                            _onBlur(e);
+                        }
+                    }
+                })),
+                error ? __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(ValidationMessage, { message: error, type: 'error' }) : null
             );
         }
-    }]);
+    );
+};
 
-    return ProductTableForm;
-}(__WEBPACK_IMPORTED_MODULE_5_react___default.a.Component);
-
-/* harmony default export */ __webpack_exports__["a"] = (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_7_react_form__["withFormApi"])(ProductTableForm));
+/* harmony default export */ __webpack_exports__["a"] = (TextValidation);
 
 /***/ })
 /******/ ]);

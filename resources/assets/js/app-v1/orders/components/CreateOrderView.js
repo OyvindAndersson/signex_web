@@ -121,11 +121,9 @@ class CreateOrderView extends React.Component {
         const userOptions = this.props.users.map( user => {
             return { value: user.id, label: user.name }
         })
-
 		const orderTypes = this.props.ordertypes.map( (type, index) => {
 			return { value: index+1, label: type.name }
 		} )
-
         // FIXME: Fetch api
         const orderStatuses = [
             { value: 1, label: "Quote"},
@@ -142,8 +140,8 @@ class CreateOrderView extends React.Component {
             <form onSubmit={formApi.submitForm}>
                 <div className="row">
                     {/* Order details*/}
-                    <div className="col-md-4">
-                        <h5 className="mb-4">Order details</h5>
+                    <div className="col-md-3" style={{ backgroundColor: '#efefef'}}>
+                        <h5 className="mt-4 mb-4">Order details</h5>
                         <LabeledFormGroup htmlFor="clientInput" label="Client" rowFormat>
                             <SelectField 
                                 required={true}
@@ -167,14 +165,12 @@ class CreateOrderView extends React.Component {
                                 options={orderStatuses}
                                 value={this.state.statusInput} />
                         </LabeledFormGroup>
-                        
                         <LabeledFormGroup htmlFor="descriptionInput" label="Description">
                             <TextArea 
                                 id="descriptionInput" 
                                 field="order.description"
                                 className="form-control">{this.state.descriptionInput}</TextArea>
                         </LabeledFormGroup>
-
                         <LabeledFormGroup htmlFor="createdAtInput" label="Taken at:" rowFormat>
                             <DateTimeField 
                                 field="order.registered_at"
@@ -199,14 +195,13 @@ class CreateOrderView extends React.Component {
 
                     {/* Products */}
                     <div className="col-md-6">
-                        <h5 className="mb-4">Order lines</h5>
+                        <h5 className="mt-4 mb-4">Order lines</h5>
                         <ProductTable />
                     </div>
 
                     {/* Tasks */}
-                    <div className="col-md-2">
+                    <div className="col-md-3">
                         <h5 className="mb-4">Order tasks</h5>
-                        
                     </div>
                 </div>
                 <div className="row">
