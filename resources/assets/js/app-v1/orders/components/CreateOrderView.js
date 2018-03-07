@@ -14,7 +14,7 @@ import { LabeledFormGroup, FormGroup } from '../../utils/bootstrap'
 import { toast } from 'react-toastify'
 import { toastIt } from "../../common/components/toastIt"
 
-import ProductLineRow from './ProductLineRow'
+import ProductTable from './ProductTable'
 
 // actions and selectors
 import {getDenormalizedClients} from 'Clients/selectors'
@@ -93,6 +93,8 @@ class CreateOrderView extends React.Component {
         })
     }
     handleSubmit(values, e, formApi){
+        console.debug(values)
+        return
         // format to MYSQL
         values.order.due_at = moment(values.order.due_at, "DD.MM.Y H:m").format('YYYY-MM-DD HH:MM:SS')
 
@@ -198,10 +200,7 @@ class CreateOrderView extends React.Component {
                     {/* Products */}
                     <div className="col-md-6">
                         <h5 className="mb-4">Order lines</h5>
-                        {/*
-                        <NestedField field="products">
-                            <ProductLineRow />
-                        </NestedField>*/}
+                        <ProductTable />
                     </div>
 
                     {/* Tasks */}

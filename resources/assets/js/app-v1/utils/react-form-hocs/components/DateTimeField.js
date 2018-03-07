@@ -26,38 +26,23 @@ export default class DateTimeField extends React.Component {
         this.renderInput = this.renderInput.bind(this)
     }
 
-    componentWillReceiveProps(next){
-        const { fieldApi, defaultValue } = next
-        const { setValue, getValue } = fieldApi
-
-        const fullFormat = `${this.props.dateFormat}${this.props.timeFormat}`
-
-        // If initially we don't have a value set, we must hack it in here
-        // for react-form to read it as submitted data, if the user dont
-        // manually change the default value interactively.
-        if(!getValue()){
-            setValue(defaultValue.format(fullFormat))
-        }
-    }
-
     render(){
 
         // We need to format for every setValue, or else it (weirdly) clears
         // the initial formatting when changing another instance of DateTime
         // on the same page.
         const fullFormat = `${this.props.dateFormat}${this.props.timeFormat}`
-
         const { field } = this.props || 'dateTimeField'
 
         return(
             <Field validate={this.validate} field={field}>
                 { fieldApi => {
-                    const { onChange, onBlur, field, value, ...rest } = props
-                    const {  error, warning, success, getValue, setValue, setTouched } = fieldApi
+                    const { defaultValue, onChange, onBlur, field, ...rest } = this.props
+                    const { error, warning, success, value, setValue, setTouched } = fieldApi
 
                     return(
                         <DateTime {...rest} 
-                        value={getValue()}
+                        value={ value || setValue(defaultValue)}
                         onChange={ e => {
                             setValue(e.format(fullFormat))
                             if(onChange){
@@ -76,6 +61,7 @@ export default class DateTimeField extends React.Component {
             </Field>
         )
     }
+    
     renderInput(props, openCalendar) {
         return(
             <div className="input-group" style={{ zIndex: 0 }}>

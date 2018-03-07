@@ -41863,61 +41863,53 @@ var DateTimeField = function (_React$Component) {
     }
 
     __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_createClass___default()(DateTimeField, [{
-        key: 'componentWillReceiveProps',
-        value: function componentWillReceiveProps(next) {
-            var fieldApi = next.fieldApi,
-                defaultValue = next.defaultValue;
-            var setValue = fieldApi.setValue,
-                getValue = fieldApi.getValue;
-
-
-            var fullFormat = '' + this.props.dateFormat + this.props.timeFormat;
-
-            // If initially we don't have a value set, we must hack it in here
-            // for react-form to read it as submitted data, if the user dont
-            // manually change the default value interactively.
-            if (!getValue()) {
-                setValue(defaultValue.format(fullFormat));
-            }
-        }
-    }, {
         key: 'render',
         value: function render() {
-            var _props = this.props,
-                fieldApi = _props.fieldApi,
-                _onChange = _props.onChange,
-                _onBlur = _props.onBlur,
-                value = _props.value,
-                rest = __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_objectWithoutProperties___default()(_props, ['fieldApi', 'onChange', 'onBlur', 'value']);
-
-            var getValue = fieldApi.getValue,
-                setValue = fieldApi.setValue,
-                setTouched = fieldApi.setTouched;
+            var _this2 = this;
 
             // We need to format for every setValue, or else it (weirdly) clears
             // the initial formatting when changing another instance of DateTime
             // on the same page.
-
             var fullFormat = '' + this.props.dateFormat + this.props.timeFormat;
+
+            var _ref = this.props || 'dateTimeField',
+                field = _ref.field;
 
             return __WEBPACK_IMPORTED_MODULE_7_react___default.a.createElement(
                 __WEBPACK_IMPORTED_MODULE_8_react_form__["Field"],
-                null,
-                __WEBPACK_IMPORTED_MODULE_7_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_10_react_datetime___default.a, __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends___default()({}, rest, {
-                    value: getValue(),
-                    onChange: function onChange(e) {
-                        setValue(e.format(fullFormat));
-                        if (_onChange) {
-                            onchange(e, fullFormat);
-                        }
-                    },
-                    onBlur: function onBlur(e) {
-                        setTouched();
-                        if (_onBlur) {
-                            _onBlur(e);
-                        }
-                    },
-                    renderInput: this.renderInput }))
+                { validate: this.validate, field: field },
+                function (fieldApi) {
+                    var _props = _this2.props,
+                        defaultValue = _props.defaultValue,
+                        _onChange = _props.onChange,
+                        _onBlur = _props.onBlur,
+                        field = _props.field,
+                        rest = __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_objectWithoutProperties___default()(_props, ['defaultValue', 'onChange', 'onBlur', 'field']);
+
+                    var error = fieldApi.error,
+                        warning = fieldApi.warning,
+                        success = fieldApi.success,
+                        value = fieldApi.value,
+                        setValue = fieldApi.setValue,
+                        setTouched = fieldApi.setTouched;
+
+
+                    return __WEBPACK_IMPORTED_MODULE_7_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_10_react_datetime___default.a, __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends___default()({}, rest, {
+                        value: value || setValue(defaultValue),
+                        onChange: function onChange(e) {
+                            setValue(e.format(fullFormat));
+                            if (_onChange) {
+                                onchange(e, fullFormat);
+                            }
+                        },
+                        onBlur: function onBlur(e) {
+                            setTouched();
+                            if (_onBlur) {
+                                _onBlur(e);
+                            }
+                        },
+                        renderInput: _this2.renderInput }));
+                }
             );
         }
     }, {
@@ -41950,6 +41942,8 @@ var DateTimeField = function (_React$Component) {
 
     return DateTimeField;
 }(__WEBPACK_IMPORTED_MODULE_7_react___default.a.Component);
+
+/* harmony default export */ __webpack_exports__["a"] = (DateTimeField);
 
 DateTimeField.defaultProps = defaultProps;
 
@@ -42020,9 +42014,14 @@ var SelectField = function (_React$Component) {
         value: function render() {
             var _this2 = this;
 
+            var _ref = this.props || 'selectField',
+                field = _ref.field;
+
+            var defaultValue = this.props.value ? this.props.value : 0;
+
             return __WEBPACK_IMPORTED_MODULE_7_react___default.a.createElement(
                 __WEBPACK_IMPORTED_MODULE_9_react_form__["Field"],
-                { validate: this.validate, field: this.props.field },
+                { validate: this.validate, field: field },
                 function (fieldApi) {
                     var _props = _this2.props,
                         _onChange = _props.onChange,
@@ -42039,7 +42038,7 @@ var SelectField = function (_React$Component) {
                         setTouched = fieldApi.setTouched;
 
                     return __WEBPACK_IMPORTED_MODULE_7_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_8_react_select__["a" /* default */], __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends___default()({
-                        value: value || '',
+                        value: value || setValue(defaultValue),
                         onChange: function onChange(e) {
                             setValue(e ? e.value : e);
                             if (_onChange) {
@@ -72843,7 +72842,7 @@ if (document.getElementById('app')) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_15_react_toastify__ = __webpack_require__(43);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_15_react_toastify___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_15_react_toastify__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__common_components_toastIt__ = __webpack_require__(391);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__ProductLineRow__ = __webpack_require__(397);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__ProductTable__ = __webpack_require__(658);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_18_Clients_selectors__ = __webpack_require__(69);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_19_Auth_selectors__ = __webpack_require__(51);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__selectors__ = __webpack_require__(95);
@@ -72963,6 +72962,8 @@ var CreateOrderView = function (_React$Component) {
     }, {
         key: 'handleSubmit',
         value: function handleSubmit(values, e, formApi) {
+            console.debug(values);
+            return;
             // format to MYSQL
             values.order.due_at = __WEBPACK_IMPORTED_MODULE_7_moment___default()(values.order.due_at, "DD.MM.Y H:m").format('YYYY-MM-DD HH:MM:SS');
 
@@ -73069,7 +73070,7 @@ var CreateOrderView = function (_React$Component) {
                                     __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
                                         __WEBPACK_IMPORTED_MODULE_14__utils_bootstrap__["b" /* LabeledFormGroup */],
                                         { htmlFor: 'createdAtInput', label: 'Taken at:', rowFormat: true },
-                                        __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_13_AppUtils_react_form_hocs_components_DateTimeField__["default"], {
+                                        __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_13_AppUtils_react_form_hocs_components_DateTimeField__["a" /* default */], {
                                             field: 'order.registered_at',
                                             id: 'createdAtInput',
                                             defaultValue: _this2.state.createdAtInput })
@@ -73077,7 +73078,7 @@ var CreateOrderView = function (_React$Component) {
                                     __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
                                         __WEBPACK_IMPORTED_MODULE_14__utils_bootstrap__["b" /* LabeledFormGroup */],
                                         { htmlFor: 'dueAtInput', label: 'Due at:', rowFormat: true },
-                                        __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_13_AppUtils_react_form_hocs_components_DateTimeField__["default"], {
+                                        __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_13_AppUtils_react_form_hocs_components_DateTimeField__["a" /* default */], {
                                             field: 'order.due_at',
                                             id: 'dueAtInput',
                                             defaultValue: _this2.state.dueAtInput })
@@ -73099,7 +73100,8 @@ var CreateOrderView = function (_React$Component) {
                                         'h5',
                                         { className: 'mb-4' },
                                         'Order lines'
-                                    )
+                                    ),
+                                    __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_17__ProductTable__["a" /* default */], null)
                                 ),
                                 __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
                                     'div',
@@ -73726,146 +73728,7 @@ function mapDispatchToProps(dispatch) {
 /* harmony default export */ __webpack_exports__["a"] = (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_8_react_router_dom__["b" /* withRouter */])(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_7_react_redux__["connect"])(mapStateToProps, mapDispatchToProps)(ordersPageHOC(__WEBPACK_IMPORTED_MODULE_18_Common_components_Page__["a" /* default */]))));
 
 /***/ }),
-/* 397 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_object_get_prototype_of__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_object_get_prototype_of___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_object_get_prototype_of__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_classCallCheck__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_classCallCheck___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_classCallCheck__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_createClass__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_createClass___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_createClass__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_react_select__ = __webpack_require__(133);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_react_form__ = __webpack_require__(82);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_react_form___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_react_form__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_reactstrap__ = __webpack_require__(32);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__utils_react_form_hocs__ = __webpack_require__(417);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__utils_bootstrap__ = __webpack_require__(98);
-
-
-
-
-
-
-
-
-
-
-
-
-
-var ProductLineRow = function ProductLineRow() {
-    return __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
-        'div',
-        null,
-        __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7_react_form__["Text"], { field: 'cunt', placeholder: 'Fucker' })
-    );
-};
-/* unused harmony default export */ var _unused_webpack_default_export = (ProductLineRow);
-
-var ProductLineRow2 = function (_React$Component) {
-    __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits___default()(ProductLineRow2, _React$Component);
-
-    function ProductLineRow2(props) {
-        __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_classCallCheck___default()(this, ProductLineRow2);
-
-        var _this = __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn___default()(this, (ProductLineRow2.__proto__ || __WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_object_get_prototype_of___default()(ProductLineRow2)).call(this, props));
-
-        _this.state = {
-            description: '',
-            price: 0.0,
-            units: 1
-        };
-        return _this;
-    }
-
-    __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_createClass___default()(ProductLineRow2, [{
-        key: 'render',
-        value: function render() {
-            var _ref = this.props || 0,
-                lineIndex = _ref.lineIndex;
-
-            var _ref2 = this.props || 'products',
-                fieldKeyName = _ref2.fieldKeyName;
-
-            return __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
-                'div',
-                null,
-                __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7_react_form__["Text"], { className: 'form-control', field: '' + fieldKeyName, id: '' + fieldKeyName })
-            );
-
-            return __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
-                'div',
-                { className: 'row' },
-                __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
-                    'table',
-                    { className: 'table table-sm' },
-                    __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
-                        'thead',
-                        null,
-                        __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
-                            'tr',
-                            null,
-                            __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
-                                'th',
-                                { scope: 'col' },
-                                '#'
-                            ),
-                            __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
-                                'th',
-                                { scope: 'col' },
-                                'Description'
-                            ),
-                            __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
-                                'th',
-                                { scope: 'col' },
-                                'Price'
-                            ),
-                            __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
-                                'th',
-                                { scope: 'col' },
-                                'Units'
-                            ),
-                            __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
-                                'th',
-                                { scope: 'col' },
-                                'Sum'
-                            )
-                        )
-                    ),
-                    __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
-                        'tbody',
-                        null,
-                        __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
-                            'tr',
-                            null,
-                            __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement('th', { scope: 'row' }),
-                            __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
-                                'td',
-                                null,
-                                __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7_react_form__["Text"], { className: 'form-control', field: '' + fieldKeyName, id: '' + fieldKeyName })
-                            ),
-                            __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement('td', null),
-                            __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement('td', null),
-                            __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement('td', null)
-                        )
-                    )
-                )
-            );
-        }
-    }]);
-
-    return ProductLineRow2;
-}(__WEBPACK_IMPORTED_MODULE_5_react___default.a.Component);
-
-/***/ }),
+/* 397 */,
 /* 398 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -114435,6 +114298,165 @@ function hasOwnProperty(obj, prop) {
 __webpack_require__(351);
 module.exports = __webpack_require__(352);
 
+
+/***/ }),
+/* 655 */,
+/* 656 */,
+/* 657 */,
+/* 658 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_object_get_prototype_of__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_object_get_prototype_of___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_object_get_prototype_of__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_classCallCheck__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_classCallCheck___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_classCallCheck__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_createClass__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_createClass___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_createClass__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_react_select__ = __webpack_require__(133);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_react_form__ = __webpack_require__(82);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_react_form___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_react_form__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_reactstrap__ = __webpack_require__(32);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__utils_react_form_hocs__ = __webpack_require__(417);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__utils_bootstrap__ = __webpack_require__(98);
+
+
+
+
+
+
+
+
+
+
+
+
+
+var ProductLineRow = function (_React$Component) {
+    __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits___default()(ProductLineRow, _React$Component);
+
+    function ProductLineRow(props) {
+        __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_classCallCheck___default()(this, ProductLineRow);
+
+        var _this = __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn___default()(this, (ProductLineRow.__proto__ || __WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_object_get_prototype_of___default()(ProductLineRow)).call(this, props));
+
+        _this.state = {
+            description: '',
+            price: 0.0,
+            units: 1
+        };
+        return _this;
+    }
+
+    __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_createClass___default()(ProductLineRow, [{
+        key: 'render',
+        value: function render() {
+            var _ref = this.props || 0,
+                lineIndex = _ref.lineIndex;
+
+            return __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
+                'tr',
+                null,
+                __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement('th', { scope: 'row' }),
+                __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
+                    'td',
+                    null,
+                    __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7_react_form__["Text"], { className: 'form-control', field: 'price', id: 'price-' + this.props.lineIndex, value: this.state.price })
+                ),
+                __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement('td', null),
+                __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement('td', null),
+                __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
+                    'td',
+                    null,
+                    __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
+                        'button',
+                        { className: 'btn btn-sm btn-danger', type: 'button' },
+                        'x'
+                    )
+                )
+            );
+        }
+    }]);
+
+    return ProductLineRow;
+}(__WEBPACK_IMPORTED_MODULE_5_react___default.a.Component);
+
+var ProductTableForm = function (_React$Component2) {
+    __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits___default()(ProductTableForm, _React$Component2);
+
+    function ProductTableForm(props) {
+        __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_classCallCheck___default()(this, ProductTableForm);
+
+        return __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn___default()(this, (ProductTableForm.__proto__ || __WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_object_get_prototype_of___default()(ProductTableForm)).call(this, props));
+    }
+
+    __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_createClass___default()(ProductTableForm, [{
+        key: 'render',
+        value: function render() {
+            return __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
+                'div',
+                { className: 'row' },
+                __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
+                    'div',
+                    { className: 'col' },
+                    __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
+                        'button',
+                        { className: 'btn btn-primary', type: 'button', onClick: this.addLine },
+                        'Add + '
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
+                        'table',
+                        { className: 'table table-sm' },
+                        __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
+                            'thead',
+                            null,
+                            __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
+                                'tr',
+                                null,
+                                __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
+                                    'th',
+                                    { scope: 'col' },
+                                    '#'
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
+                                    'th',
+                                    { scope: 'col' },
+                                    'Description'
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
+                                    'th',
+                                    { scope: 'col' },
+                                    'Price'
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
+                                    'th',
+                                    { scope: 'col' },
+                                    'Units'
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
+                                    'th',
+                                    { scope: 'col' },
+                                    'Sum'
+                                )
+                            )
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement('tbody', null)
+                    )
+                )
+            );
+        }
+    }]);
+
+    return ProductTableForm;
+}(__WEBPACK_IMPORTED_MODULE_5_react___default.a.Component);
+
+/* harmony default export */ __webpack_exports__["a"] = (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_7_react_form__["withFormApi"])(ProductTableForm));
 
 /***/ })
 /******/ ]);

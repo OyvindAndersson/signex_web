@@ -7,11 +7,16 @@ import SelectField from '../components/SelectField'
 describe('SelecField component', () => {
 
     it('Should render', () => {
+        const options = [{}]
         let tree = renderer.create(
             <Form >
             { formApi => (
                 <form onSubmit={() => {}} id="form5">
-                    <SelectField>
+                    <SelectField required={true}
+                                field="order.client_id" 
+                                id="clientInput" 
+                                options={options}
+                                value={1}>
                     </SelectField>
                 </form>
             )}

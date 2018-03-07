@@ -13,7 +13,7 @@ class CreateProductsTable extends Migration
      */
     public function up()
     {
-        return; // Dont migrate yet.
+        //return; // Dont migrate yet.
 
         /**
         * PRODUCTS
@@ -29,13 +29,14 @@ class CreateProductsTable extends Migration
 
             $table->string('code', 16)->unique();
             $table->string('name');
-            $table->json('attributes');
+            $table->json('attributes')->nullable();
             $table->float('profit_margin_override')->nullable(); // Overrides any margin set for product category
             $table->timestamps();
             // Referenced data
             $table->integer('supplier_id')->unsigned()->nullable();
-            $table->integer('category_id')->unsigned();
-            $table->integer('unit_type_id')->unsigned();
+            $table->integer('category_id')->unsigned()->nullable();
+            $table->integer('unit_type_id')->unsigned()->nullable();
+
             $table->float('unit_price')->default(0.0);
         });
 

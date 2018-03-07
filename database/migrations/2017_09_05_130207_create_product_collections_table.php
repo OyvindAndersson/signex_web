@@ -51,7 +51,7 @@ class CreateProductCollectionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('product_collection_product_state_info');
+        Schema::dropIfExists('product_collection_product_state');
         Schema::dropIfExists('product_collections');
     }
 }

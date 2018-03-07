@@ -21,6 +21,7 @@ export default class SelectField extends React.Component {
     }
     render() {
         const { field } = this.props || 'selectField'
+        const defaultValue = this.props.value ? this.props.value : 0
 
         return(
             <Field validate={this.validate} field={field}>
@@ -29,7 +30,7 @@ export default class SelectField extends React.Component {
                     const { value, error, warning, success, setValue, setTouched } = fieldApi
                     return(
                     <Select 
-                        value={value || ''}
+                        value={value || setValue(defaultValue)}
                         onChange={(e) => {
                             setValue(e ? e.value : e)
                             if(onChange){
