@@ -38,6 +38,7 @@ class OrderProjectController extends Controller
     {
         $data = $request->all();
         $order_data = $data['order'];
+        $products = $data['products'];
 
         if(\App::runningUnitTests()){
 

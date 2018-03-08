@@ -4,16 +4,7 @@ import { Form, Text, Field, withFieldApi} from 'react-form'
 
 const ValidationMessage = props => {
     const {type, message} = props
-    var typeClass = ''
-
-    switch(type){
-        case 'error': typeClass = 'invalid-feedback'
-        break
-        case 'warning': typeClass = 'invalid-feedback'
-        break
-        case 'success': typeClass = 'valid-feedback'
-        break
-    }
+    var typeClass = (type === 'error' || type === 'warning') ? 'invalid-feedback' : 'valid-feedback'
 
     return (
         <div className={typeClass}>
@@ -33,6 +24,8 @@ const TextValidation = props => (
         const { onChange, onBlur, field, validate, ...rest } = props
         const { value, error, warning, success, setValue, setTouched } = fieldApi
 
+        const showError = (<ValidationMessage message="Blargh" type="error" />)
+
         return(
             <div>
                 <input
@@ -51,7 +44,7 @@ const TextValidation = props => (
                         }
                     }}
                 />
-                { error ? (<ValidationMessage message={error} type="error" />) : null }
+            { error ? <div className="invalid-feedback">{error}</div> : null }
             </div>
         )
     }}

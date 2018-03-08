@@ -7,6 +7,8 @@ export default class Page extends React.Component {
     render(){
 
         const classes = this.props.fluid ? "container-fluid" : "container"
+        const rowClasses = this.props.center ? "justify-content-md-center" : ''
+        
         const isLoadingData = this.props.isLoadingData
 
         if(isLoadingData){
@@ -14,7 +16,7 @@ export default class Page extends React.Component {
                 <div>
                     <hr />
                     <div className={classes}>
-                        <div className="row">
+                        <div className={`row ${rowClasses}`}>
                             Loading page data...
                         </div>
                     </div>
@@ -25,7 +27,7 @@ export default class Page extends React.Component {
                 <div>
                     <hr />
                     <div className={classes}>
-                        <div className="row">
+                        <div className={`row ${rowClasses}`}>
                             {this.props.children}
                         </div>
                     </div>

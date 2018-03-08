@@ -45,6 +45,7 @@ class CreateOrderView extends React.Component {
 
         this.handleSelectChange = this.handleSelectChange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
+        this.handleSubmitFail = this.handleSubmitFail.bind(this)
         this.resetForm = this.resetForm.bind(this)
 
         this.state = {
@@ -93,8 +94,7 @@ class CreateOrderView extends React.Component {
         })
     }
     handleSubmit(values, e, formApi){
-        console.debug(values)
-        return
+
         // format to MYSQL
         values.order.due_at = moment(values.order.due_at, "DD.MM.Y H:m").format('YYYY-MM-DD HH:MM:SS')
 
@@ -107,6 +107,12 @@ class CreateOrderView extends React.Component {
         // We need a reference to formApi in resetForm(), 
         // which will only ever be called after a submit
         this.formApi = formApi
+    }
+    handleSubmitFail(errors, onSubmitError, formApi){
+        const form = document.getElementsByName('createOrderForm')
+        if(form[0]){
+            form[0].classList.add('was-validated')
+        }
     }
     resetForm(){
         if(this.formApi){
@@ -134,14 +140,14 @@ class CreateOrderView extends React.Component {
         ]
 
         return(
-        <div className="col-md-12">
-            <Form onSubmit={this.handleSubmit}>
+        <div className="col-md-10 col-md-offset-1">
+            <Form onSubmit={this.handleSubmit} onSubmitFailure={this.handleSubmitFail}>
             { formApi => (
-            <form onSubmit={formApi.submitForm}>
-                <div className="row">
+            <form name="createOrderForm" onSubmit={formApi.submitForm} className={`needs-validation`} noValidate>
+                <div className="form-row">
                     {/* Order details*/}
-                    <div className="col-md-3" style={{ backgroundColor: '#efefef'}}>
-                        <h5 className="mt-4 mb-4">Order details</h5>
+                    <div className="col-md-3">
+                        <h5 className="mt-4 mb-4">Basis info</h5>
                         <LabeledFormGroup htmlFor="clientInput" label="Client" rowFormat>
                             <SelectField 
                                 required={true}
@@ -195,13 +201,13 @@ class CreateOrderView extends React.Component {
 
                     {/* Products */}
                     <div className="col-md-6">
-                        <h5 className="mt-4 mb-4">Order lines</h5>
+                        <h5 className="mt-4 mb-4">Varlinjer</h5>
                         <ProductTable />
                     </div>
 
                     {/* Tasks */}
                     <div className="col-md-3">
-                        <h5 className="mb-4">Order tasks</h5>
+                        <h5 className="mt-4 mb-4">Prosjektoppgaver</h5>
                     </div>
                 </div>
                 <div className="row">

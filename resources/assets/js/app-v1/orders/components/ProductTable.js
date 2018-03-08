@@ -6,6 +6,7 @@ import { UncontrolledAlert } from 'reactstrap'
 import { SelectField, DateTimeField, TextValidation } from '../../utils/react-form-hocs'
 import { LabeledFormGroup, FormGroup } from '../../utils/bootstrap'
 
+
 /**
  * Product Line Row
  * Represents a single product line in a ProductTableForm
@@ -15,66 +16,64 @@ class ProductLineRow extends React.Component{
         super(props)
 
         this.defaultOnRemove = this.defaultOnRemove.bind(this)
-        this.validateInput = this.validateInput.bind(this)
     }
 
     defaultOnRemove(e){
         console.debug('No remove handler')
     }
 
-    validateInput(e){
-        const { description, discount, price, units } = e
-        
-        return {
-            error: !description ? "Produktlinje må ha en beskrivelse" : null
-        }
-    }
-
     render(){
         const { lineIndex, field, onRemove, state } = this.props
         const lineNum = lineIndex + 1 // Not using zero based index for product line nums
+        
+        const defaultValues = {
+            description: '',
+            units: 1,
+            price: 0.0,
+            discount: 0
+        }
+
         var sum = 0
-        try {
-            sum =  state.price * (1-(state.discount / 100)) * state.units
-        } catch(e){ sum = "Error" }
+        try { sum =  state.price * (1-(state.discount / 100)) * state.units } catch(err) { }
         
 
         return(
-            <NestedField field={field} validate={this.validateInput}>
+            <NestedField field={field} validate={this.validateInput} defaultValues={defaultValues}>
             <tr>
                 <th scope="row">{`${lineIndex + 1}`}</th>
                 <td>
-                    <TextValidation className="form-control form-control-sm" 
+                    <TextValidation className="form-control form-control-sm"
+                        type="text"
                         field={'description'} 
-                        id={`description-${this.props.lineIndex}`} 
-                        defaultValue={this.props.description}
-                        validate={(value) => ({ error: !value || value !== 'Cunt' ? "Bitch" : null })} />
+                        id={`description-${this.props.lineIndex}`}
+                        validate={(value) => ({ error: !value || value.length < 3 ? "Minst 3 tegn" : null })} />
                 </td>
                 <td>
                     <Text className="form-control form-control-sm" 
                         field={'units'} 
-                        id={`units-${this.props.lineIndex}`} 
-                        defaultValue={this.props.units}
+                        id={`units-${this.props.lineIndex}`}
                         type="number"
-                        min="0" />
+                        min="0"
+                        step="1"
+                        pattern="\d+" />
                 </td>
 
                 <td>
                     <Text className="form-control form-control-sm" 
                         field={'price'} 
-                        id={`price-${this.props.lineIndex}`} 
-                        defaultValue={this.props.price} />
+                        id={`price-${this.props.lineIndex}`}
+                        pattern="[0-9]+([\.,][0-9]+)?" />
                 </td>
 
                 <td>
                     <Text className="form-control form-control-sm" 
                         field={'discount'} 
                         id={`discount-${this.props.lineIndex}`}
-                        defaultValue={this.props.discount} />
+                        value={this.props.discount} />
                 </td>
 
                 <td>
-                    <input className="form-control form-control-sm" value={sum || 0} max="100" min="0" readOnly />
+                    <input type="text" className="form-control form-control-sm" value={sum || 0} max="100" min="0" readOnly />
                 </td>
 
                 <td><button className="btn btn-danger btn-sm btn-block" type="button" onClick={onRemove}>-</button></td>
@@ -83,12 +82,6 @@ class ProductLineRow extends React.Component{
         )
     }
     
-}
-ProductLineRow.defaultProps = {
-    description: '',
-    price: 0.0,
-    units: 1,
-    discount: 0
 }
 
 /**

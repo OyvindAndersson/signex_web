@@ -13,7 +13,9 @@
 @import 'react-toastify/src/scss/main';
 @import 'react-select/dist/react-select';
 
-
+.form-control:valid {
+    border: 1px solid $input-border !important;
+}
 
 .badge {
     border-radius: 0;
