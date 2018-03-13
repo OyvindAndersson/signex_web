@@ -43,7 +43,6 @@ class CreateOrderView extends React.Component {
     constructor(props) {
         super(props)
 
-        this.handleSelectChange = this.handleSelectChange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
         this.handleSubmitFail = this.handleSubmitFail.bind(this)
         this.resetForm = this.resetForm.bind(this)
@@ -64,13 +63,6 @@ class CreateOrderView extends React.Component {
         }
     }
     componentWillReceiveProps(next){
-        if(next.user !== this.state.user){
-            this.setState({ 
-                userInput: next.user.id, 
-                user: next.user,
-                users: next.users
-            })
-        }
         if(next.notify){
             this.setState({
                 notify: next.notify
@@ -79,27 +71,14 @@ class CreateOrderView extends React.Component {
             this.resetForm()
         }
     }
-    handleSelectChange(val, id){
-        this.setState({
-            id: val.value
-        })
-    }
-    handleInputChange(e){
-        const targe = e.target
-        const value = target.type === 'checkbox' ? target.checked : target.value
-        const name = target.name
-
-        this.setState({
-            name: value
-        })
-    }
     handleSubmit(values, e, formApi){
 
         // format to MYSQL
-        values.order.due_at = moment(values.order.due_at, "DD.MM.Y H:m").format('YYYY-MM-DD HH:MM:SS')
+        values.order.due_at = moment(values.order.due_at, 'DD.MM.Y HH:mm').format('Y-M-D H:m')
+        values.order.registered_at = moment(values.order.registered_at, 'DD.MM.Y HH:mm').format('Y-M-D H:m')
 
         console.debug(values)
-        return
+        //return
         
         const { createOrder } = this.props
         createOrder(values)
@@ -139,9 +118,20 @@ class CreateOrderView extends React.Component {
             { value: 5, label: "Archived"},
         ]
 
+        const basicDefaults = {
+            order: {
+                registered_at: moment(),
+                due_at: moment().add(7, 'days'),
+                status_id: 1,
+                client_id: 1,
+                user_id: 1,
+                type: 1,
+            }
+        }
+
         return(
         <div className="col-md-10 col-md-offset-1">
-            <Form onSubmit={this.handleSubmit} onSubmitFailure={this.handleSubmitFail}>
+            <Form onSubmit={this.handleSubmit} onSubmitFailure={this.handleSubmitFail} defaultValues={basicDefaults}>
             { formApi => (
             <form name="createOrderForm" onSubmit={formApi.submitForm} className={`needs-validation`} noValidate>
                 <div className="form-row">
@@ -153,48 +143,41 @@ class CreateOrderView extends React.Component {
                                 required={true}
                                 field="order.client_id" 
                                 id="clientInput" 
-                                options={clientOptions}
-                                value={this.state.clientInput}
-                                onChange={this.handleSelectChange} />
+                                options={clientOptions} />
                         </LabeledFormGroup>
                         <LabeledFormGroup htmlFor="userInput" label="Our ref" rowFormat>
                             <SelectField 
                                 field="order.user_id" 
                                 id="userInput"
-                                options={userOptions}
-                                value={this.state.userInput} />
+                                options={userOptions} />
                         </LabeledFormGroup>
                         <LabeledFormGroup htmlFor="statusInput" label="Status" rowFormat>
                             <SelectField 
                                 field="order.status_id" 
                                 id="statusInput"
-                                options={orderStatuses}
-                                value={this.state.statusInput} />
+                                options={orderStatuses} />
                         </LabeledFormGroup>
                         <LabeledFormGroup htmlFor="descriptionInput" label="Description">
                             <TextArea 
                                 id="descriptionInput" 
                                 field="order.description"
-                                className="form-control">{this.state.descriptionInput}</TextArea>
+                                className="form-control" />
                         </LabeledFormGroup>
                         <LabeledFormGroup htmlFor="createdAtInput" label="Taken at:" rowFormat>
                             <DateTimeField 
                                 field="order.registered_at"
-                                id="createdAtInput"
-                                defaultValue={this.state.createdAtInput} />
+                                id="createdAtInput" />
                         </LabeledFormGroup>
                         <LabeledFormGroup htmlFor="dueAtInput" label="Due at:" rowFormat>
                             <DateTimeField 
                                 field="order.due_at"
-                                id="dueAtInput"
-                                defaultValue={this.state.dueAtInput} />
+                                id="dueAtInput" />
                         </LabeledFormGroup>
                         <LabeledFormGroup htmlFor="typeInput" label="Type" rowFormat>
                             <SelectField 
                                 field="order.type" 
                                 id="typeInput"
-                                options={orderTypes}
-                                value={this.state.typeInput} />
+                                options={orderTypes} />
                         </LabeledFormGroup>
                         
                     </div>

@@ -1,7 +1,7 @@
 import React from 'react'
 
 import Select from 'react-select'
-import { Text, TextArea, NestedField, withFormApi } from 'react-form'
+import { Text, TextArea, Checkbox, NestedField, withFormApi } from 'react-form'
 import { UncontrolledAlert } from 'reactstrap'
 import { SelectField, DateTimeField, TextValidation } from '../../utils/react-form-hocs'
 import { LabeledFormGroup, FormGroup } from '../../utils/bootstrap'
@@ -74,6 +74,10 @@ class ProductLineRow extends React.Component{
 
                 <td>
                     <input type="text" className="form-control form-control-sm" value={sum || 0} max="100" min="0" readOnly />
+                </td>
+
+                <td>
+                    <Checkbox field="stocked">Stocked</Checkbox>
                 </td>
 
                 <td><button className="btn btn-danger btn-sm btn-block" type="button" onClick={onRemove}>-</button></td>

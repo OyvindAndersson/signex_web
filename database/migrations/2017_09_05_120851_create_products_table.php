@@ -29,15 +29,17 @@ class CreateProductsTable extends Migration
 
             $table->string('code', 16)->unique();
             $table->string('name');
-            $table->json('attributes')->nullable();
-            $table->float('profit_margin_override')->nullable(); // Overrides any margin set for product category
+            $table->string('description');
+            $table->float('unit_price')->default(0.0);
+            $table->integer('inventory')->default(0);
+            $table->integer('stocked')->default(0);
+            $table->json('custom')->nullable();
+            $table->float('margin_override')->nullable(); // Overrides any margin set for product category
             $table->timestamps();
             // Referenced data
             $table->integer('supplier_id')->unsigned()->nullable();
             $table->integer('category_id')->unsigned()->nullable();
             $table->integer('unit_type_id')->unsigned()->nullable();
-
-            $table->float('unit_price')->default(0.0);
         });
 
         /**
@@ -57,6 +59,7 @@ class CreateProductsTable extends Migration
         * to reflect the state of the product at the given time.
         * All mutable and important time-specific state is copied.
         */
+        /*
         Schema::create('product_states', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('product_id')->unsigned()->nullable();
@@ -65,7 +68,7 @@ class CreateProductsTable extends Migration
 
             $table->foreign('product_id')->references('id')->on('products')->onDelete('set null');
             $table->timestamps();
-        });
+        });*/
     }
 
     /**
@@ -75,7 +78,7 @@ class CreateProductsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('product_states');
+        //Schema::dropIfExists('product_states');
         Schema::dropIfExists('product_categories');
         Schema::dropIfExists('products');
     }

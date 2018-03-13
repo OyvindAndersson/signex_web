@@ -47,6 +47,11 @@ class Order extends Model
         return $this->belongsTo(\App\OrderStatus::class);
     }
 
+    public function products()
+    {
+        return $this->hasMany('App\Product', 'order_products', 'order_id', 'product_id');
+    }
+
     public static function get_code_from_id($id)
     {
         return CodeRules::get_code_format_string('order', $id);

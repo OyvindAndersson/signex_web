@@ -13,6 +13,7 @@ class CreateProductCollectionsTable extends Migration
      */
     public function up()
     {
+        // TODO: Remove if other setup works better (ProductHistory table and OrderProduct tables)
         return;
 
         /**
@@ -22,7 +23,12 @@ class CreateProductCollectionsTable extends Migration
         */
         Schema::create('product_collections', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('order_id')->unsigned();
             $table->timestamps();
+
+            $table->foreign('order_id')
+            ->references('id')->on('orders')
+            ->onDelete('cascade');
         });
 
         /**
@@ -51,6 +57,7 @@ class CreateProductCollectionsTable extends Migration
      */
     public function down()
     {
+        return;
         Schema::dropIfExists('product_collection_product_state');
         Schema::dropIfExists('product_collections');
     }

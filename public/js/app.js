@@ -72904,7 +72904,6 @@ var CreateOrderView = function (_React$Component) {
 
         var _this = __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn___default()(this, (CreateOrderView.__proto__ || __WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_object_get_prototype_of___default()(CreateOrderView)).call(this, props));
 
-        _this.handleSelectChange = _this.handleSelectChange.bind(_this);
         _this.handleSubmit = _this.handleSubmit.bind(_this);
         _this.handleSubmitFail = _this.handleSubmitFail.bind(_this);
         _this.resetForm = _this.resetForm.bind(_this);
@@ -72929,13 +72928,6 @@ var CreateOrderView = function (_React$Component) {
     __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_createClass___default()(CreateOrderView, [{
         key: 'componentWillReceiveProps',
         value: function componentWillReceiveProps(next) {
-            if (next.user !== this.state.user) {
-                this.setState({
-                    userInput: next.user.id,
-                    user: next.user,
-                    users: next.users
-                });
-            }
             if (next.notify) {
                 this.setState({
                     notify: next.notify
@@ -72945,32 +72937,15 @@ var CreateOrderView = function (_React$Component) {
             }
         }
     }, {
-        key: 'handleSelectChange',
-        value: function handleSelectChange(val, id) {
-            this.setState({
-                id: val.value
-            });
-        }
-    }, {
-        key: 'handleInputChange',
-        value: function handleInputChange(e) {
-            var targe = e.target;
-            var value = target.type === 'checkbox' ? target.checked : target.value;
-            var name = target.name;
-
-            this.setState({
-                name: value
-            });
-        }
-    }, {
         key: 'handleSubmit',
         value: function handleSubmit(values, e, formApi) {
 
             // format to MYSQL
-            values.order.due_at = __WEBPACK_IMPORTED_MODULE_7_moment___default()(values.order.due_at, "DD.MM.Y H:m").format('YYYY-MM-DD HH:MM:SS');
+            values.order.due_at = __WEBPACK_IMPORTED_MODULE_7_moment___default()(values.order.due_at, 'DD.MM.Y HH:mm').format('Y-M-D H:m');
+            values.order.registered_at = __WEBPACK_IMPORTED_MODULE_7_moment___default()(values.order.registered_at, 'DD.MM.Y HH:mm').format('Y-M-D H:m');
 
             console.debug(values);
-            return;
+            //return
 
             var createOrder = this.props.createOrder;
 
@@ -72998,8 +72973,6 @@ var CreateOrderView = function (_React$Component) {
     }, {
         key: 'render',
         value: function render() {
-            var _this2 = this;
-
             // Map the clients to the Select required format (value - label)
             var clientOptions = this.props.clients.map(function (client) {
                 return { value: client.id, label: client.name };
@@ -73013,12 +72986,23 @@ var CreateOrderView = function (_React$Component) {
             // FIXME: Fetch api
             var orderStatuses = [{ value: 1, label: "Quote" }, { value: 2, label: "Registered" }, { value: 3, label: "In progress" }, { value: 4, label: "Finished / Sent" }, { value: 5, label: "Archived" }];
 
+            var basicDefaults = {
+                order: {
+                    registered_at: __WEBPACK_IMPORTED_MODULE_7_moment___default()(),
+                    due_at: __WEBPACK_IMPORTED_MODULE_7_moment___default()().add(7, 'days'),
+                    status_id: 1,
+                    client_id: 1,
+                    user_id: 1,
+                    type: 1
+                }
+            };
+
             return __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
                 'div',
                 { className: 'col-md-10 col-md-offset-1' },
                 __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
                     __WEBPACK_IMPORTED_MODULE_10_react_form__["Form"],
-                    { onSubmit: this.handleSubmit, onSubmitFailure: this.handleSubmitFail },
+                    { onSubmit: this.handleSubmit, onSubmitFailure: this.handleSubmitFail, defaultValues: basicDefaults },
                     function (formApi) {
                         return __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
                             'form',
@@ -73041,9 +73025,7 @@ var CreateOrderView = function (_React$Component) {
                                             required: true,
                                             field: 'order.client_id',
                                             id: 'clientInput',
-                                            options: clientOptions,
-                                            value: _this2.state.clientInput,
-                                            onChange: _this2.handleSelectChange })
+                                            options: clientOptions })
                                     ),
                                     __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
                                         __WEBPACK_IMPORTED_MODULE_14__utils_bootstrap__["b" /* LabeledFormGroup */],
@@ -73051,8 +73033,7 @@ var CreateOrderView = function (_React$Component) {
                                         __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_12_AppUtils_react_form_hocs_components_SelectField__["a" /* default */], {
                                             field: 'order.user_id',
                                             id: 'userInput',
-                                            options: userOptions,
-                                            value: _this2.state.userInput })
+                                            options: userOptions })
                                     ),
                                     __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
                                         __WEBPACK_IMPORTED_MODULE_14__utils_bootstrap__["b" /* LabeledFormGroup */],
@@ -73060,36 +73041,29 @@ var CreateOrderView = function (_React$Component) {
                                         __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_12_AppUtils_react_form_hocs_components_SelectField__["a" /* default */], {
                                             field: 'order.status_id',
                                             id: 'statusInput',
-                                            options: orderStatuses,
-                                            value: _this2.state.statusInput })
+                                            options: orderStatuses })
                                     ),
                                     __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
                                         __WEBPACK_IMPORTED_MODULE_14__utils_bootstrap__["b" /* LabeledFormGroup */],
                                         { htmlFor: 'descriptionInput', label: 'Description' },
-                                        __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
-                                            __WEBPACK_IMPORTED_MODULE_10_react_form__["TextArea"],
-                                            {
-                                                id: 'descriptionInput',
-                                                field: 'order.description',
-                                                className: 'form-control' },
-                                            _this2.state.descriptionInput
-                                        )
+                                        __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_10_react_form__["TextArea"], {
+                                            id: 'descriptionInput',
+                                            field: 'order.description',
+                                            className: 'form-control' })
                                     ),
                                     __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
                                         __WEBPACK_IMPORTED_MODULE_14__utils_bootstrap__["b" /* LabeledFormGroup */],
                                         { htmlFor: 'createdAtInput', label: 'Taken at:', rowFormat: true },
                                         __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_13_AppUtils_react_form_hocs_components_DateTimeField__["a" /* default */], {
                                             field: 'order.registered_at',
-                                            id: 'createdAtInput',
-                                            defaultValue: _this2.state.createdAtInput })
+                                            id: 'createdAtInput' })
                                     ),
                                     __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
                                         __WEBPACK_IMPORTED_MODULE_14__utils_bootstrap__["b" /* LabeledFormGroup */],
                                         { htmlFor: 'dueAtInput', label: 'Due at:', rowFormat: true },
                                         __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_13_AppUtils_react_form_hocs_components_DateTimeField__["a" /* default */], {
                                             field: 'order.due_at',
-                                            id: 'dueAtInput',
-                                            defaultValue: _this2.state.dueAtInput })
+                                            id: 'dueAtInput' })
                                     ),
                                     __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
                                         __WEBPACK_IMPORTED_MODULE_14__utils_bootstrap__["b" /* LabeledFormGroup */],
@@ -73097,8 +73071,7 @@ var CreateOrderView = function (_React$Component) {
                                         __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_12_AppUtils_react_form_hocs_components_SelectField__["a" /* default */], {
                                             field: 'order.type',
                                             id: 'typeInput',
-                                            options: orderTypes,
-                                            value: _this2.state.typeInput })
+                                            options: orderTypes })
                                     )
                                 ),
                                 __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
@@ -73869,6 +73842,15 @@ var ProductLineRow = function (_React$Component) {
                         'td',
                         null,
                         __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement('input', { type: 'text', className: 'form-control form-control-sm', value: sum || 0, max: '100', min: '0', readOnly: true })
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
+                        'td',
+                        null,
+                        __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
+                            __WEBPACK_IMPORTED_MODULE_7_react_form__["Checkbox"],
+                            { field: 'stocked' },
+                            'Stocked'
+                        )
                     ),
                     __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
                         'td',

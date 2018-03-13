@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Order;
 use App\Client;
+use App\ProductCollection;
+use App\ProductState;
 use Illuminate\Http\Request;
 
 class OrderProjectController extends Controller
@@ -38,7 +40,6 @@ class OrderProjectController extends Controller
     {
         $data = $request->all();
         $order_data = $data['order'];
-        $products = $data['products'];
 
         if(\App::runningUnitTests()){
 
@@ -62,17 +63,43 @@ class OrderProjectController extends Controller
         // If successful order was created, we assign a new unique order-id.
         if($newOrder)
         {
-            $code = Order::get_code_from_id($newOrder->id);
-            $newOrder->code = $code;
-            $newOrder->save();
+            try 
+            {
+                // Associate code
+                $code = Order::get_code_from_id($newOrder->id);
+                $newOrder->code = $code;
 
-            return response()->json(
-                [
-                    'order' => $newOrder, 
-                    'client' => $newOrder->client,
-                    'notify' => ['title' => 'Success!', 'message' => "Order #$newOrder->code added!", 'status' => 'success']
-                ]
-            );
+                if(isset($data['products']) && count($data['products']) > 0)
+                {
+                    foreach($data['products'] as $product)
+                    {
+                        $newProduct = Product::create($product); // IF MARKED STOCKED: SAVE MAKE SURE TO CHECK 'STOCKED'
+                        if($newProduct)
+                        {
+                            
+                        }
+                    }
+                }
+
+                // Save order
+                $newOrder->save();
+
+                return response()->json(
+                    [
+                        'order' => $newOrder, 
+                        'client' => $newOrder->client,
+                        'product_collection' => $newOrder->product_collection,
+                        'product_state' => $product,
+                        'notify' => ['title' => 'Success!', 'message' => "Order #$newOrder->code added!", 'status' => 'success']
+                    ]
+                );
+
+            }
+            catch(\Exception $e)
+            {
+                return response()->json(['exception' => $e], 504);
+            }
+            
         }
         else {
             return response()->json([

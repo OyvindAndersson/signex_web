@@ -19,4 +19,9 @@ class Product extends Model
         'unit_type_id', 
         'unit_price'
     ];
+
+    public function orders()
+    {
+        return $this->belongsToMany('App\Order', 'order_products', 'product_id', 'order_id');
+    }
 }
