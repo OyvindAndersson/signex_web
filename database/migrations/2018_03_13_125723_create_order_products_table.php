@@ -19,6 +19,7 @@ class CreateOrderProductsTable extends Migration
             $table->integer('product_id')->unsigned();
             $table->integer('units');
             $table->float('unit_price');
+            $table->float('discount')->default(0.0);
             $table->timestamps();
 
             $table->foreign('order_id')->references('id')->on('orders')->onDelete('SET NULL');

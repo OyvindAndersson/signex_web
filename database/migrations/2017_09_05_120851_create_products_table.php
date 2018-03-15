@@ -27,14 +27,15 @@ class CreateProductsTable extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->increments('id');
 
-            $table->string('code', 16)->unique();
-            $table->string('name');
+            $table->string('code', 16)->default('null');
+            $table->string('name')->default('');
             $table->string('description');
             $table->float('unit_price')->default(0.0);
             $table->integer('inventory')->default(0);
             $table->integer('stocked')->default(0);
             $table->json('custom')->nullable();
             $table->float('margin_override')->nullable(); // Overrides any margin set for product category
+            $table->float('global_discount')->default(0.0);
             $table->timestamps();
             // Referenced data
             $table->integer('supplier_id')->unsigned()->nullable();

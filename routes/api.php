@@ -67,7 +67,7 @@ Route::group(['middleware' => ['api']/*, 'namespace' => 'App\Http\Controllers', 
     Route::get('orders/{id?}', function($id = null) 
     {
 		
-        $orders = Order::orderBy('due_at')->get();//->with(['client', 'registrar', 'status'])->get();
+        $orders = Order::orderBy('due_at')->with(['products'])->get();
         return response()->json(['orders' => $orders]);
 
         if(!$id)

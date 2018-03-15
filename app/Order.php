@@ -49,7 +49,10 @@ class Order extends Model
 
     public function products()
     {
-        return $this->hasMany('App\Product', 'order_products', 'order_id', 'product_id');
+        return $this->belongsToMany('App\Product', 'order_products', 'order_id', 'product_id')
+        ->withPivot('units', 'unit_price', 'discount')
+        ->as('order_state')
+        ->withTimestamps();
     }
 
     public static function get_code_from_id($id)

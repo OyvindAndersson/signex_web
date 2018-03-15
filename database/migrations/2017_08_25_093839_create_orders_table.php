@@ -31,7 +31,7 @@ class CreateOrdersTable extends Migration
 
             $table->boolean('is_quote')->default(1); // Is it an Order or a Quote that could possibly become an order?
             $table->dateTime('quote_expires_at')->nullable(); // When this - as a quote - expires
-            $table->integer('product_collection_id')->unsigned()->nullable(); // Collection of product state infos.
+            //$table->integer('product_collection_id')->unsigned()->nullable(); // Collection of product state infos.
 
             $table->integer('type_id')->unsigned()->default(1); // Reference on pivot table for multiple order types
             $table->integer('status_id')->unsigned()->default(1); // Reference to order_statuses table (pivot)

@@ -1,11 +1,52 @@
 import React from 'react'
 import {Field} from 'react-form'
 import moment from 'moment'
-import DateTime from 'react-datetime'
+moment.locale('nb');
+import Datetime from 'react-datetime'
+
+export default class DateTimeField extends React.Component {
+    constructor(props){
+        super(props)
+        
+    }
+
+    render(){
+        return(
+            <Field field={this.props.field}>
+                { fieldApi => {
+                    const { onChange, onBlur, ...rest } = this.props
+                    const { value, error, warning, success, setValue, setTouched } = fieldApi
+
+                    return(
+                        <Datetime 
+                            value={value} 
+                            onChange={(value) => {
+                                setValue(value)
+                                if(onChange){
+                                    onChange(value)
+                                }
+                            }} 
+                            onBlur={(e) => {
+                                setTouched()
+                                if(onBlur){
+                                    onBlur()
+                                }
+                            }}
+                            {...rest}
+                            />
+                    )
+                }}
+            </Field>
+        )
+    }
+}
+
+
+
 
 const defaultProps = {
-    dateFormat: 'DD.MM.Y ',
-    timeFormat: 'H:mm',
+    dateFormat: 'DD.MM.Y',
+    timeFormat: 'HH:mm',
     locale: 'nb',
     closeOnSelect: true,
 }
@@ -19,7 +60,7 @@ const defaultProps = {
  * @todo DefaultValue is not set for react-form. Need to setValue() somewhere...
  * @see react-datetime API for props and options https://github.com/YouCanBookMe/react-datetime
  */
-export default class DateTimeField extends React.Component {
+class DateTimeField2 extends React.Component {
     constructor(props){
         super(props)
 
@@ -82,4 +123,4 @@ export default class DateTimeField extends React.Component {
         console.log("ÆRROR",error, info);
       }
 }
-DateTimeField.defaultProps = defaultProps
+DateTimeField2.defaultProps = defaultProps

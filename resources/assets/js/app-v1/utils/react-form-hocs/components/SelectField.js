@@ -30,7 +30,7 @@ export default class SelectField extends React.Component {
                     const { value, error, warning, success, setValue, setTouched } = fieldApi
                     return(
                     <Select 
-                        value={value || setValue(defaultValue)}
+                        value={value || '' }
                         onChange={(e) => {
                             setValue(e ? e.value : e)
                             if(onChange){

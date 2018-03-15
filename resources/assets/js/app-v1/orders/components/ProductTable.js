@@ -3,7 +3,7 @@ import React from 'react'
 import Select from 'react-select'
 import { Text, TextArea, Checkbox, NestedField, withFormApi } from 'react-form'
 import { UncontrolledAlert } from 'reactstrap'
-import { SelectField, DateTimeField, TextValidation } from '../../utils/react-form-hocs'
+import { SelectField, DateTimeField, TextValidation, CheckBox } from '../../utils/react-form-hocs'
 import { LabeledFormGroup, FormGroup } from '../../utils/bootstrap'
 
 
@@ -30,7 +30,8 @@ class ProductLineRow extends React.Component{
             description: '',
             units: 1,
             price: 0.0,
-            discount: 0
+            discount: 0,
+            stocked: false
         }
 
         var sum = 0
@@ -38,15 +39,15 @@ class ProductLineRow extends React.Component{
         
 
         return(
-            <NestedField field={field} validate={this.validateInput} defaultValues={defaultValues}>
+            <NestedField field={field} validate={this.validateInput}>
             <tr>
                 <th scope="row">{`${lineIndex + 1}`}</th>
                 <td>
-                    <TextValidation className="form-control form-control-sm"
-                        type="text"
+                    <Text className="form-control form-control-sm"
                         field={'description'} 
                         id={`description-${this.props.lineIndex}`}
-                        validate={(value) => ({ error: !value || value.length < 3 ? "Minst 3 tegn" : null })} />
+                        minLength="3"
+                        required />
                 </td>
                 <td>
                     <Text className="form-control form-control-sm" 
@@ -77,7 +78,11 @@ class ProductLineRow extends React.Component{
                 </td>
 
                 <td>
-                    <Checkbox field="stocked">Stocked</Checkbox>
+                    <div className="form-check">
+                        <CheckBox className="form-check-input position-static" 
+                            field={'stocked'} 
+                            id={`stocked-${this.props.lineIndex}`} />
+                    </div>
                 </td>
 
                 <td><button className="btn btn-danger btn-sm btn-block" type="button" onClick={onRemove}>-</button></td>

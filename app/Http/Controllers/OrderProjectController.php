@@ -4,8 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Order;
 use App\Client;
-use App\ProductCollection;
-use App\ProductState;
+use App\Product;
 use Illuminate\Http\Request;
 
 class OrderProjectController extends Controller
@@ -68,28 +67,54 @@ class OrderProjectController extends Controller
                 // Associate code
                 $code = Order::get_code_from_id($newOrder->id);
                 $newOrder->code = $code;
+                // Save order
+                $newOrder->save();
 
-                if(isset($data['products']) && count($data['products']) > 0)
+                // Process products, if any
+                if( isset($data['products']) && is_array($data['products']) )
                 {
                     foreach($data['products'] as $product)
                     {
-                        $newProduct = Product::create($product); // IF MARKED STOCKED: SAVE MAKE SURE TO CHECK 'STOCKED'
-                        if($newProduct)
+                        // Was this an existing product??
+                        if(!isset($product['id']) || $product['id'] == 0)
                         {
+                            // Create new product
+                            $newProduct = Product::create([
+                                'description' => $product['description'],
+                                'unit_price' => $product['price'],
+                                'global_discount' => $product['discount'],
+                                'stocked' => $product['stocked'],
+                            ]);
                             
+                            // Does it exist now?
+                            if($newProduct)
+                            {
+                                // Give it the new product code
+                                $newProduct->code = Product::get_code_from_id($newProduct->id);
+                                $newProduct->save();
+
+                                // Attach to the order
+                                $newOrder->products()->attach($newProduct, 
+                                    [
+                                        'units' => $product['units'], 
+                                        'unit_price' => $product['price'],
+                                        'discount' => $product['discount']
+                                    ]);
+                            }
                         }
+                        else 
+                        {
+                            // TODO: Fetch existing and attach to order with units/discount details.
+                        }
+                        
                     }
                 }
-
-                // Save order
-                $newOrder->save();
 
                 return response()->json(
                     [
                         'order' => $newOrder, 
-                        'client' => $newOrder->client,
-                        'product_collection' => $newOrder->product_collection,
-                        'product_state' => $product,
+                        //'client' => $newOrder->client,
+                        'products' => $newOrder->products,
                         'notify' => ['title' => 'Success!', 'message' => "Order #$newOrder->code added!", 'status' => 'success']
                     ]
                 );
@@ -97,7 +122,7 @@ class OrderProjectController extends Controller
             }
             catch(\Exception $e)
             {
-                return response()->json(['exception' => $e], 504);
+                return response()->json(['exception' => $e], 402);
             }
             
         }

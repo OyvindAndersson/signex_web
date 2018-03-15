@@ -72,16 +72,16 @@ class CreateOrderView extends React.Component {
         }
     }
     handleSubmit(values, e, formApi){
-
-        // format to MYSQL
-        values.order.due_at = moment(values.order.due_at, 'DD.MM.Y HH:mm').format('Y-M-D H:m')
-        values.order.registered_at = moment(values.order.registered_at, 'DD.MM.Y HH:mm').format('Y-M-D H:m')
-
-        console.debug(values)
-        //return
-        
         const { createOrder } = this.props
-        createOrder(values)
+        const mutatedValues = _.clone(values, true)
+
+        // format for MYSQL
+        mutatedValues.order.due_at = moment(mutatedValues.order.due_at).format('Y-MM-D H:m:s')
+        mutatedValues.order.registered_at = moment(mutatedValues.order.registered_at).format('Y-MM-D H:m:s')
+
+        console.debug(mutatedValues)
+        
+        createOrder(mutatedValues)
 
         // We need a reference to formApi in resetForm(), 
         // which will only ever be called after a submit
@@ -133,26 +133,28 @@ class CreateOrderView extends React.Component {
         <div className="col-md-10 col-md-offset-1">
             <Form onSubmit={this.handleSubmit} onSubmitFailure={this.handleSubmitFail} defaultValues={basicDefaults}>
             { formApi => (
-            <form name="createOrderForm" onSubmit={formApi.submitForm} className={`needs-validation`} noValidate>
+            <form name="createOrderForm" onSubmit={formApi.submitForm}>
                 <div className="form-row">
                     {/* Order details*/}
                     <div className="col-md-3">
                         <h5 className="mt-4 mb-4">Basis info</h5>
                         <LabeledFormGroup htmlFor="clientInput" label="Client" rowFormat>
                             <SelectField 
-                                required={true}
+                                required
                                 field="order.client_id" 
                                 id="clientInput" 
                                 options={clientOptions} />
                         </LabeledFormGroup>
                         <LabeledFormGroup htmlFor="userInput" label="Our ref" rowFormat>
                             <SelectField 
+                                required
                                 field="order.user_id" 
                                 id="userInput"
                                 options={userOptions} />
                         </LabeledFormGroup>
                         <LabeledFormGroup htmlFor="statusInput" label="Status" rowFormat>
                             <SelectField 
+                                required
                                 field="order.status_id" 
                                 id="statusInput"
                                 options={orderStatuses} />
@@ -165,16 +167,19 @@ class CreateOrderView extends React.Component {
                         </LabeledFormGroup>
                         <LabeledFormGroup htmlFor="createdAtInput" label="Taken at:" rowFormat>
                             <DateTimeField 
+                                required
                                 field="order.registered_at"
                                 id="createdAtInput" />
                         </LabeledFormGroup>
                         <LabeledFormGroup htmlFor="dueAtInput" label="Due at:" rowFormat>
                             <DateTimeField 
+                                required
                                 field="order.due_at"
                                 id="dueAtInput" />
                         </LabeledFormGroup>
                         <LabeledFormGroup htmlFor="typeInput" label="Type" rowFormat>
                             <SelectField 
+                                required
                                 field="order.type" 
                                 id="typeInput"
                                 options={orderTypes} />

@@ -6,11 +6,13 @@ import {denormalize, schema} from 'normalizr'
 import moment from 'moment'
 import { toast } from 'react-toastify'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Alert } from 'reactstrap'
+import { Form } from 'react-form'
 
 import { loadOrdersAction, updateOrdersMasterListItemIdAction } from '../actions'
 import actionTypes from '../actionTypes'
 import {getSelectedOrderUI, getSelectedOrderId, getDenormalizedOrders, isLoadingOrders} from '../selectors'
 
+import ProductTable from './ProductTable'
 import CreateOrderView from './CreateOrderView'
 import Page from 'Common/components/Page'
 import PageSubNavbar from 'Common/components/pageSubNavbar'
@@ -95,16 +97,39 @@ class OrderDetailPane extends React.Component {
         const dueAtWeek = moment(order.due_at).isoWeek()
         const createdAt = moment(order.created_at).format(SIGNEX.humanDateFormat)
 
+        const products = order.products.map( prod => {
+            return {
+                description: prod.description,
+                price: prod.order_state.unit_price,
+                units: prod.order_state.units,
+                discount: prod.order_state.discount,
+                stocked: prod.stocked ? true : false
+            }
+        })
+
+        const defaultValues = {
+            products
+        }
+
         return(
             <div className="row align-items-center">
                 <div className="col">
-                    <h2 className="text-primary">{order.client_id.name} 
+                    <h2 className="text-primary">
+                        {order.client_id.name} 
                         <small className="text-dark"> #{order.code}</small>
                     </h2>
                     <hr />
                     <div className="row">
                         <div className="col-md-6">
                             <p>{order.description}</p>
+
+                            <Form defaultValues={defaultValues}>
+                                { formApi => (
+                                        <form name="createOrderForm" onSubmit={formApi.submitForm}>
+                                            <ProductTable />
+                                        </form>
+                                )}
+                            </Form>
                         </div>
                         <div className="col-md-6">
                             <ul className="list-group">

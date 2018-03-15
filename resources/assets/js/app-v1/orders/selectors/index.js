@@ -6,7 +6,7 @@ import actionTypes from '../actionTypes'
 import { createHasActiveRequestSelectorFor, createFailedRequestSelectorFor } from 'AppUtils/redux/requests/selectors'
 
 /** A selector to check if this modules' cache is dirty or not */
-export const isCacheDirtySelector = state => state.entities.orders.cache.isDirty
+export const isCacheDirtySelector = x => true // state => state.entities.orders.cache.isDirty
 
 /** Check if there is an active request for orders loading  */
 export const isLoadingOrders = createHasActiveRequestSelectorFor('ORDERS_LOAD')

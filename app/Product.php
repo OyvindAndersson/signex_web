@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Http\CodeRules;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -12,16 +13,26 @@ class Product extends Model
 {
     protected $table = 'products';
     protected $fillable = [
+        'code',
         'name', 
-        'attributes', 
-        'profit_margin_override',
-        'category_id', 
+        'description',
+        'unit_price',
         'unit_type_id', 
-        'unit_price'
+        'custom',
+        'supplier_id',
+        'margin_override',
+        'inventory',
+        'category_id',
+        'stocked'
     ];
 
     public function orders()
     {
         return $this->belongsToMany('App\Order', 'order_products', 'product_id', 'order_id');
+    }
+
+    public static function get_code_from_id($id)
+    {
+        return CodeRules::get_code_format_string('product', $id);
     }
 }
