@@ -23,26 +23,28 @@ class ProductLineRow extends React.Component{
     }
 
     render(){
-        const { lineIndex, field, onRemove, state } = this.props
+        const { lineIndex, field, onRemove, product } = this.props
         const lineNum = lineIndex + 1 // Not using zero based index for product line nums
         
         const defaultValues = {
-            description: '',
-            units: 1,
-            price: 0.0,
-            discount: 0,
-            stocked: false
+            id: product.id || 0,
+            description: product.description || '',
+            units: product.units || 1,
+            price: product.price || 0.0,
+            discount: product.discount || 0,
+            stocked: product.stocked || false
         }
 
         var sum = 0
-        try { sum =  state.price * (1-(state.discount / 100)) * state.units } catch(err) { }
+        try { sum =  product.price * (1-(product.discount / 100)) * product.units } catch(err) { }
         
 
         return(
-            <NestedField field={field} validate={this.validateInput}>
+            <NestedField field={field} validate={this.validateInput} defaultValues={defaultValues}>
             <tr>
                 <th scope="row">{`${lineIndex + 1}`}</th>
                 <td>
+                    <Text type="hidden" field={'id'} />
                     <Text className="form-control form-control-sm"
                         field={'description'} 
                         id={`description-${this.props.lineIndex}`}
@@ -132,7 +134,7 @@ class ProductTableForm extends React.Component {
                         <tbody>
                         { formApi.values.products && formApi.values.products.map( (product, i) => (
                             <ProductLineRow 
-                                state={product}
+                                product={product}
                                 key={`product${i}`} 
                                 field={['products', i]} 
                                 lineIndex={i}

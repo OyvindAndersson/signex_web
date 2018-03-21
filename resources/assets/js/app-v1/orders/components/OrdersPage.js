@@ -6,7 +6,7 @@ import {denormalize, schema} from 'normalizr'
 import moment from 'moment'
 import { toast } from 'react-toastify'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Alert } from 'reactstrap'
-import { Form } from 'react-form'
+import { Form, withFormApi } from 'react-form'
 
 import { loadOrdersAction, updateOrdersMasterListItemIdAction } from '../actions'
 import actionTypes from '../actionTypes'
@@ -90,6 +90,28 @@ OrdersMasterList.propTypes = {
  * @todo Implement fully
  */
 class OrderDetailPane extends React.Component {
+    constructor(props){
+        super(props)
+
+        this.handleUpdateFormSubmit = this.handleUpdateFormSubmit.bind(this)
+
+        this.state = {
+            key: 'formKey1'
+        }
+    }
+    componentWillReceiveProps(props) {
+        if(props.order != this.props.order){
+            console.log("REFRESH MOTHERFUCKER")
+            console.log(props)
+            this.setState({ key: `formKey${Math.random()}` })
+        }
+    }
+
+    handleUpdateFormSubmit(values){
+        console.log(`Order ${this.props.order.code} updated with: `)
+        console.log(values)
+    }
+
     render() {
         const {order} = this.props
 
@@ -99,6 +121,7 @@ class OrderDetailPane extends React.Component {
 
         const products = order.products.map( prod => {
             return {
+                id: prod.id,
                 description: prod.description,
                 price: prod.order_state.unit_price,
                 units: prod.order_state.units,
@@ -107,12 +130,15 @@ class OrderDetailPane extends React.Component {
             }
         })
 
+        // Form settings
+
+        //const {formApi} = this.props || null
         const defaultValues = {
             products
         }
-
+        
         return(
-            <div className="row align-items-center">
+            <div className="row align-items-center" >
                 <div className="col">
                     <h2 className="text-primary">
                         {order.client_id.name} 
@@ -122,14 +148,15 @@ class OrderDetailPane extends React.Component {
                     <div className="row">
                         <div className="col-md-6">
                             <p>{order.description}</p>
-
-                            <Form defaultValues={defaultValues}>
+                                <Form onSubmit={this.handleUpdateFormSubmit} defaultValues={defaultValues} key={this.state.key}>
                                 { formApi => (
-                                        <form name="createOrderForm" onSubmit={formApi.submitForm}>
-                                            <ProductTable />
-                                        </form>
+                                <form name="updateOrderForm" onSubmit={formApi.submitForm}>
+                                    <ProductTable />
+
+                                    <button type="submit" className="btn btn-lg btn-block btn-primary">Lagre endringer</button> 
+                                </form>
                                 )}
-                            </Form>
+                                </Form>
                         </div>
                         <div className="col-md-6">
                             <ul className="list-group">

@@ -21,12 +21,13 @@ const getAllOrderIds = state => state.entities.orders.allIds
 export const getSelectedOrderId = state => state.ui.orders.selectedOrderId
 
 /** Get the selected order entity based on selected order ID */
+/*
 export const getSelectedOrderUI = createSelector(
     [getSelectedOrderId, getOrdersNormalized],
     (orderId, orders) => {
         return orderId ? orders[orderId] : null
     }
-)
+)*/
 
 /** Compose an object that contains all entities required to denormalize orders @todo: This sucks.. */
 const getOrdersWithAll = state => ({ 
@@ -43,5 +44,16 @@ export const getDenormalizedOrders = createSelector(
         console.debug(`${denormalized.length} orders denormalized.`)
 
         return denormalized
+    }
+)
+
+/** Get the selected order entity based on selected order ID, DENORMALIZED */
+export const getSelectedOrderUI = createSelector(
+    [ getSelectedOrderId, getOrdersWithAll],
+    (orderIds, orders) => {
+        const denormalized = denormalize([orderIds], orderListSchema, orders)
+        console.debug(`${denormalized.length} orders denormalized.`)
+
+        return denormalized[0]
     }
 )
